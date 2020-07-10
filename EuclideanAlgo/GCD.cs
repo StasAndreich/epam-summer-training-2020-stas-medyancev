@@ -14,9 +14,9 @@ namespace EuclideanAlgo
         /// Returns the GCD of two signed integers
         /// using Euclidean algorithm.
         /// </summary>
-        /// <param name="a">First integer</param>
-        /// <param name="b">Second integer</param>
-        /// <returns>GCD int-value</returns>
+        /// <param name="a">First integer.</param>
+        /// <param name="b">Second integer.</param>
+        /// <returns>GCD int-value.</returns>
         public static int GetEuclideanGCD(int a, int b)
         {
             int aAbs = Math.Abs(a);
@@ -43,10 +43,10 @@ namespace EuclideanAlgo
         /// Returns the GCD of three signed integers
         /// using Euclidean algorithm.
         /// </summary>
-        /// <param name="a">First integer</param>
-        /// <param name="b">Second integer</param>
-        /// <param name="c">Third integer</param>
-        /// <returns>GCD int-value</returns>
+        /// <param name="a">First integer.</param>
+        /// <param name="b">Second integer.</param>
+        /// <param name="c">Third integer.</param>
+        /// <returns>GCD int-value.</returns>
         public static int GetEuclideanGCD(int a, int b, int c)
         {
             int cAbs = Math.Abs(c);
@@ -57,11 +57,11 @@ namespace EuclideanAlgo
         /// Returns the GCD of four signed integers
         /// using Euclidean algorithm.
         /// </summary>
-        /// <param name="a">First integer</param>
-        /// <param name="b">Second integer</param>
-        /// <param name="c">Third integer</param>
-        /// <param name="d">Forth integer</param>
-        /// <returns>GCD int-value</returns>
+        /// <param name="a">First integer.</param>
+        /// <param name="b">Second integer.</param>
+        /// <param name="c">Third integer.</param>
+        /// <param name="d">Forth integer.</param>
+        /// <returns>GCD int-value.</returns>
         public static int GetEuclideanGCD(int a, int b, int c, int d)
         {
             int dAbs = Math.Abs(d);
@@ -72,12 +72,12 @@ namespace EuclideanAlgo
         /// Returns the GCD of five signed integers
         /// using Euclidean algorithm.
         /// </summary>
-        /// <param name="a">First integer</param>
-        /// <param name="b">Second integer</param>
-        /// <param name="c">Third integer</param>
-        /// <param name="d">Forth integer</param>
-        /// <param name="e">Fifth integer</param>
-        /// <returns>GCD int-value</returns>
+        /// <param name="a">First integer.</param>
+        /// <param name="b">Second integer.</param>
+        /// <param name="c">Third integer.</param>
+        /// <param name="d">Forth integer.</param>
+        /// <param name="e">Fifth integer.</param>
+        /// <returns>GCD int-value.</returns>
         public static int GetEuclideanGCD(int a, int b, int c, int d, int e)
         {
             int eAbs = Math.Abs(e);
@@ -88,10 +88,10 @@ namespace EuclideanAlgo
         /// Returns the GCD of two signed integers
         /// using Stein binary algorithm.
         /// </summary>
-        /// <param name="a">First integer</param>
-        /// <param name="b">Second integer</param>
-        /// <param name="execTime">Method execution time out-parameter</param>
-        /// <returns>GCD int-value</returns>
+        /// <param name="a">First integer.</param>
+        /// <param name="b">Second integer.</param>
+        /// <param name="execTime">Method execution time out-parameter.</param>
+        /// <returns>GCD int-value.</returns>
         public static int GetSteinGCD(int a, int b, out long execTime)
         {
             // Does not include Abs() in time measurement.
@@ -168,10 +168,10 @@ namespace EuclideanAlgo
         /// <summary>
         /// Returns the GCD of two signed integers.
         /// </summary>
-        /// <param name="a">First integer</param>
-        /// <param name="b">Second integer</param>
-        /// <param name="execTime">Method execution time out-parameter</param>
-        /// <returns>GCD int-value</returns>
+        /// <param name="a">First integer.</param>
+        /// <param name="b">Second integer.</param>
+        /// <param name="execTime">Method execution time out-parameter.</param>
+        /// <returns>GCD int-value.</returns>
         public static int GetEuclideanGCD(int a, int b, out long execTime)
         {
             // Does not include Abs() in time measurement.
@@ -214,9 +214,9 @@ namespace EuclideanAlgo
         /// Compairs execution time of two GCD algorithms
         /// for the same integer values.
         /// </summary>
-        /// <param name="a">First integer</param>
-        /// <param name="b">Second integer</param>
-        /// <returns>Key-value pairs of IDictionary</returns>
+        /// <param name="a">First integer.</param>
+        /// <param name="b">Second integer.</param>
+        /// <returns>Key-value pairs of IDictionary.</returns>
         public static IDictionary<string, long> GetGCDExecTimeComparisonData(int a, int b)
         {
             long euclideanTime;
