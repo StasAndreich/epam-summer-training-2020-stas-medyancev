@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.Sockets;
 
 namespace EuclideanAlgo
 {
@@ -21,6 +21,14 @@ namespace EuclideanAlgo
         {
             int aAbs = Math.Abs(a);
             int bAbs = Math.Abs(b);
+
+            // Simple cases that protect the while statement
+            // from infinite looping.
+            if (aAbs == 0)
+                return bAbs;
+
+            if (bAbs == 0)
+                return aAbs;
 
             while (aAbs != bAbs)
             {
@@ -76,47 +84,6 @@ namespace EuclideanAlgo
             return GetEuclideanGCD(GetEuclideanGCD(a, b, c, d), eAbs);
         }
 
-
-        //public static int GetSteinGCD(int a, int b, out long execTime)
-        //{
-        //    // Starting a new Stopwatch for execution time measuring.
-        //    var stopwatch = Stopwatch.StartNew();
-
-        //    // Check simple cases.
-        //    if (a == b)
-        //    {
-        //        // Get the execution time value.
-        //        stopwatch.Stop();
-        //        execTime = stopwatch.ElapsedMilliseconds;
-        //        return a;
-        //    }
-
-        //    if (a == 0)
-        //    {
-        //        stopwatch.Stop();
-        //        execTime = stopwatch.ElapsedMilliseconds;
-        //        return b;
-        //    }
-
-        //    if (b == 0)
-        //    {
-        //        stopwatch.Stop();
-        //        execTime = stopwatch.ElapsedMilliseconds;
-        //        return a;
-        //    }
-
-        //    // Check if divisible by 2.
-        //    // a is even.
-        //    if ((a & 1) != 1)
-        //    {
-        //        // b is odd.
-        //        if ((b & 1) == 1)
-        //        {
-        //            return GetSteinGCD();
-        //        }
-        //    }    
-        //}
-
         /// <summary>
         /// Returns the GCD of two signed integers
         /// using Stein binary algorithm.
@@ -144,14 +111,14 @@ namespace EuclideanAlgo
             if (aAbs == 0)
             {
                 stopwatch.Stop();
-                execTime = stopwatch.ElapsedMilliseconds;
+                execTime = stopwatch.ElapsedTicks;
                 return bAbs;
             }
 
             if (bAbs == 0)
             {
                 stopwatch.Stop();
-                execTime = stopwatch.ElapsedMilliseconds;
+                execTime = stopwatch.ElapsedTicks;
                 return aAbs;
             }
 
@@ -192,7 +159,7 @@ namespace EuclideanAlgo
             } while (bAbs != 0);
 
             stopwatch.Stop();
-            execTime = stopwatch.ElapsedMilliseconds;
+            execTime = stopwatch.ElapsedTicks;
 
             // Restore common factors of 2.
             return aAbs << shift;
@@ -214,6 +181,22 @@ namespace EuclideanAlgo
             // Starting a new Stopwatch for execution time measuring.
             var stopwatch = Stopwatch.StartNew();
 
+            // Check simple cases.
+            if (aAbs == 0)
+            {
+                // Stopping the stopwatch and getting execTime.
+                stopwatch.Stop();
+                execTime = stopwatch.ElapsedTicks;
+                return bAbs;
+            }
+
+            if (bAbs == 0)
+            {
+                stopwatch.Stop();
+                execTime = stopwatch.ElapsedTicks;
+                return aAbs;
+            }
+
             while (aAbs != bAbs)
             {
                 _ = (aAbs > bAbs) ? (aAbs -= bAbs) :
@@ -222,9 +205,32 @@ namespace EuclideanAlgo
 
             // Get the execution time value.
             stopwatch.Stop();
-            execTime = stopwatch.ElapsedMilliseconds;
+            execTime = stopwatch.ElapsedTicks;
 
             return aAbs;
+        }
+
+        /// <summary>
+        /// Compairs execution time of two GCD algorithms
+        /// for the same integer values.
+        /// </summary>
+        /// <param name="a">First integer</param>
+        /// <param name="b">Second integer</param>
+        /// <returns>Key-value pairs of IDictionary</returns>
+        public static IDictionary<string, long> GetGCDExecTimeComparisonData(int a, int b)
+        {
+            long euclideanTime;
+            long steinTime;
+
+            GetEuclideanGCD(a, b, execTime: out euclideanTime);
+            GetSteinGCD(a, b, execTime: out steinTime);
+
+            // Add results to a dictionary.
+            var data = new SortedDictionary<string, long>();
+            data.Add("Euclidean algorithm", euclideanTime);
+            data.Add("Stein algorithm", steinTime);
+
+            return data;
         }
     }
 }
