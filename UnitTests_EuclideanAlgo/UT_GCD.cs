@@ -47,6 +47,16 @@ namespace UnitTests_EuclideanAlgo
 
             Assert.AreEqual(gcdResult, zeroResult);
         }
+
+        [TestMethod]
+        public void GetSteinGCD_ZeroAsTwoParams_ZeroResult()
+        {
+            var zeroResult = 0;
+
+            int gcdResult = GCD.GetSteinGCD(0, 0, execTime: out _);
+
+            Assert.AreEqual(gcdResult, zeroResult);
+        }
         #endregion
 
 
@@ -93,6 +103,34 @@ namespace UnitTests_EuclideanAlgo
                     continue;
 
                 int gcdResult = GCD.GetEuclideanGCD(intParam, zeroParam);
+
+                // Check if the answer is incorrect.
+                if (!gcdResult.Equals(Math.Abs(intParam)))
+                {
+                    throw new InvalidOperationException("Result of GetEuclideanGCD " +
+                        "does not equal to abs of the int parameter.");
+                }
+            }
+
+            // If there is no mistakes the test will be passed.
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void GetSteinGCD_ZeroAs1stParamIntAs2ndParam_ResultEqualsToAbsIntParam()
+        {
+            var zeroParam = 0;
+
+            // Check through all the System.Int32 values range.
+            // Preventing from computing the absolute value of 
+            // System.Int32.MinValue.
+            for (int intParam = int.MinValue + 1; intParam < int.MaxValue; intParam++)
+            {
+                // Skip 0 value.
+                if (intParam == 0)
+                    continue;
+
+                int gcdResult = GCD.GetSteinGCD(zeroParam, intParam, execTime: out _);
 
                 // Check if the answer is incorrect.
                 if (!gcdResult.Equals(Math.Abs(intParam)))
