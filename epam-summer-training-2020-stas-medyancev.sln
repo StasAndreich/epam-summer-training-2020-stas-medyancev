@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "task01_NET_Declaring_and_ca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuclideanAlgo", "EuclideanAlgo\EuclideanAlgo.csproj", "{6A58B6E9-1CB3-4BFC-8AAE-8A5D560D18FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests_EuclideanAlgo", "UnitTests_EuclideanAlgo\UnitTests_EuclideanAlgo.csproj", "{CC57A3AE-62C3-442A-A148-1F943B70E7AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{6A58B6E9-1CB3-4BFC-8AAE-8A5D560D18FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A58B6E9-1CB3-4BFC-8AAE-8A5D560D18FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A58B6E9-1CB3-4BFC-8AAE-8A5D560D18FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC57A3AE-62C3-442A-A148-1F943B70E7AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC57A3AE-62C3-442A-A148-1F943B70E7AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC57A3AE-62C3-442A-A148-1F943B70E7AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC57A3AE-62C3-442A-A148-1F943B70E7AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6A58B6E9-1CB3-4BFC-8AAE-8A5D560D18FD} = {49F86CA5-29D6-43FB-8D94-C568F5E85E5D}
+		{CC57A3AE-62C3-442A-A148-1F943B70E7AD} = {49F86CA5-29D6-43FB-8D94-C568F5E85E5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9008F188-1616-4B42-AFA5-E5B492673C98}
