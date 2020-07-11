@@ -17,19 +17,19 @@ namespace Shapes
         {
             double[] sides = new double[points.Length];
 
-            for (int i = 0; i < points.Length; i++)
+            for (int i = 0; i < points.Length - 1; i++)
             {
+                // Compute a side between the last and the first points.
+                if (i == points.Length - 2)
+                {
+                    sides[i + 1] = Math.Sqrt(
+                    Math.Pow(points[i + 1].X - points[0].X, 2) +
+                    Math.Pow(points[i + 1].Y - points[0].Y, 2));
+                }
+
                 sides[i] = Math.Sqrt(
                     Math.Pow(points[i].X - points[i + 1].X, 2) +
                     Math.Pow(points[i].Y - points[i + 1].Y, 2));
-
-                if (i == points.Length - 1)
-                {
-                    i++;
-                    sides[i] = Math.Sqrt(
-                    Math.Pow(points[i].X - points[i + 1].X, 2) +
-                    Math.Pow(points[i].Y - points[i + 1].Y, 2));
-                }
             }
 
             return sides;

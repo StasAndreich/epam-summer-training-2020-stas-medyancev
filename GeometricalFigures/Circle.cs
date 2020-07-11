@@ -7,6 +7,8 @@ namespace Shapes
     /// </summary>
     public class Circle : Shape
     {
+        private double radius;
+
         /// <summary>
         /// Default ctor that inits a circle.
         /// </summary>
@@ -18,9 +20,22 @@ namespace Shapes
         }
 
         /// <summary>
-        /// Circle radius.
+        /// Circle radius prop. If setting a negative
+        /// value positive one will be applied.
         /// </summary>
-        public double Radius { get; set; }
+        public double Radius
+        { 
+            get => radius;
+            set
+            {
+                if (value < 0)
+                    // No matter what is the sign of
+                    // the radius value.
+                    radius = Math.Abs(value);
+                else
+                    radius = value;
+            }
+        }
 
         /// <summary>
         /// Returns a circumference.

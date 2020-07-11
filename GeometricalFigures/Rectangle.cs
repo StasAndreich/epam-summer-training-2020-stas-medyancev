@@ -1,4 +1,6 @@
-﻿namespace Shapes
+﻿using System;
+
+namespace Shapes
 {
     /// <summary>
     /// Defines a general rectangle shape.
@@ -15,7 +17,8 @@
         { }
 
         /// <summary>
-        /// Ctor that inits a rectangle with 4 points.
+        /// Ctor that inits a rectangle with 4 vertices
+        /// passed in (counter) clock-wise order (sequence).
         /// </summary>
         /// <param name="vertex1"></param>
         /// <param name="vertex2"></param>
@@ -28,6 +31,37 @@
                                 vertex3,
                                 vertex4)
         { }
+
+        /// <summary>
+        /// Keeps all the rectangle sides.
+        /// </summary>
+        /// <exception cref="ArgumentException"/>
+        /// <exception cref="ApplicationException"/>
+        public override double[] Sides
+        {
+            get => base.Sides;
+            set
+            {
+                // Validation.
+                if (value.Length < 4)
+                    throw new ApplicationException("Less than 4 sides passed as parameters for building a rectangle.");
+
+                // Check the array for negative values.
+                foreach (var side in value)
+                {
+                    if (side < 0)
+                        throw new ArgumentException("Sides can't be of negative values.");
+                }
+
+                // Rectangle validation.
+                if (value[0] != value[2]
+                    || value[1] != value[3])
+                    throw new ApplicationException("Incorrect rectangle size.");
+
+                // Assign value if everything is good.
+                Sides = value;
+            }
+        }
 
         /// <summary>
         /// Returns a rectangle perimeter.

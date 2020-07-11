@@ -30,6 +30,42 @@ namespace Shapes
         { }
 
         /// <summary>
+        /// Keeps all the triangle sides.
+        /// </summary>
+        /// <exception cref="ArgumentException"/>
+        /// <exception cref="ApplicationException"/>
+        public override double[] Sides
+        {
+            get => base.Sides; 
+            set
+            {
+                // Validation.
+                if (value.Length < 3)
+                    throw new ApplicationException("Less than 3 sides passed as parameters for building a triangle.");
+
+                // Check the array for negative values.
+                foreach (var side in value)
+                {
+                    if (side < 0)
+                        throw new ArgumentException("Sides can't be of negative values.");
+                }
+
+                // Triangle validation.
+                var side1 = value[0];
+                var side2 = value[1];
+                var side3 = value[2];
+
+                if (side1 + side2 <= side3
+                    || side1 + side3 <= side2
+                    || side2 + side3 <= side1)
+                    throw new ApplicationException("Incorrect triangle size.");
+
+                // Assign value if everything is good.
+                Sides = value;
+            }
+        }
+
+        /// <summary>
         /// Returns a triangle perimeter.
         /// </summary>
         /// <returns></returns>

@@ -39,7 +39,7 @@ namespace Shapes
         /// <summary>
         /// Keeps all the polygon sides.
         /// </summary>
-        public double[] Sides
+        public virtual double[] Sides
         {
             get => sides;
             set

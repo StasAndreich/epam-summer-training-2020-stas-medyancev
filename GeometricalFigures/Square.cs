@@ -1,4 +1,6 @@
-﻿namespace Shapes
+﻿using System;
+
+namespace Shapes
 {
     /// <summary>
     /// Defines a general square shape.
@@ -14,19 +16,53 @@
         { }
 
         /// <summary>
-        /// Ctor that inits a square with 4 points.
+        /// Ctor that inits a square with 4 vertices
+        /// passed in (counter) clock-wise order (sequence).
         /// </summary>
         /// <param name="vertex1"></param>
         /// <param name="vertex2"></param>
         /// <param name="vertex3"></param>
         /// <param name="vertex4"></param>
         public Square(Point vertex1, Point vertex2,
-                        Point vertex3, Point vertex4)
+                      Point vertex3, Point vertex4)
             : base("Square", vertex1,
                              vertex2,
                              vertex3,
                              vertex4)
         { }
+
+        /// <summary>
+        /// Keeps all the square sides.
+        /// </summary>
+        /// <exception cref="ArgumentException"/>
+        /// <exception cref="ApplicationException"/>
+        public override double[] Sides
+        {
+            get => base.Sides;
+            set
+            {
+                // Validation.
+                if (value.Length < 4)
+                    throw new ApplicationException("Less than 4 sides passed as parameters for building a rectangle.");
+
+                // Check the array for negative values.
+                foreach (var side in value)
+                {
+                    if (side < 0)
+                        throw new ArgumentException("Sides can't be of negative values.");
+                }
+
+                // Rectangle validation.
+                for (int i = 0; i < value.Length + 1; i++)
+                {
+                    if (value[i] != value[i + 1])
+                        throw new ApplicationException("Incorrect square size.");
+                }                    
+
+                // Assign value if everything is good.
+                Sides = value;
+            }
+        }
 
         /// <summary>
         /// Returns a square perimeter.

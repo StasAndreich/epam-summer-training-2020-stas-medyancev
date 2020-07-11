@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests_EuclideanAlgo", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapes", "GeometricalFigures\Shapes.csproj", "{FEF7EA05-7C07-4200-9613-5F6695E04C04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapesUtilities", "ShapesParser\ShapesUtilities.csproj", "{960CF6DF-1265-45A5-805B-2458302A130F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{FEF7EA05-7C07-4200-9613-5F6695E04C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEF7EA05-7C07-4200-9613-5F6695E04C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEF7EA05-7C07-4200-9613-5F6695E04C04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{960CF6DF-1265-45A5-805B-2458302A130F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{960CF6DF-1265-45A5-805B-2458302A130F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{960CF6DF-1265-45A5-805B-2458302A130F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{960CF6DF-1265-45A5-805B-2458302A130F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 		{6A58B6E9-1CB3-4BFC-8AAE-8A5D560D18FD} = {49F86CA5-29D6-43FB-8D94-C568F5E85E5D}
 		{CC57A3AE-62C3-442A-A148-1F943B70E7AD} = {49F86CA5-29D6-43FB-8D94-C568F5E85E5D}
 		{FEF7EA05-7C07-4200-9613-5F6695E04C04} = {49F86CA5-29D6-43FB-8D94-C568F5E85E5D}
+		{960CF6DF-1265-45A5-805B-2458302A130F} = {49F86CA5-29D6-43FB-8D94-C568F5E85E5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9008F188-1616-4B42-AFA5-E5B492673C98}
