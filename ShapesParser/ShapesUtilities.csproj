@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\ShapesUtilities.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,9 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CircleCreator.cs" />
     <Compile Include="IShapeCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RectangleCreator.cs" />
     <Compile Include="ShapeLoader.cs" />
+    <Compile Include="SquareCreator.cs" />
+    <Compile Include="TriangleCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GeometricalFigures\Shapes.csproj">

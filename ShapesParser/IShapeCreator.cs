@@ -8,6 +8,18 @@ namespace ShapesUtilities
     /// </summary>
     interface IShapeCreator
     {
-        Shape CreateShape(string input);
+        /// <summary>
+        /// Creates a specific shape using its sides.
+        /// </summary>
+        /// <param name="sides"></param>
+        /// <returns></returns>
+        Shape CreateShape(params double[] sides);
+
+        /// <summary>
+        /// Creates a specific shape using its coordinates.
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        Shape CreateShape(params Point[] points);
     }
 }
