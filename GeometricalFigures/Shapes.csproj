@@ -7,8 +7,8 @@
     <ProjectGuid>{FEF7EA05-7C07-4200-9613-5F6695E04C04}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GeometricalFigures</RootNamespace>
-    <AssemblyName>GeometricalFigures</AssemblyName>
+    <RootNamespace>Shapes</RootNamespace>
+    <AssemblyName>Shapes</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\GeometricalFigures.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Shapes.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,8 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Figure.cs" />
+    <Compile Include="Circle.cs" />
+    <Compile Include="Point.cs" />
+    <Compile Include="Rectangle.cs" />
+    <Compile Include="Shape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Trapezoid.cs" />
     <Compile Include="Triangle.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

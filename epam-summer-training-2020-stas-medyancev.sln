@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuclideanAlgo", "EuclideanA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests_EuclideanAlgo", "UnitTests_EuclideanAlgo\UnitTests_EuclideanAlgo.csproj", "{CC57A3AE-62C3-442A-A148-1F943B70E7AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricalFigures", "GeometricalFigures\GeometricalFigures.csproj", "{FEF7EA05-7C07-4200-9613-5F6695E04C04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapes", "GeometricalFigures\Shapes.csproj", "{FEF7EA05-7C07-4200-9613-5F6695E04C04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
