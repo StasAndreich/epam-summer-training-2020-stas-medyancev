@@ -10,24 +10,17 @@ namespace Shapes
         /// <summary>
         /// Default ctor that inits a circle.
         /// </summary>
-        /// <param name="center">Point structure.</param>
         /// <param name="radius">Double value.</param>
-        public Circle(Point center, double radius)
+        public Circle(double radius)
             : base("Circle")
         {
             this.Radius = radius;
-            this.Center = center;
         }
 
         /// <summary>
         /// Circle radius.
         /// </summary>
         public double Radius { get; set; }
-
-        /// <summary>
-        /// Cirlce center point.
-        /// </summary>
-        public Point Center { get; set; }
 
         /// <summary>
         /// Returns a circumference.
@@ -53,17 +46,35 @@ namespace Shapes
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format($"{base.Name} {Center} {Radius}");
+            return string.Format($"{base.Name} {Radius}");
         }
 
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-
+        /// <summary>
+        /// Returns a hash-code for a circle object.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            unchecked
+            {
+                return (int)(GetArea() * GetPerimeter() / 2);
+            }
+        }
+
+        /// <summary>
+        /// Check the equality of this circle instance and other object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !(this.GetType().Equals(obj.GetType())))
+                return false;
+
+            var circle = (Circle)obj;
+
+            return this.Radius.Equals(circle.Radius);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Shapes
     /// <summary>
     /// Defines a general triangle shape.
     /// </summary>
-    public class Triangle : Shape 
+    public class Triangle : Polygon 
     {
         /// <summary>
         /// Ctor that inits a triangle with 3 sides.
@@ -14,13 +14,8 @@ namespace Shapes
         /// <param name="bSide"></param>
         /// <param name="cSide"></param>
         public Triangle(double aSide, double bSide, double cSide)
-            : base("Triangle")
-        {
-            this.Sides = new double[]
-            {
-                aSide, bSide, cSide
-            };
-        }
+            : base("Triangle", aSide, bSide, cSide)
+        { }
 
         /// <summary>
         /// Ctor that inits a triangle with 3 points.
@@ -29,17 +24,10 @@ namespace Shapes
         /// <param name="vertex2"></param>
         /// <param name="vertex3"></param>
         public Triangle(Point vertex1, Point vertex2, Point vertex3)
-            : base("Triangle")
-        {
-            this.Sides = Shape.GetSidesArrayFrompoints(vertex1,
-                                                         vertex2,
-                                                         vertex3);
-        }
-
-        /// <summary>
-        /// Array that keeps all the triangle sides.
-        /// </summary>
-        public double[] Sides { get; }
+            : base("Triangle", vertex1,
+                               vertex2,
+                               vertex3)
+        { }
 
         /// <summary>
         /// Returns a triangle perimeter.
@@ -47,14 +35,7 @@ namespace Shapes
         /// <returns></returns>
         public override double GetPerimeter()
         {
-            double perimeter = 0;
-
-            foreach (var side in Sides)
-            {
-                perimeter += side;
-            }
-
-            return perimeter;
+            return base.GetPerimeter();
         }
 
         /// <summary>
@@ -79,14 +60,26 @@ namespace Shapes
         /// <returns></returns>
         public override string ToString()
         {
-            var result = $"{base.Name}";
+            return base.ToString();
+        }
 
-            foreach (var side in Sides)
-            {
-                result += $" {side}";
-            }
+        /// <summary>
+        /// Returns a hash-code for a triangle object.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
-            return result;
+        /// <summary>
+        /// Check the equality of this triangle instance and other object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
         }
     }
 }

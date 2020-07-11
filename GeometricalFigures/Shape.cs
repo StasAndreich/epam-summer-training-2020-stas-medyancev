@@ -8,6 +8,11 @@ namespace Shapes
     /// </summary>
     public abstract class Shape
     {
+        /// <summary>
+        /// Returns an array of sides computed from points.
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
         public static double[] GetSidesArrayFromPoints(params Point[] points)
         {
             double[] sides = new double[points.Length];
@@ -42,7 +47,7 @@ namespace Shapes
         /// <summary>
         /// Keeps the shape name.
         /// </summary>
-        public string Name { get; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Returns the perimeter of the shape.

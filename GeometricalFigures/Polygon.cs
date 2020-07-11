@@ -7,6 +7,9 @@ namespace Shapes
     /// </summary>
     public class Polygon : Shape
     {
+        /// <summary>
+        /// Array of all polygon sides.
+        /// </summary>
         private double[] sides;
 
         /// <summary>
@@ -71,6 +74,55 @@ namespace Shapes
         public override double GetArea()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Returns a formatted string filled with Polygon props.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            var result = $"{base.Name}";
+            foreach (var side in sides)
+            {
+                result += $" {side}";
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a hash-code for a circle object.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (int)(GetArea() * GetPerimeter() / 2);
+            }
+        }
+
+        /// <summary>
+        /// Check the equality of this polygon instance and other object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !(this.GetType().Equals(obj.GetType())))
+                return false;
+
+            var polygon = (Polygon)obj;
+
+            for (int i = 0; i < this.sides.Length; i++)
+            {
+                if (this.sides[i] != polygon.sides[i])
+                    return false;
+            }
+
+            return true;
         }
     }
 }
