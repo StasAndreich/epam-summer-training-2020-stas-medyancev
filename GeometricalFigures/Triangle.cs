@@ -23,7 +23,7 @@ namespace Shapes
         }
 
         /// <summary>
-        /// Ctor that inits a triangle with 3 vertices.
+        /// Ctor that inits a triangle with 3 points.
         /// </summary>
         /// <param name="vertex1"></param>
         /// <param name="vertex2"></param>
@@ -31,7 +31,7 @@ namespace Shapes
         public Triangle(Point vertex1, Point vertex2, Point vertex3)
             : base("Triangle")
         {
-            this.Sides = Shape.GetSidesArrayFromVertices(vertex1,
+            this.Sides = Shape.GetSidesArrayFrompoints(vertex1,
                                                          vertex2,
                                                          vertex3);
         }
@@ -71,7 +71,6 @@ namespace Shapes
                 (halfPerimeter - Sides[0]) *
                 (halfPerimeter - Sides[1]) *
                 (halfPerimeter - Sides[2]));
-
         }
 
         /// <summary>

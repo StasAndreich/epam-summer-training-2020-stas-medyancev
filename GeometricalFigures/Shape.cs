@@ -8,22 +8,22 @@ namespace Shapes
     /// </summary>
     public abstract class Shape
     {
-        public static double[] GetSidesArrayFromVertices(params Point[] vertices)
+        public static double[] GetSidesArrayFromPoints(params Point[] points)
         {
-            double[] sides = new double[vertices.Length];
+            double[] sides = new double[points.Length];
 
-            for (int i = 0; i < vertices.Length; i++)
+            for (int i = 0; i < points.Length; i++)
             {
                 sides[i] = Math.Sqrt(
-                    Math.Pow(vertices[i].X - vertices[i + 1].X, 2) +
-                    Math.Pow(vertices[i].Y - vertices[i + 1].Y, 2));
+                    Math.Pow(points[i].X - points[i + 1].X, 2) +
+                    Math.Pow(points[i].Y - points[i + 1].Y, 2));
 
-                if (i == vertices.Length - 1)
+                if (i == points.Length - 1)
                 {
                     i++;
                     sides[i] = Math.Sqrt(
-                    Math.Pow(vertices[i].X - vertices[i + 1].X, 2) +
-                    Math.Pow(vertices[i].Y - vertices[i + 1].Y, 2));
+                    Math.Pow(points[i].X - points[i + 1].X, 2) +
+                    Math.Pow(points[i].Y - points[i + 1].Y, 2));
                 }
             }
 
