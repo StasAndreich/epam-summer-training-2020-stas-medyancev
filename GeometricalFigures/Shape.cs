@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Shapes
 {
@@ -33,6 +34,26 @@ namespace Shapes
             }
 
             return sides;
+        }
+
+        /// <summary>
+        /// Returns an array of shapes that
+        /// are equal to a shape passed as parameter.
+        /// </summary>
+        /// <param name="shapes"></param>
+        /// <param name="shape"></param>
+        /// <returns></returns>
+        public static Shape[] FindEqualShapesInArray(Shape[] shapes, Shape shape)
+        {
+            var equalShapes = new List<Shape>();
+
+            foreach (var item in shapes)
+            {
+                if (item.Equals(shape))
+                    equalShapes.Add(item);
+            }
+
+            return equalShapes.ToArray();
         }
 
         /// <summary>

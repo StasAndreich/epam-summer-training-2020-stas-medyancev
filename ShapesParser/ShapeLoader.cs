@@ -12,6 +12,19 @@ namespace ShapesUtilities
 
             foreach (var line in File.ReadAllLines(filePath))
             {
+                var lineUnits = line.Split(' ');
+
+                switch(lineUnits[0])
+                {
+                    case "Circle":
+                        break;
+                    case "Triangle":
+                        break;
+                    case "Rectangle":
+                        break;
+                    case "Square":
+                        break;
+                }
                 inputShapesList.Add();
             }
         }
