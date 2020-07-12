@@ -1,6 +1,4 @@
-﻿
-
-using Shapes;
+﻿using Shapes;
 
 namespace ShapesUtilities
 {
