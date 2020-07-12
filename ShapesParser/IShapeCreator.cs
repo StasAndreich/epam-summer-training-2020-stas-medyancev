@@ -6,7 +6,7 @@ namespace ShapesUtilities
     /// Interface that defines a factory method
     /// for creating shapes instances.
     /// </summary>
-    interface IShapeCreator
+    public interface IShapeCreator
     {
         /// <summary>
         /// Creates a specific shape using its sides.

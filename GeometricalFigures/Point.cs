@@ -6,6 +6,17 @@
     public struct Point
     {
         /// <summary>
+        /// Ctor that fully inits a Point.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public Point(double x, double y)
+        {
+            this.X = x;
+            this.Y = y;
+        }
+
+        /// <summary>
         /// X-coord.
         /// </summary>
         public double X;
