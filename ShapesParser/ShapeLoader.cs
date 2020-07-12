@@ -111,7 +111,7 @@ namespace ShapesUtilities
                 return shapeCreator.CreateShape(points);
             }
 
-            // If nothing to create.
+            // If there is nothing to create.
             return null;
         }
     }

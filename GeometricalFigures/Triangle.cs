@@ -61,7 +61,7 @@ namespace Shapes
                     throw new ApplicationException("Incorrect triangle size.");
 
                 // Assign value if everything is good.
-                Sides = value;
+                sides = value;
             }
         }
 

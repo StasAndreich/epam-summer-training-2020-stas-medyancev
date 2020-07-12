@@ -59,7 +59,7 @@ namespace Shapes
                     throw new ApplicationException("Incorrect rectangle size.");
 
                 // Assign value if everything is good.
-                Sides = value;
+                sides = value;
             }
         }
 

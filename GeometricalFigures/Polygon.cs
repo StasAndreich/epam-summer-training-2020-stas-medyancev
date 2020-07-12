@@ -10,7 +10,7 @@ namespace Shapes
         /// <summary>
         /// Array of all polygon sides.
         /// </summary>
-        private double[] sides;
+        protected double[] sides;
 
         /// <summary>
         /// Ctor that inits a polygon with its sides.
