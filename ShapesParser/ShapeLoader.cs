@@ -70,27 +70,8 @@ namespace ShapesUtilities
             var matchesSides = regexSides.Matches(input);
             var matchesPoints = regexPoints.Matches(input);
 
-            // Create a shape from sides.
-            if (matchesSides.Count != 0)
-            {
-                var sides = new double[matchesSides.Count];
-                int i = 0;
-
-                foreach (Match match in matchesSides)
-                {
-                    // Parse sides values.
-                    double.TryParse(match.Value, result: out double side);
-
-                    // Assign a side value to an array.
-                    sides[i] = side;
-                    i++;
-                }
-
-                return shapeCreator.CreateShape(sides);
-            }
-
             // Create a shape from coords.
-            else if (matchesPoints.Count != 0)
+            if (matchesPoints.Count != 0)
             {
                 // Accumulate all vertices in Point[] array.
                 var points = new Point[matchesPoints.Count];
@@ -109,6 +90,25 @@ namespace ShapesUtilities
                 }
 
                 return shapeCreator.CreateShape(points);
+            }
+
+            // Create a shape from sides.
+            else if (matchesSides.Count != 0)
+            {
+                var sides = new double[matchesSides.Count];
+                int i = 0;
+
+                foreach (Match match in matchesSides)
+                {
+                    // Parse sides values.
+                    double.TryParse(match.Value, result: out double side);
+
+                    // Assign a side value to an array.
+                    sides[i] = side;
+                    i++;
+                }
+
+                return shapeCreator.CreateShape(sides);
             }
 
             // If there is nothing to create.

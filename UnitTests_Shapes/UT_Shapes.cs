@@ -30,29 +30,27 @@ namespace UnitTests_Shapes
             Assert.IsTrue(true);
         }
 
-        //[TestMethod]
-        //public void Triangle_GetPerimeter_CorrectResult()
-        //{
-        //    var attempts = 10000;
-        //    var rand = new Random();
+        [TestMethod]
+        public void Triangle_GetPerimeter_CorrectResult()
+        {
+            var attempts = 10000;
+            var rand = new Random();
 
-        //    for (int i = 0; i < attempts; i++)
-        //    {
-        //        // Create a rand triangle.
-        //        var side1 = rand.NextDouble() * rand.Next(0, 10000);
-        //        var side2 = rand.NextDouble() * rand.Next(0, 10000);
-        //        var side3 = rand.NextDouble() * rand.Next(0, 10000);
-        //        var triangle = new Triangle(side1, side2, side3);
+            for (int i = 0; i < attempts; i++)
+            {
+                // Create a rand triangle.
+                var side = rand.NextDouble() * rand.Next(0, 10000);
+                var triangle = new Triangle(side, side, side);
 
-        //        // Compare results.
-        //        if (!triangle.GetPerimeter()
-        //            .Equals(2 * Math.PI * doubleValue))
-        //            throw new ApplicationException("Perimeter value is incorrect.");
-        //    }
+                // Compare results.
+                if (!triangle.GetPerimeter()
+                    .Equals(3 * side))
+                    throw new ApplicationException("Perimeter value is incorrect.");
+            }
 
-        //    // If no exceptions.
-        //    Assert.IsTrue(true);
-        //}
+            // If no exceptions.
+            Assert.IsTrue(true);
+        }
 
         [TestMethod]
         public void Rectangle_GetPerimeter_CorrectResult()
@@ -117,6 +115,33 @@ namespace UnitTests_Shapes
                 // Compare results.
                 if (!circle.GetArea()
                     .Equals(Math.PI * doubleValue * doubleValue))
+                    throw new ApplicationException("Area value is incorrect.");
+            }
+
+            // If no exceptions.
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void Triangle_GetArea_CorrectResult()
+        {
+            var attempts = 10000;
+            var rand = new Random();
+
+            for (int i = 0; i < attempts; i++)
+            {
+                // Create a rand triangle.
+                var side = rand.NextDouble() * rand.Next(0, 10000);
+                var triangle = new Triangle(side, side, side);
+
+                var halfPerimeter = (side + side + side) / 2;
+                // Compare results.
+                if (!triangle.GetArea()
+                    .Equals(Math.Sqrt(
+                            (halfPerimeter / 2) *
+                            (halfPerimeter - side) *
+                            (halfPerimeter - side) *
+                            (halfPerimeter - side))))
                     throw new ApplicationException("Area value is incorrect.");
             }
 
@@ -202,6 +227,44 @@ namespace UnitTests_Shapes
                 if (!(circle1.Equals(circle2)
                     && circle2.Equals(circle3))
                     && circle1.Equals(circle3))
+                    throw new ApplicationException("Equals check of two equal obj is incorrect.");
+            }
+
+            // If no exceptions.
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void Triangle_Equals_CorrectResult()
+        {
+            var attempts = 10000;
+            var rand = new Random();
+
+            for (int i = 0; i < attempts; i++)
+            {
+                // Create rand rectangles.
+                var doubleValue = rand.NextDouble() * rand.Next(0, 10000);
+
+                var triangle1 = new Triangle(doubleValue, doubleValue, doubleValue);
+                var triangle2 = new Triangle(doubleValue, doubleValue, doubleValue);
+                var triangle3 = new Triangle(doubleValue, doubleValue, doubleValue);
+
+                // Reflectiveness check.
+                if (!triangle1.Equals(triangle1))
+                    throw new ApplicationException("Equals check of two equal obj is incorrect.");
+
+                // Symmetry check.
+                if (!triangle1.Equals(triangle2))
+                    throw new ApplicationException("Equals check of two equal obj is incorrect.");
+
+                // Symmetry check.
+                if (!triangle2.Equals(triangle1))
+                    throw new ApplicationException("Equals check of two equal obj is incorrect.");
+
+                // Transitivity check.
+                if (!(triangle1.Equals(triangle2)
+                    && triangle2.Equals(triangle3))
+                    && triangle1.Equals(triangle3))
                     throw new ApplicationException("Equals check of two equal obj is incorrect.");
             }
 
