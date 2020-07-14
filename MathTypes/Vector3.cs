@@ -123,5 +123,100 @@ namespace MathTypes
         {
             return (int)(this.X * this.Y / this.Z);
         }
+
+        /// <summary>
+        /// Set x, y and z components of an existing Vector3.
+        /// </summary>
+        /// <param name="newX"></param>
+        /// <param name="newY"></param>
+        /// <param name="newZ"></param>
+        public void Set(float newX, float newY, float newZ)
+        {
+            this.X = newX;
+            this.Y = newY;
+            this.Z = newZ;
+        }
+
+
+        #region Operators overloading
+        /// <summary>
+        /// Adds two vectors.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static Vector3 operator +(Vector3 a, Vector3 b)
+        {
+            return new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+        }
+
+        /// <summary>
+        /// Subtracts one vector from another.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static Vector3 operator -(Vector3 a, Vector3 b)
+        {
+            return new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+        }
+
+        /// <summary>
+        /// Scalar multiplication of two vectors.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static double operator *(Vector3 a, Vector3 b)
+        {
+            return (a.X * b.X) + (a.Y * b.Y) + (a.Z * b.Z);
+        }
+
+        /// <summary>
+        /// Multiplies a vector by a number.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public static Vector3 operator *(Vector3 a, double num)
+        {
+            return new Vector3(a.X * num, a.Y * num, a.Z * num);
+        }
+
+        /// <summary>
+        /// Divides a vector by a number.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public static Vector3 operator /(Vector3 a, double num)
+        {
+            if (!num.Equals(0))
+                return new Vector3(a.X / num, a.Y / num, a.Z / num);
+            throw new InvalidOperationException("Division by zero.");
+        }
+
+        /// <summary>
+        /// Returns true if two vectors are equal.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static bool operator ==(Vector3 a, Vector3 b)
+        {           
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Returns true if vectors are not equal.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static bool operator !=(Vector3 a, Vector3 b)
+        {
+            return !a.Equals(b);
+        }
+        #endregion
     }
 }
