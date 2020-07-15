@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "task02_NET_Operations_overl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathTypes", "MathTypes\MathTypes.csproj", "{9507FD3B-812C-4401-8726-87F8A94AD7CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests_MathTypes", "UnitTests_MathTypes\UnitTests_MathTypes.csproj", "{B87D9897-B411-4AF2-95C6-F56D0B0A8B43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{9507FD3B-812C-4401-8726-87F8A94AD7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9507FD3B-812C-4401-8726-87F8A94AD7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9507FD3B-812C-4401-8726-87F8A94AD7CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B87D9897-B411-4AF2-95C6-F56D0B0A8B43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B87D9897-B411-4AF2-95C6-F56D0B0A8B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B87D9897-B411-4AF2-95C6-F56D0B0A8B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B87D9897-B411-4AF2-95C6-F56D0B0A8B43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9507FD3B-812C-4401-8726-87F8A94AD7CC} = {EA9F75D7-4310-4AC5-A041-191411905DF0}
+		{B87D9897-B411-4AF2-95C6-F56D0B0A8B43} = {EA9F75D7-4310-4AC5-A041-191411905DF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9008F188-1616-4B42-AFA5-E5B492673C98}

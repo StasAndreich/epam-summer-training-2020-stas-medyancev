@@ -12,7 +12,7 @@ namespace MathTypes
         /// </summary>
         public static Vector3 One
         {
-            get => new Vector3(1f, 1f, 1f);
+            get => new Vector3(1, 1, 1);
         }
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace MathTypes
         /// </summary>
         public static Vector3 Zero
         {
-            get => new Vector3(0f, 0f, 0f);
+            get => new Vector3(0, 0, 0);
         }
 
         /// <summary>
