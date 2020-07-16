@@ -46,6 +46,17 @@ namespace MathTypes
         }
 
         /// <summary>
+        /// Scalar multiplication of two vectors.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns>Dot product.</returns>
+        public static double Dot(Vector3 a, Vector3 b)
+        {
+            return (a.X * b.X) + (a.Y * b.Y) + (a.Z * b.Z);
+        }
+
+        /// <summary>
         /// Ctor that creates a new vector
         /// with (x, y, z) components.
         /// </summary>
@@ -159,17 +170,6 @@ namespace MathTypes
         public static Vector3 operator -(Vector3 a, Vector3 b)
         {
             return new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
-        }
-
-        /// <summary>
-        /// Scalar multiplication of two vectors.
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        public static double operator *(Vector3 a, Vector3 b)
-        {
-            return (a.X * b.X) + (a.Y * b.Y) + (a.Z * b.Z);
         }
 
         /// <summary>

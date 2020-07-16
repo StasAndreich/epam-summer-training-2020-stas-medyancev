@@ -126,6 +126,40 @@ namespace UnitTests_MathTypes
             Assert.IsTrue(true);
         }
 
+        [TestMethod]
+        public void Dot_TwoVectors3_DoubleScalar()
+        {
+            var attempts = 10000;
+            var rand = new Random();
+
+            for (int i = 0; i < attempts; i++)
+            {
+                // Randomise xyz-coords values for 1st vector.
+                var x1 = rand.NextDouble() * rand.Next(0, 10000);
+                var y1 = rand.NextDouble() * rand.Next(0, 10000);
+                var z1 = rand.NextDouble() * rand.Next(0, 10000);
+
+                // Randomise xyz-coords values for 2nd vector.
+                var x2 = rand.NextDouble() * rand.Next(0, 10000);
+                var y2 = rand.NextDouble() * rand.Next(0, 10000);
+                var z2 = rand.NextDouble() * rand.Next(0, 10000);
+
+                // Create the 1st rand vector from xyz.
+                var vector1 = new Vector3(x1, y1, z1);
+                // Create the 2nd rand vector from xyz.
+                var vector2 = new Vector3(x2, y2, z2);
+
+                // Compute vector1 and vector2 dot product.
+                var dotProduct = (vector1.X * vector2.X)
+                                  + (vector1.Y * vector2.Y)
+                                  + (vector1.Z * vector2.Z);
+
+                if (!dotProduct.Equals(Vector3.Dot(vector1, vector2)))
+                    throw new ApplicationException("Product of two vectors3 is incorrect.");
+            }
+
+            Assert.IsTrue(true);
+        }
 
         #region Operators overloading
         [TestMethod]
@@ -193,41 +227,6 @@ namespace UnitTests_MathTypes
 
                 if (!diffVector.Equals(vector1 - vector2))
                     throw new ApplicationException("Difference of two vectors3 is incorrect.");
-            }
-
-            Assert.IsTrue(true);
-        }
-
-        [TestMethod]
-        public void MultiplicationOperatorOverloading_TwoVectors3_DoubleScalar()
-        {
-            var attempts = 10000;
-            var rand = new Random();
-
-            for (int i = 0; i < attempts; i++)
-            {
-                // Randomise xyz-coords values for 1st vector.
-                var x1 = rand.NextDouble() * rand.Next(0, 10000);
-                var y1 = rand.NextDouble() * rand.Next(0, 10000);
-                var z1 = rand.NextDouble() * rand.Next(0, 10000);
-
-                // Randomise xyz-coords values for 2nd vector.
-                var x2 = rand.NextDouble() * rand.Next(0, 10000);
-                var y2 = rand.NextDouble() * rand.Next(0, 10000);
-                var z2 = rand.NextDouble() * rand.Next(0, 10000);
-
-                // Create the 1st rand vector from xyz.
-                var vector1 = new Vector3(x1, y1, z1);
-                // Create the 2nd rand vector from xyz.
-                var vector2 = new Vector3(x2, y2, z2);
-
-                // Compute vector1 and vector2 product.
-                var productScalar = (vector1.X * vector2.X)
-                                  + (vector1.Y * vector2.Y)
-                                  + (vector1.Z * vector2.Z);
-
-                if (!productScalar.Equals(vector1 * vector2))
-                    throw new ApplicationException("Product of two vectors3 is incorrect.");
             }
 
             Assert.IsTrue(true);
