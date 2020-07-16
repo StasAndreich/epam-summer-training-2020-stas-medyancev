@@ -184,6 +184,17 @@ namespace MathTypes
         }
 
         /// <summary>
+        /// Multiplies a number by a vector.
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static Vector3 operator *(double num, Vector3 a)
+        {
+            return a * num;
+        }
+
+        /// <summary>
         /// Divides a vector by a number.
         /// </summary>
         /// <param name="a"></param>

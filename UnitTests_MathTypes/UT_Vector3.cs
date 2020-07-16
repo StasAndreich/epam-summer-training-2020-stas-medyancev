@@ -234,7 +234,7 @@ namespace UnitTests_MathTypes
         }
 
         [TestMethod]
-        public void MultiplicationOperatorOverloading_Vector3AndDouble_Vector3()
+        public void MultiplicationOperatorOverloading_Vector3AndDoubleAndViceVersa_Vector3()
         {
             var attempts = 10000;
             var rand = new Random();
@@ -256,7 +256,8 @@ namespace UnitTests_MathTypes
                                                 vector.Y * doubleValue,
                                                 vector.Z * doubleValue);
 
-                if (!productVector.Equals(vector * doubleValue))
+                if (!(productVector.Equals(vector * doubleValue))
+                    && (productVector.Equals(doubleValue * vector)))
                     throw new ApplicationException("Product of a vectors3 and double value is incorrect.");
             }
 
