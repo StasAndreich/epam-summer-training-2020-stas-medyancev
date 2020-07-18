@@ -107,7 +107,8 @@ namespace MathTypes
         {
             // If degrees are different.
             if (!lhs.Exponent.Equals(rhs.Exponent))
-                return lhs;
+                throw new ArgumentOutOfRangeException("Impossible to add to monomials " +
+                    "with different exponents.");
 
             return new MonomialSingleVar(lhs.Coefficient + rhs.Coefficient,
                                 lhs.Exponent);
@@ -123,7 +124,8 @@ namespace MathTypes
         {
             // If degrees are different.
             if (!lhs.Exponent.Equals(rhs.Exponent))
-                return lhs;
+                throw new ArgumentOutOfRangeException("Impossible to add to monomials " +
+                    "with different exponents.");
 
             return new MonomialSingleVar(lhs.Coefficient - rhs.Coefficient,
                                 lhs.Exponent);

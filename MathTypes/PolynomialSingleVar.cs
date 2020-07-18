@@ -21,41 +21,19 @@ namespace MathTypes
         {
             for (int i = 0; i < coefficients.Length; i++)
             {
-                Members.Add(new MonomialSingleVar(coefficients[i], i));
+                members.Add(new MonomialSingleVar(coefficients[i], i));
             }
         }
-
-        private List<MonomialSingleVar> members = new List<MonomialSingleVar>();
 
         /// <summary>
-        /// Provides access to monomials of the polynomial.
+        /// Keeps all poynomial monomials-members.
         /// </summary>
-        public List<MonomialSingleVar> Members 
-        { 
-            get => this.members;// ???
-            set
-            {
-                if ()
-            }
-        }
+        private List<MonomialSingleVar> members = new List<MonomialSingleVar>();
 
         /// <summary>
         /// Returns max exponent value of current polynomial.
         /// </summary>
-        public int MaxExponent
-        {
-            get
-            {
-                var maxExp = 0;
-                foreach (var member in Members)
-                {
-                    if (member.Exponent > maxExp)
-                        maxExp = member.Exponent;
-                }
-
-                return maxExp;
-            }
-        }
+        public int MaxExponent { get => members.Count - 1; }
 
         /// <summary>
         /// Returns the count of polynomial mono-members.
@@ -71,7 +49,7 @@ namespace MathTypes
         {
             double result = 0;
 
-            foreach (var member in Members)
+            foreach (var member in members)
             {
                 result += member.Evaluate(variableValue);
             }
@@ -85,12 +63,12 @@ namespace MathTypes
         /// <returns>Formatted string of PolynomialSingleVar.</returns>
         public override string ToString()
         {
-            string result = $"{Members[0]})";
+            //string result = $"{members[0]})";
 
-            for (int i = 1; i < Members.Count; i++)
-            {
-                result += $" + ({Members[i]})";
-            }
+            //for (int i = 1; i < members.Count; i++)
+            //{
+            //    result += $" + ({members[i]})";
+            //}
 
             return base.ToString();
         }
@@ -108,12 +86,12 @@ namespace MathTypes
             var polynomial = (PolynomialSingleVar)obj;
 
             // Amount of monomials is not the same.
-            if (!Members.Count.Equals(polynomial.Members.Count))
+            if (!members.Count.Equals(polynomial.members.Count))
                 return false;
 
-            for (int i = 0; i < this.Members.Count; i++)
+            for (int i = 0; i < this.members.Count; i++)
             {
-                if (!Members[i].Equals(polynomial.Members[i]))
+                if (!members[i].Equals(polynomial.members[i]))
                     return false;
             }
 
@@ -128,28 +106,83 @@ namespace MathTypes
         {
             int hash = 0;
 
-            foreach (var item in Members)
+            foreach (var item in members)
             {
                 hash += item.GetHashCode();
             }
 
-            return hash / Members.Count;
+            return hash / members.Count;
         }
 
+        /// <summary>
+        /// Creates a copy of current polynomial.
+        /// </summary>
+        /// <returns>New PolynomialSingleVar object.</returns>
         public PolynomialSingleVar GetCopy()
         {
+            var paramsArray = new double[members.Count];
 
+            for (int i = 0; i < members.Count; i++)
+            {
+                paramsArray[i] = members[i].Coefficient;
+            }
 
-            var copy = new PolynomialSingleVar();
+            return new PolynomialSingleVar(paramsArray);
         }
 
         /// <summary>
         /// Adds a new member to the polynomial.
         /// </summary>
-        /// <param name="member"></param>
-        public void AddMember(MonomialSingleVar member)
+        /// <param name="mono">Monomial.</param>
+        public void AddMember(MonomialSingleVar mono)
         {
+            // If exp of param is bigger than max exp.
+            if (mono.Exponent > this.MaxExponent)
+            {
+                // Fill members list with empty monomials.
+                for (int i = 0; i < mono.Exponent - this.MaxExponent; i++)
+                {
+                    if (mono.Exponent == this.MaxExponent)
+                        // Param monomial.
+                        members.Add(new MonomialSingleVar(mono.Coefficient, mono.Exponent));
+                    else
+                        // Empty (0, 0) monomial.
+                        members.Add(new MonomialSingleVar(0));
+                }
+            }
+            // If exp of param is less than max exp (or equals).
+            else
+            {
+                members[mono.Exponent] += mono;
+            }
+        }
 
+        /// <summary>
+        /// Adds a new member to the polynomial.
+        /// </summary>
+        /// <param name="exp">Exponent.</param>
+        /// <param name="coef">Coefficient.</param>
+        public void AddMember(int exp, double coef)
+        {
+            // If exp of param is bigger than max exp.
+            if (exp > this.MaxExponent)
+            {
+                // Fill members list with empty monomials.
+                for (int i = 0; i < exp - this.MaxExponent; i++)
+                {
+                    if (exp == this.MaxExponent)
+                        // Param monomial.
+                        members.Add(new MonomialSingleVar(coef, exp));
+                    else
+                        // Empty (0, 0) monomial.
+                        members.Add(new MonomialSingleVar(0));
+                }
+            }
+            // If exp of param is less than max exp (or equals).
+            else
+            {
+                members[exp] += new MonomialSingleVar(coef, exp);
+            }
         }
 
         /// <summary>
@@ -166,50 +199,33 @@ namespace MathTypes
                     throw new ArgumentOutOfRangeException("Exponent can't be less than 0.");
 
                 if (exponent > members.Count)
-                    throw new ArgumentOutOfRangeException("Expone");
-                members[exponent]
+                    throw new ArgumentOutOfRangeException("Exponent can't be bigger than it actually is.");
+
+                return members[exponent];
             }
         }
 
         #region Operator overloadings
-        //public static PolynomialSingleVar operator +(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
-        //{
-        //    //var paramsList = new List<double>();
+        /// <summary>
+        /// Adds two polynomials.
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static PolynomialSingleVar operator +(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
+        {
+            // Create a new obj.
+            var resultPoly = lhs.GetCopy();
 
-        //    //var maxCount = Math.Max(lhs.monomials.Count, rhs.monomials.Count);
+            // Add all members.
 
-        //    //for (int i = 0; i < maxCount; i++)
-        //    //{
-        //    //    paramsList.Add();
-        //    //}
+            foreach (var member in rhs.members)
+            {
+                resultPoly.AddMember(member);
+            }
 
-
-
-
-        //    //for (int i = 0; i < lhs.monomials.Count; i++)
-        //    //{
-        //    //    for (int j = 0; j < rhs.monomials.Count; j++)
-        //    //    {
-        //    //        // If degrees are equal than Add monomials.
-        //    //        if (lhs.monomials[i].Degree.Equals(rhs.monomials[j].Degree))
-        //    //        {
-        //    //            paramsList.Add(lhs.monomials[i].Coefficient + rhs.monomials[j].Coefficient);
-        //    //            break;
-        //    //        }
-        //    //        // Else add this monomial to the list of monomials
-        //    //        // in polynomial type.
-        //    //        else
-        //    //            paramsList.Add(rhs.monomials[j].Coefficient);
-        //    //    }
-        //    //}
-
-        //    ////foreach (var item in monoList)
-        //    ////{
-        //    ////    resultPoly.monomials.Add(item);
-        //    ////}
-
-        //    //return new PolynomialSingleVar(paramsList.ToArray());
-        //}
+            return resultPoly;
+        }
 
         //public static PolynomialSingleVar operator -(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
         //{
