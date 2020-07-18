@@ -3,20 +3,25 @@
 namespace MathTypes
 {
     /// <summary>
-    /// Type that defines a monomial.
+    /// Type that defines a single variable monomial.
     /// </summary>
-    public sealed class Monomial
+    public sealed class MonomialSingleVar
     {
+        /// <summary>
+        /// Keeps monomial degree (non-negative int).
+        /// </summary>
+        private int degree;
+
         /// <summary>
         /// Ctor that creates a monomial using coef 
         /// and degree values (by default: degree = 0).
         /// </summary>
         /// <param name="coef"></param>
         /// <param name="degree"></param>
-        public Monomial(double coef, double degree = 0)
+        public MonomialSingleVar(double coef, int degree = 0)
         {
             this.Coefficient = coef;
-            this.Degree = degree;
+            this.degree = degree;
         }
 
         /// <summary>
@@ -27,7 +32,18 @@ namespace MathTypes
         /// <summary>
         /// Monomial degree.
         /// </summary>
-        public double Degree { get; set; }
+        public int Degree
+        {
+            get => degree;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("Monomial degree " +
+                        "can't be anything except non-negative integer.");
+
+                this.degree = value;
+            }
+        }
 
         /// <summary>
         /// Inserts a parameter value in monomial.
@@ -68,7 +84,7 @@ namespace MathTypes
             if ((obj == null) || !(this.GetType().Equals(obj.GetType())))
                 return false;
 
-            var monomial = (Monomial)obj;
+            var monomial = (MonomialSingleVar)obj;
 
             if (!(this.Coefficient.Equals(monomial.Coefficient)
                 && this.Degree.Equals(monomial.Degree)))
@@ -77,6 +93,7 @@ namespace MathTypes
             return true;
         }
 
+
         #region Operators overloadings
         /// <summary>
         /// Adds two monomials.
@@ -84,12 +101,12 @@ namespace MathTypes
         /// <param name="original"></param>
         /// <param name="other"></param>
         /// <returns></returns>
-        public static Monomial operator +(Monomial original, Monomial other)
+        public static MonomialSingleVar operator +(MonomialSingleVar original, MonomialSingleVar other)
         {
             if (!original.Degree.Equals(other.Degree))
                 return null;
 
-            return new Monomial(original.Coefficient + other.Coefficient,
+            return new MonomialSingleVar(original.Coefficient + other.Coefficient,
                                 original.Degree);
         }
 
@@ -99,12 +116,12 @@ namespace MathTypes
         /// <param name="original"></param>
         /// <param name="other"></param>
         /// <returns></returns>
-        public static Monomial operator -(Monomial original, Monomial other)
+        public static MonomialSingleVar operator -(MonomialSingleVar original, MonomialSingleVar other)
         {
             if (!original.Degree.Equals(other.Degree))
                 return null;
 
-            return new Monomial(original.Coefficient - other.Coefficient,
+            return new MonomialSingleVar(original.Coefficient - other.Coefficient,
                                 original.Degree);
         }
 
@@ -114,10 +131,10 @@ namespace MathTypes
         /// <param name="original"></param>
         /// <param name="other"></param>
         /// <returns></returns>
-        public static Monomial operator *(Monomial original, Monomial other)
+        public static MonomialSingleVar operator *(MonomialSingleVar original, MonomialSingleVar other)
         {
-            return new Monomial(original.Coefficient * other.Coefficient,
-                                original.Degree * other.Degree);
+            return new MonomialSingleVar(original.Coefficient * other.Coefficient,
+                                original.Degree + other.Degree);
         }
 
         /// <summary>
@@ -126,10 +143,10 @@ namespace MathTypes
         /// <param name="original"></param>
         /// <param name="other"></param>
         /// <returns></returns>
-        public static Monomial operator /(Monomial original, Monomial other)
+        public static MonomialSingleVar operator /(MonomialSingleVar original, MonomialSingleVar other)
         {
-            return new Monomial(original.Coefficient / other.Coefficient,
-                                original.Degree / other.Degree);
+            return new MonomialSingleVar(original.Coefficient / other.Coefficient,
+                                original.Degree - other.Degree);
         }
         #endregion
     }

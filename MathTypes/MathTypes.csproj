@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Monomial.cs" />
-    <Compile Include="PolynomialSingle.cs" />
+    <Compile Include="MonomialSingleVar.cs" />
+    <Compile Include="PolynomialSingleVar.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
