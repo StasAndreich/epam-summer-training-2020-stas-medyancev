@@ -5,19 +5,11 @@ namespace MathTypes
 {
     /// <summary>
     /// Type that defines a polynomial
-    /// of a single variable.
+    /// of a single variable in standart form.
     /// </summary>
     public class PolynomialSingleVar
     {
-        private List<MonomialSingleVar> members = new List<MonomialSingleVar>();
-
-        /// <summary>
-        /// Provides access to monomials of the polynomial.
-        /// </summary>
-        public List<MonomialSingleVar> Members 
-        { 
-            get => this.members; 
-        }
+        private const double tolerance = 0.000001;
 
         /// <summary>
         /// Ctor that creates a single variable polynomial 
@@ -33,10 +25,64 @@ namespace MathTypes
             }
         }
 
+        private List<MonomialSingleVar> members = new List<MonomialSingleVar>();
+
+        /// <summary>
+        /// Provides access to monomials of the polynomial.
+        /// </summary>
+        public List<MonomialSingleVar> Members 
+        { 
+            get => this.members;// ???
+            set
+            {
+                if ()
+            }
+        }
+
+        /// <summary>
+        /// Returns max exponent value of current polynomial.
+        /// </summary>
+        public int MaxExponent
+        {
+            get
+            {
+                var maxExp = 0;
+                foreach (var member in Members)
+                {
+                    if (member.Exponent > maxExp)
+                        maxExp = member.Exponent;
+                }
+
+                return maxExp;
+            }
+        }
+
+        /// <summary>
+        /// Returns the count of polynomial mono-members.
+        /// </summary>
+        public int Count { get => members.Count; }
+
+        /// <summary>
+        /// Evaluates a polynomial with a variable value.
+        /// </summary>
+        /// <param name="variableValue"></param>
+        /// <returns></returns>
+        public double Evaluate(double variableValue)
+        {
+            double result = 0;
+
+            foreach (var member in Members)
+            {
+                result += member.Evaluate(variableValue);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Overrides ToString.
         /// </summary>
-        /// <returns>Formatted string for PolynomialSingleVar.</returns>
+        /// <returns>Formatted string of PolynomialSingleVar.</returns>
         public override string ToString()
         {
             string result = $"{Members[0]})";
@@ -90,6 +136,40 @@ namespace MathTypes
             return hash / Members.Count;
         }
 
+        public PolynomialSingleVar GetCopy()
+        {
+
+
+            var copy = new PolynomialSingleVar();
+        }
+
+        /// <summary>
+        /// Adds a new member to the polynomial.
+        /// </summary>
+        /// <param name="member"></param>
+        public void AddMember(MonomialSingleVar member)
+        {
+
+        }
+
+        /// <summary>
+        /// Indexer that provides access to the polynomial
+        /// members by its exponent.
+        /// </summary>
+        /// <param name="exponent"></param>
+        /// <returns></returns>
+        public MonomialSingleVar this[int exponent]
+        {
+            get
+            {
+                if (exponent < 0)
+                    throw new ArgumentOutOfRangeException("Exponent can't be less than 0.");
+
+                if (exponent > members.Count)
+                    throw new ArgumentOutOfRangeException("Expone");
+                members[exponent]
+            }
+        }
 
         #region Operator overloadings
         //public static PolynomialSingleVar operator +(PolynomialSingleVar lhs, PolynomialSingleVar rhs)

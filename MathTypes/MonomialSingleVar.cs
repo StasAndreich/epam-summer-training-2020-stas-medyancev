@@ -7,6 +7,8 @@ namespace MathTypes
     /// </summary>
     public sealed class MonomialSingleVar
     {
+        private const double tolerance = 0.000001;
+        
         /// <summary>
         /// Keeps monomial exponent (non-negative int).
         /// </summary>
@@ -86,8 +88,8 @@ namespace MathTypes
 
             var monomial = (MonomialSingleVar)obj;
 
-            if (!(this.Coefficient.Equals(monomial.Coefficient)
-                && this.Exponent.Equals(monomial.Exponent)))
+            if (!(Math.Abs(Coefficient - monomial.Coefficient) < tolerance)
+                && this.Exponent.Equals(monomial.Exponent))
                 return false;
 
             return true;
