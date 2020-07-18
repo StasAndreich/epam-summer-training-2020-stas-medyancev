@@ -37,40 +37,6 @@ namespace UnitTests_MathTypes
 
             Assert.IsTrue(true);
         }
-
-        [TestMethod]
-        public void PropNegativeInfinity_Get_NegativeInfinityVector3()
-        {
-            // Create a negative infinity vector.
-            var unit = new Vector3(double.NegativeInfinity,
-                                   double.NegativeInfinity,
-                                   double.NegativeInfinity);
-
-            // Get a negative infinity vector from property NegativeInfinity.
-            var negativeInfinityProp = Vector3.NegativeInfinity;
-
-            if (!unit.Equals(negativeInfinityProp))
-                throw new ApplicationException("Negative infinity vector coords are incorrect.");
-
-            Assert.IsTrue(true);
-        }
-
-        [TestMethod]
-        public void PropPositiveInfinity_Get_PositiveInfinityVector3()
-        {
-            // Create a positive infinity vector.
-            var unit = new Vector3(double.PositiveInfinity,
-                                   double.PositiveInfinity,
-                                   double.PositiveInfinity);
-
-            // Get a positive infinity vector from property PositiveInfinity.
-            var positiveInfinityProp = Vector3.PositiveInfinity;
-
-            if (!unit.Equals(positiveInfinityProp))
-                throw new ApplicationException("Positive infinity vector coords are incorrect.");
-
-            Assert.IsTrue(true);
-        }
         #endregion
 
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace MathTypes
 {
@@ -10,57 +9,51 @@ namespace MathTypes
     /// </summary>
     public class PolynomialSingleVar
     {
+        private List<MonomialSingleVar> members = new List<MonomialSingleVar>();
+
         /// <summary>
-        /// Creates a single variable polynomial 
+        /// Provides access to monomials of the polynomial.
+        /// </summary>
+        public List<MonomialSingleVar> Members 
+        { 
+            get => this.members; 
+        }
+
+        /// <summary>
+        /// Ctor that creates a single variable polynomial 
         /// using coeffs for creating monomials
-        /// with degrees of their serial numbers.
+        /// with degrees corresponding to their serial numbers.
         /// </summary>
         /// <param name="coefficients"></param>
         public PolynomialSingleVar(params double[] coefficients)
         {
             for (int i = 0; i < coefficients.Length; i++)
             {
-                this.Monomials.Add(new MonomialSingleVar(coefficients[i], i));
+                Members.Add(new MonomialSingleVar(coefficients[i], i));
             }
-            // new Poly(3, 4, 5);
-            5x^2 + 4x + 3
         }
 
         /// <summary>
-        /// Creates a single variable polynomial
-        /// from multiple monomials.
+        /// Overrides ToString.
         /// </summary>
-        /// <param name="inputMonomials"></param>
-        public PolynomialSingleVar(params MonomialSingleVar[] inputMonomials)
+        /// <returns>Formatted string for PolynomialSingleVar.</returns>
+        public override string ToString()
         {
-            this.Monomials.AddRange(inputMonomials);
-        }
+            string result = $"{Members[0]})";
 
-
-        private List<MonomialSingleVar> monomials = new List<MonomialSingleVar>();
-
-        /// <summary>
-        /// Provides access to monomials of the polynomial.
-        /// </summary>
-        public List<MonomialSingleVar> Monomials
-        {
-            get => monomials;
-            set
+            for (int i = 1; i < Members.Count; i++)
             {
-                // Standard polynomial form validation.
-                foreach (var inputMono in value)
-                {
-                    for (int i = 0; i < monomials.Count; i++)
-                    {
-                        if (monomials[i].Degree == inputMono.Degree)
-                            monomials[i] += inputMono;
-                        else
-                            monomials.Add(inputMono);
-                    }
-                }
+                result += $" + ({Members[i]})";
             }
+
+            return base.ToString();
         }
 
+        /// <summary>
+        /// Overrides Equals of two polynomial obj.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
@@ -68,32 +61,80 @@ namespace MathTypes
 
             var polynomial = (PolynomialSingleVar)obj;
 
-            if (!this.Monomials.Count.Equals(polynomial.Monomials.Count))
+            // Amount of monomials is not the same.
+            if (!Members.Count.Equals(polynomial.Members.Count))
                 return false;
 
-
-
-            return base.Equals(obj);
-        }
-
-
-        public static PolynomialSingleVar operator +(PolynomialSingleVar aPoly, PolynomialSingleVar bPoly)
-        {
-            // Copy...
-            var resultPoly = new PolynomialSingleVar(aPoly.Monomials.ToArray());
-
-            for (int i = 0; i < resultPoly.Monomials.Count; i++)
+            for (int i = 0; i < this.Members.Count; i++)
             {
-                for (int j = 0; j < bPoly.Monomials.Count; j++)
-                {
-                    if (resultPoly.Monomials[i].Degree != bPoly.Monomials[j].Degree)
-                        continue;
-
-                    resultPoly.Monomials[i] += bPoly.Monomials[j];
-                }
+                if (!Members[i].Equals(polynomial.Members[i]))
+                    return false;
             }
 
-            return resultPoly;
+            return true;
         }
+
+        /// <summary>
+        /// Overrides GetHashCode based polynomial components.
+        /// </summary>
+        /// <returns>Polynomial object hash code.</returns>
+        public override int GetHashCode()
+        {
+            int hash = 0;
+
+            foreach (var item in Members)
+            {
+                hash += item.GetHashCode();
+            }
+
+            return hash / Members.Count;
+        }
+
+
+        #region Operator overloadings
+        //public static PolynomialSingleVar operator +(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
+        //{
+        //    //var paramsList = new List<double>();
+
+        //    //var maxCount = Math.Max(lhs.monomials.Count, rhs.monomials.Count);
+
+        //    //for (int i = 0; i < maxCount; i++)
+        //    //{
+        //    //    paramsList.Add();
+        //    //}
+
+
+
+
+        //    //for (int i = 0; i < lhs.monomials.Count; i++)
+        //    //{
+        //    //    for (int j = 0; j < rhs.monomials.Count; j++)
+        //    //    {
+        //    //        // If degrees are equal than Add monomials.
+        //    //        if (lhs.monomials[i].Degree.Equals(rhs.monomials[j].Degree))
+        //    //        {
+        //    //            paramsList.Add(lhs.monomials[i].Coefficient + rhs.monomials[j].Coefficient);
+        //    //            break;
+        //    //        }
+        //    //        // Else add this monomial to the list of monomials
+        //    //        // in polynomial type.
+        //    //        else
+        //    //            paramsList.Add(rhs.monomials[j].Coefficient);
+        //    //    }
+        //    //}
+
+        //    ////foreach (var item in monoList)
+        //    ////{
+        //    ////    resultPoly.monomials.Add(item);
+        //    ////}
+
+        //    //return new PolynomialSingleVar(paramsList.ToArray());
+        //}
+
+        //public static PolynomialSingleVar operator -(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
+        //{
+
+        //}
+        #endregion
     }
 }

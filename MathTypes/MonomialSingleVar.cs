@@ -8,20 +8,20 @@ namespace MathTypes
     public sealed class MonomialSingleVar
     {
         /// <summary>
-        /// Keeps monomial degree (non-negative int).
+        /// Keeps monomial exponent (non-negative int).
         /// </summary>
-        private int degree;
+        private int exponent;
 
         /// <summary>
         /// Ctor that creates a monomial using coef 
-        /// and degree values (by default: degree = 0).
+        /// and exponent values (by default: degree = 0).
         /// </summary>
         /// <param name="coef"></param>
-        /// <param name="degree"></param>
-        public MonomialSingleVar(double coef, int degree = 0)
+        /// <param name="exponent"></param>
+        public MonomialSingleVar(double coef, int exponent = 0)
         {
             this.Coefficient = coef;
-            this.degree = degree;
+            this.Exponent = exponent;
         }
 
         /// <summary>
@@ -32,16 +32,16 @@ namespace MathTypes
         /// <summary>
         /// Monomial degree.
         /// </summary>
-        public int Degree
+        public int Exponent
         {
-            get => degree;
+            get => exponent;
             set
             {
                 if (value < 0)
-                    throw new ArgumentOutOfRangeException("Monomial degree " +
+                    throw new ArgumentOutOfRangeException("Monomial exponent " +
                         "can't be anything except non-negative integer.");
 
-                this.degree = value;
+                exponent = value;
             }
         }
 
@@ -50,9 +50,9 @@ namespace MathTypes
         /// </summary>
         /// <param name="variableValue"></param>
         /// <returns>Computed monomial result.</returns>
-        public double GetMonomialValue(double variableValue)
+        public double Evaluate(double variableValue)
         {
-            return Math.Pow(variableValue, Degree) * Coefficient;
+            return Math.Pow(variableValue, Exponent) * Coefficient;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace MathTypes
         /// <returns>Formatted string (ex. -2x^(4)).</returns>
         public override string ToString()
         {
-            return $"{Coefficient}x^({Degree})";
+            return $"{Coefficient}x^({Exponent})";
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace MathTypes
         /// <returns>Hash code for current obj.</returns>
         public override int GetHashCode()
         {
-            return (int)(Coefficient * Degree / 2);
+            return (int)(Coefficient * Exponent / 2);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace MathTypes
             var monomial = (MonomialSingleVar)obj;
 
             if (!(this.Coefficient.Equals(monomial.Coefficient)
-                && this.Degree.Equals(monomial.Degree)))
+                && this.Exponent.Equals(monomial.Exponent)))
                 return false;
 
             return true;
@@ -98,55 +98,57 @@ namespace MathTypes
         /// <summary>
         /// Adds two monomials.
         /// </summary>
-        /// <param name="original"></param>
-        /// <param name="other"></param>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
         /// <returns></returns>
-        public static MonomialSingleVar operator +(MonomialSingleVar original, MonomialSingleVar other)
+        public static MonomialSingleVar operator +(MonomialSingleVar lhs, MonomialSingleVar rhs)
         {
-            if (!original.Degree.Equals(other.Degree))
-                return null;
+            // If degrees are different.
+            if (!lhs.Exponent.Equals(rhs.Exponent))
+                return lhs;
 
-            return new MonomialSingleVar(original.Coefficient + other.Coefficient,
-                                original.Degree);
+            return new MonomialSingleVar(lhs.Coefficient + rhs.Coefficient,
+                                lhs.Exponent);
         }
 
         /// <summary>
         /// Subtracts two monomials.
         /// </summary>
-        /// <param name="original"></param>
-        /// <param name="other"></param>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
         /// <returns></returns>
-        public static MonomialSingleVar operator -(MonomialSingleVar original, MonomialSingleVar other)
+        public static MonomialSingleVar operator -(MonomialSingleVar lhs, MonomialSingleVar rhs)
         {
-            if (!original.Degree.Equals(other.Degree))
-                return null;
+            // If degrees are different.
+            if (!lhs.Exponent.Equals(rhs.Exponent))
+                return lhs;
 
-            return new MonomialSingleVar(original.Coefficient - other.Coefficient,
-                                original.Degree);
+            return new MonomialSingleVar(lhs.Coefficient - rhs.Coefficient,
+                                lhs.Exponent);
         }
 
         /// <summary>
         /// Multiplies two monomials.
         /// </summary>
-        /// <param name="original"></param>
-        /// <param name="other"></param>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
         /// <returns></returns>
-        public static MonomialSingleVar operator *(MonomialSingleVar original, MonomialSingleVar other)
+        public static MonomialSingleVar operator *(MonomialSingleVar lhs, MonomialSingleVar rhs)
         {
-            return new MonomialSingleVar(original.Coefficient * other.Coefficient,
-                                original.Degree + other.Degree);
+            return new MonomialSingleVar(lhs.Coefficient * rhs.Coefficient,
+                                lhs.Exponent + rhs.Exponent);
         }
 
         /// <summary>
         /// Divides two monomials.
         /// </summary>
-        /// <param name="original"></param>
-        /// <param name="other"></param>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
         /// <returns></returns>
-        public static MonomialSingleVar operator /(MonomialSingleVar original, MonomialSingleVar other)
+        public static MonomialSingleVar operator /(MonomialSingleVar lhs, MonomialSingleVar rhs)
         {
-            return new MonomialSingleVar(original.Coefficient / other.Coefficient,
-                                original.Degree - other.Degree);
+            return new MonomialSingleVar(lhs.Coefficient / rhs.Coefficient,
+                                lhs.Exponent - rhs.Exponent);
         }
         #endregion
     }

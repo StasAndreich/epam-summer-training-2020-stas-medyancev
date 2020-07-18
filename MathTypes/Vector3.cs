@@ -7,6 +7,8 @@ namespace MathTypes
     /// </summary>
     public class Vector3
     {
+        private const double tolerance = 0.000001;
+
         /// <summary>
         /// Shortcut property for creating Vector3(1, 1, 1).
         /// </summary>
@@ -121,9 +123,9 @@ namespace MathTypes
             if (this.GetType() != obj.GetType()) return false;
 
             var vector3 = (Vector3)obj;
-            return this.X.Equals(vector3.X)
-                && this.Y.Equals(vector3.Y)
-                && this.Z.Equals(vector3.Z);
+            return (Math.Abs(this.X - vector3.X) < tolerance)
+                && (Math.Abs(this.Y - vector3.Y) < tolerance)
+                && (Math.Abs(this.Z - vector3.Z) < tolerance);
         }
 
         /// <summary>
