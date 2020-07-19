@@ -227,10 +227,59 @@ namespace MathTypes
             return resultPoly;
         }
 
-        //public static PolynomialSingleVar operator -(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
-        //{
+        /// <summary>
+        /// Subtracts two monomials.
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static PolynomialSingleVar operator -(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
+        {
+            // Create a new obj.
+            var resultPoly = lhs.GetCopy();
 
-        //}
+            for (int i = 0; i < rhs.members.Count; i++)
+            {
+                if (rhs.members[i].Exponent > resultPoly.MaxExponent)
+                {
+                    // Add new member with negative coef.
+                    resultPoly.members.Add(new MonomialSingleVar(-rhs.members[i].Coefficient,
+                                                                  rhs.members[i].Exponent));
+                }
+                else
+                {
+                    // Subtract coeffs.
+                    resultPoly[i].Coefficient -= rhs.members[i].Coefficient;
+                }
+            }
+
+            return resultPoly;
+        }
+
+        
+
+        public PolynomialSingleVar Minus(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
+        {
+            // Create a new obj.
+            var resultPoly = lhs.GetCopy();
+
+            for (int i = 0; i < rhs.members.Count; i++)
+            {
+                if (rhs.members[i].Exponent > resultPoly.MaxExponent)
+                {
+                    // Add new member with negative coef.
+                    resultPoly.members.Add(new MonomialSingleVar(-rhs.members[i].Coefficient,
+                                                                  rhs.members[i].Exponent));
+                }
+                else
+                {
+                    // Subtract coeffs.
+                    resultPoly[i].Coefficient -= rhs.members[i].Coefficient;
+                }
+            }
+
+            return resultPoly;
+        }
         #endregion
     }
 }
