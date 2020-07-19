@@ -151,6 +151,10 @@ namespace MathTypes
         /// <returns></returns>
         public static MonomialSingleVar operator /(MonomialSingleVar lhs, MonomialSingleVar rhs)
         {
+            if (lhs.Exponent < rhs.Exponent)
+                throw new ArgumentOutOfRangeException("Exponent of the dividend must" +
+                    "be bigger than exponent of divisor.");
+
             return new MonomialSingleVar(lhs.Coefficient / rhs.Coefficient,
                                 lhs.Exponent - rhs.Exponent);
         }

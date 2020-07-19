@@ -41,12 +41,31 @@ namespace UnitTests_MathTypes
         {
             var p1 = new PolynomialSingleVar(0, 2, 3);// 3x^2 + 2x
 
-            var p2 = new PolynomialSingleVar(0, 0, 3, 7);// 7x^3 + 3x^2
+            //var p2 = new PolynomialSingleVar(0, 0, 3, 7);// 7x^3 + 3x^2
+
+            var p2 = new MonomialSingleVar(1, 1);
 
             var result = new PolynomialSingleVar(0, 0, 0, 6, 23, 21);
 
             //var dif = p1 - p2;
-            var dif = p1.Mul(p1, p2);
+            var dif = p1 / p2;
+
+            Assert.IsTrue(result.Equals(dif));
+        }
+
+        [TestMethod]
+        public void DivisionOperatorOverloading_PolynomialsDivideOnMonomial_CorrectPolynomial()
+        {
+            var p1 = new PolynomialSingleVar(0, 2, 3);// 3x^2 + 2x
+
+            //var p2 = new PolynomialSingleVar(0, 0, 3, 7);// 7x^3 + 3x^2
+
+            var p2 = new MonomialSingleVar(1, 1);
+
+            var result = new PolynomialSingleVar(2, 3);
+
+            //var dif = p1 - p2;
+            var dif = p1 / p2;
 
             Assert.IsTrue(result.Equals(dif));
         }
