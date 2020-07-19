@@ -30,10 +30,25 @@ namespace UnitTests_MathTypes
 
             var result = new PolynomialSingleVar(0, 2, 0, -7, 9, 1);// 7x^3 + 6x^2 + 2x + 0
 
-            //var dif = p1 - p2;
-            var dif = p1.Minus(p1, p2);
+            ////var dif = p1 - p2;
+            //var dif = p1.Minus(p1, p2);
 
             Assert.IsTrue(result.Equals(p1 - p2));
+        }
+
+        [TestMethod]
+        public void MultiplicationOperatorOverloading_TwoPolynomials_CorrectPolynomial()
+        {
+            var p1 = new PolynomialSingleVar(0, 2, 3);// 3x^2 + 2x
+
+            var p2 = new PolynomialSingleVar(0, 0, 3, 7);// 7x^3 + 3x^2
+
+            var result = new PolynomialSingleVar(0, 0, 0, 6, 23, 21);
+
+            //var dif = p1 - p2;
+            var dif = p1.Mul(p1, p2);
+
+            Assert.IsTrue(result.Equals(dif));
         }
     }
 }

@@ -140,17 +140,19 @@ namespace MathTypes
             if (mono.Exponent > this.MaxExponent)
             {
                 // Fill members list with empty monomials.
-                for (int i = 0; i < mono.Exponent - this.MaxExponent; i++)
+                var fillCount = mono.Exponent - this.MaxExponent;
+
+                for (int i = 0; i <= fillCount; i++)
                 {
                     if (mono.Exponent == this.MaxExponent)
-                        // Param monomial.
-                        members.Add(new MonomialSingleVar(mono.Coefficient, mono.Exponent));
+                        // Add monomial from parameter.
+                        members[mono.Exponent] += mono;
                     else
-                        // Empty (0, 0) monomial.
-                        members.Add(new MonomialSingleVar(0));
+                        //Empty monomial with suitable exponent.
+                        members.Add(new MonomialSingleVar(0, this.MaxExponent + 1));//???
                 }
             }
-            // If exp of param is less than max exp (or equals).
+            //If exp of param is less than max exp (or equals).
             else
             {
                 members[mono.Exponent] += mono;
@@ -256,25 +258,58 @@ namespace MathTypes
             return resultPoly;
         }
 
-        
-
-        public PolynomialSingleVar Minus(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
+        /// <summary>
+        /// Multiplies two polynomials.
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static PolynomialSingleVar operator *(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
         {
-            // Create a new obj.
-            var resultPoly = lhs.GetCopy();
+            //// New polynomial max exp is the sum of two multipliers exp.
+            //var coefParams = new double[lhs.MaxExponent + rhs.MaxExponent];
 
-            for (int i = 0; i < rhs.members.Count; i++)
+            // Create a new obj.
+            var resultPoly = new PolynomialSingleVar();
+
+            // Multiply each with each members.
+            for (int i = 0; i < lhs.members.Count; i++)
             {
-                if (rhs.members[i].Exponent > resultPoly.MaxExponent)
+                for (int j = 0; j < rhs.members.Count; j++)
                 {
-                    // Add new member with negative coef.
-                    resultPoly.members.Add(new MonomialSingleVar(-rhs.members[i].Coefficient,
-                                                                  rhs.members[i].Exponent));
+                    resultPoly.AddMember(lhs.members[i] * rhs.members[j]);
                 }
-                else
+            }
+
+            return resultPoly;
+        }
+
+        /// <summary>
+        /// Divides two polynomials.
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        //public static PolynomialSingleVar operator /(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
+        //{
+
+        //}
+
+        public PolynomialSingleVar Mul(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
+        {
+            //// New polynomial max exp is the sum of two multipliers exp.
+            //var coefParams = new double[lhs.MaxExponent + rhs.MaxExponent];
+
+            // Create a new obj.
+            var resultPoly = new PolynomialSingleVar(0);
+
+            // Multiply each with each members.
+            for (int i = 0; i < lhs.members.Count; i++)
+            {
+                for (int j = 0; j < rhs.members.Count; j++)
                 {
-                    // Subtract coeffs.
-                    resultPoly[i].Coefficient -= rhs.members[i].Coefficient;
+                    var m = lhs.members[i] * rhs.members[j];
+                    resultPoly.AddMember(m);
                 }
             }
 
