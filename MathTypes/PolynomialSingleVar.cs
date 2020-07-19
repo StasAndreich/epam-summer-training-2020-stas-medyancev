@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace MathTypes
 {
@@ -63,14 +64,21 @@ namespace MathTypes
         /// <returns>Formatted string of PolynomialSingleVar.</returns>
         public override string ToString()
         {
-            //string result = $"{members[0]})";
+            var resultStr = new StringBuilder();
 
-            //for (int i = 1; i < members.Count; i++)
-            //{
-            //    result += $" + ({members[i]})";
-            //}
+            for (int i = 0; i < this.Count; i++)
+            {
+                // If coef is ~0.
+                if (Math.Abs(members[i].Coefficient - 0) < tolerance)
+                    continue;
 
-            return base.ToString();
+                resultStr.Append($"({members[i]})");
+
+                if (members[i].Exponent != this.MaxExponent)
+                    resultStr.Append(" + ");
+            }
+
+            return resultStr.ToString();
         }
 
         /// <summary>
@@ -209,6 +217,7 @@ namespace MathTypes
             }
         }
 
+
         #region Operator overloadings
         /// <summary>
         /// Adds two polynomials.
@@ -222,7 +231,6 @@ namespace MathTypes
             var resultPoly = lhs.GetCopy();
 
             // Add all members.
-
             foreach (var member in rhs.members)
             {
                 resultPoly.AddMember(member);
@@ -276,8 +284,7 @@ namespace MathTypes
             {
                 for (int j = 0; j < rhs.members.Count; j++)
                 {
-                    var m = lhs.members[i] * rhs.members[j];
-                    resultPoly.AddMember(m);
+                    resultPoly.AddMember(lhs.members[i] * rhs.members[j]);
                 }
             }
 
@@ -298,14 +305,36 @@ namespace MathTypes
             // Divide each member with monomial.
             for (int i = 0; i < poly.members.Count; i++)
             {
+                // We can divide only exponents that are bigger than divisor.
                 if (poly.members[i].Exponent >= mono.Exponent)
                 {
-                    var m = poly.members[i] / mono;
-                    resultPoly.AddMember(m);
+                    resultPoly.AddMember(poly.members[i] / mono);
                 }
             }
 
             return resultPoly;
+        }
+
+        /// <summary>
+        /// Returns true if two polynomials are equal.
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static bool operator ==(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
+        {
+            return lhs.Equals(rhs);
+        }
+
+        /// <summary>
+        /// Returns true if polynomials are not equal.
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static bool operator !=(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
+        {
+            return !lhs.Equals(rhs);
         }
 
         public PolynomialSingleVar Mul(PolynomialSingleVar lhs, PolynomialSingleVar rhs)

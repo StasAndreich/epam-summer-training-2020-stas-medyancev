@@ -121,7 +121,7 @@ namespace UnitTests_MathTypes
                                   + (vector1.Z * vector2.Z);
 
                 if (!dotProduct.Equals(Vector3.Dot(vector1, vector2)))
-                    throw new ApplicationException("Product of two vectors3 is incorrect.");
+                    throw new ApplicationException("Dot product of two vectors3 is incorrect.");
             }
 
             Assert.IsTrue(true);
