@@ -336,27 +336,6 @@ namespace MathTypes
         {
             return !lhs.Equals(rhs);
         }
-
-        public PolynomialSingleVar Mul(PolynomialSingleVar lhs, PolynomialSingleVar rhs)
-        {
-            //// New polynomial max exp is the sum of two multipliers exp.
-            //var coefParams = new double[lhs.MaxExponent + rhs.MaxExponent];
-
-            // Create a new obj.
-            var resultPoly = new PolynomialSingleVar();
-
-            // Multiply each with each members.
-            for (int i = 0; i < lhs.members.Count; i++)
-            {
-                for (int j = 0; j < rhs.members.Count; j++)
-                {
-                    var m = lhs.members[i] * rhs.members[j];
-                    resultPoly.AddMember(m);
-                }
-            }
-
-            return resultPoly;
-        }
         #endregion
     }
 }
