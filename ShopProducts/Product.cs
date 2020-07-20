@@ -3,7 +3,7 @@
 namespace ShopProducts
 {
     /// <summary>
-    /// Defines a shop product.
+    /// Defines an abstract shop product.
     /// </summary>
     public abstract class Product
     {
