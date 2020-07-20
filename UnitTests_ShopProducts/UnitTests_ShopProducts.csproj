@@ -49,6 +49,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UT_Product_Fruit.cs" />
+    <Compile Include="UT_Product_Vegetable.cs" />
+    <Compile Include="UT_Product_Fish.cs" />
     <Compile Include="UT_Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

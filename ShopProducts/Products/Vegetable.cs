@@ -1,4 +1,6 @@
-﻿namespace ShopProducts.Products
+﻿using System;
+
+namespace ShopProducts.Products
 {
     /// <summary>
     /// Defines products of a vegetable type.
@@ -37,7 +39,7 @@
         /// <returns></returns>
         public static Vegetable operator +(Vegetable lhs, Vegetable rhs)
         {
-            var strcat = $"{lhs.Name} - {rhs.Name}";
+            var strcat = $"{lhs.Name}-{rhs.Name}";
             var avgPrice = (lhs.Price + rhs.Price) / 2;
 
             return new Vegetable(strcat, avgPrice);
@@ -59,6 +61,42 @@
         public static explicit operator Fruit(Vegetable fish)
         {
             return new Fruit(fish.Name, fish.Price);
+        }
+
+        /// <summary>
+        /// Checks if two Vegetable objects are equal.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (this.GetType() != obj.GetType()) return false;
+
+            var vegetable = (Vegetable)obj;
+
+            // Float tolerance.
+            var tolerance = 0.001f;
+            return this.Name.ToUpper() == vegetable.Name.ToUpper()
+                && (Math.Abs(this.Price - vegetable.Price) < tolerance);
+        }
+
+        /// <summary>
+        /// Calculates a vegetable obj hash code.
+        /// </summary>
+        /// <returns>Int32 hash code.</returns>
+        public override int GetHashCode()
+        {
+            return (int)(this.Name.GetHashCode() / this.Price);
+        }
+
+        /// <summary>
+        /// Puts a vegetable object to a string.
+        /// </summary>
+        /// <returns>Formatted string of a vegetable type object.</returns>
+        public override string ToString()
+        {
+            return $"{this.Type}: {this.Name} - {this.Price}";
         }
     }
 }
