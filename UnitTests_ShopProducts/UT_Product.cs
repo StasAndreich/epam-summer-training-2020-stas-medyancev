@@ -46,7 +46,7 @@ namespace UnitTests_ShopProducts
 
                 float actualFloat = product;
 
-                if (!randPrice.Equals(actualFloat))
+                if (!(Math.Abs(randPrice - actualFloat) < tolerance))
                     throw new InvalidCastException("Incorrect type casting.");
             }
 
