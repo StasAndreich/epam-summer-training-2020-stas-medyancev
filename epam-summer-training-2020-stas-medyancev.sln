@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests_MathTypes", "Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopProducts", "ShopProducts\ShopProducts.csproj", "{DD5B5F22-948D-4D1F-82E6-51E9DB87D83F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests_ShopProducts", "UnitTests_ShopProducts\UnitTests_ShopProducts.csproj", "{15106742-F48A-4F2C-AFF9-610468F72DC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{DD5B5F22-948D-4D1F-82E6-51E9DB87D83F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD5B5F22-948D-4D1F-82E6-51E9DB87D83F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD5B5F22-948D-4D1F-82E6-51E9DB87D83F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15106742-F48A-4F2C-AFF9-610468F72DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15106742-F48A-4F2C-AFF9-610468F72DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15106742-F48A-4F2C-AFF9-610468F72DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15106742-F48A-4F2C-AFF9-610468F72DC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 		{9507FD3B-812C-4401-8726-87F8A94AD7CC} = {EA9F75D7-4310-4AC5-A041-191411905DF0}
 		{B87D9897-B411-4AF2-95C6-F56D0B0A8B43} = {EA9F75D7-4310-4AC5-A041-191411905DF0}
 		{DD5B5F22-948D-4D1F-82E6-51E9DB87D83F} = {EA9F75D7-4310-4AC5-A041-191411905DF0}
+		{15106742-F48A-4F2C-AFF9-610468F72DC5} = {EA9F75D7-4310-4AC5-A041-191411905DF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9008F188-1616-4B42-AFA5-E5B492673C98}

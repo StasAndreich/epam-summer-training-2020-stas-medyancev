@@ -52,10 +52,10 @@ namespace UnitTests_MathTypes
 
                 if (!resultPoly.Equals(poly1 + poly2))
                     throw new ApplicationException("Sum of two polynomials is incorrect.");
-
-                // If everything is OK.
-                Assert.IsTrue(true);
             }
+
+            // If everything is OK.
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -105,10 +105,10 @@ namespace UnitTests_MathTypes
 
                 if (!resultPoly.Equals(poly1 - poly2))
                     throw new ApplicationException("Difference of two polynomials is incorrect.");
-
-                // If everything is OK.
-                Assert.IsTrue(true);
             }
+
+            // If everything is OK.
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -157,10 +157,10 @@ namespace UnitTests_MathTypes
 
                 if (!resultPoly.Equals(poly1 * poly2))
                     throw new ApplicationException("Product of two polynomials is incorrect.");
-
-                // If everything is OK.
-                Assert.IsTrue(true);
             }
+
+            // If everything is OK.
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -204,10 +204,10 @@ namespace UnitTests_MathTypes
 
                 if (!resultPoly.Equals(poly / mono))
                     throw new ApplicationException("Division of polynomial on monomial is incorrect.");
-
-                // If everything is OK.
-                Assert.IsTrue(true);
             }
+
+            // If everything is OK.
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -234,10 +234,10 @@ namespace UnitTests_MathTypes
                 // If evaluated != expected.
                 if (!poly1.Equals(poly2))
                     throw new ApplicationException("Equality of two equal polynomials is incorrect.");
-
-                // If everything is OK.
-                Assert.IsTrue(true);
             }
+
+            // If everything is OK.
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -275,10 +275,10 @@ namespace UnitTests_MathTypes
 
                 if (poly1.Equals(poly2))
                     throw new ApplicationException("Inequality of two equal polynomials is incorrect.");
-
-                // If everything is OK.
-                Assert.IsTrue(true);
             }
+
+            // If everything is OK.
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -314,10 +314,10 @@ namespace UnitTests_MathTypes
                 // If evaluated != expected.
                 if (Math.Abs(evaluated - expected) > tolerance)
                     throw new ApplicationException("Evaluation value is incorrect.");
-
-                // If everything is OK.
-                Assert.IsTrue(true);
             }
+
+            // If everything is OK.
+            Assert.IsTrue(true);
         }
     }
 }
