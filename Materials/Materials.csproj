@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5B29E198-81DF-4FF8-939D-6BE12F88DA23}</ProjectGuid>
+    <ProjectGuid>{F155E513-1F24-4D86-A446-08B3E3389F9B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Shapes</RootNamespace>
-    <AssemblyName>Shapes</AssemblyName>
+    <RootNamespace>Materials</RootNamespace>
+    <AssemblyName>Materials</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Shapes.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Materials.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,14 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IShape.cs" />
+    <Compile Include="Colors.cs" />
+    <Compile Include="Film.cs" />
+    <Compile Include="IMaterial.cs" />
+    <Compile Include="Paper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Materials\Materials.csproj">
-      <Project>{f155e513-1f24-4d86-a446-08b3e3389f9b}</Project>
-      <Name>Materials</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
