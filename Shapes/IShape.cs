@@ -28,5 +28,11 @@ namespace Shapes
         /// </summary>
         /// <returns></returns>
         double GetArea();
+
+        /// <summary>
+        /// Paints shape in a specific color.
+        /// </summary>
+        /// <param name="color"></param>
+        void ChangeColor(Color color);
     }
 }

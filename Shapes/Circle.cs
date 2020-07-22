@@ -1,5 +1,6 @@
 ﻿using Materials;
 using System;
+using System.Net;
 
 namespace Shapes
 {
@@ -61,6 +62,15 @@ namespace Shapes
         public double GetArea()
         {
             return Math.PI * Radius * Radius;
+        }
+
+        /// <summary>
+        /// Paints shape in a specific color.
+        /// </summary>
+        /// <param name="color"></param>
+        public void ChangeColor(Color color)
+        {
+            this.Material.Paint(color);
         }
 
         /// <summary>

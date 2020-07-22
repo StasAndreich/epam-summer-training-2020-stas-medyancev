@@ -6,6 +6,10 @@
     public interface IMaterial
     {
         /// <summary>
+        /// Material name.
+        /// </summary>
+        string Name { get; }
+        /// <summary>
         /// Defines a material color.
         /// </summary>
         Color Color { get; }

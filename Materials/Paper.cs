@@ -13,6 +13,7 @@ namespace Materials
         public Paper()
         {
             this.color = Color.White;
+            this.Name = "Paper";
         }
 
         /// <summary>
@@ -22,7 +23,13 @@ namespace Materials
         public Paper(Color color)
         {
             this.color = color;
+            this.Name = "Paper";
         }
+
+        /// <summary>
+        /// Material name.
+        /// </summary>
+        public string Name { get; }
 
         private Color color;
         /// <summary>
@@ -49,6 +56,40 @@ namespace Materials
             else
                 throw new ApplicationException("Paper material can be painted" +
                     "only once.");
+        }
+
+        /// <summary>
+        /// Check the equality of this paper material instance and other object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !(this.GetType().Equals(obj.GetType())))
+                return false;
+
+            var paper = (Paper)obj;
+
+            return this.Color.Equals(paper.Color);
+        }
+
+        /// <summary>
+        /// Returns a hash-code for a paper material object.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return Color.GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns a formatted string filled with paper material props.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format($"{Name} {Color}");
         }
     }
 }

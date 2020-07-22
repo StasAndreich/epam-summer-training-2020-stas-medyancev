@@ -13,10 +13,13 @@ namespace Shapes
         /// </summary>
         /// <param name="height"></param>
         /// <param name="width"></param>
-        public Rectangle(double height, double width)
+        /// <param name="material"></param>
+        public Rectangle(IMaterial material, double height, double width)
         {
+            this.Material = material;
             this.Height = height;
             this.Width = width;
+            this.Name = "Rectangle";
         }
 
         /// <summary>

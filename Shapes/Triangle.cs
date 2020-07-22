@@ -12,9 +12,12 @@ namespace Shapes
         /// Creates an equilateral triangle.
         /// </summary>
         /// <param name="side"></param>
-        public Triangle(double side)
+        /// <param name="material"></param>
+        public Triangle(IMaterial material, double side)
         {
-
+            this.Material = material;
+            this.Side = side;
+            this.Name = "Triangle";
         }
 
         /// <summary>
