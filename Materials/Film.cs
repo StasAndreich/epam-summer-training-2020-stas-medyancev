@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Materials
+﻿namespace Materials
 {
     /// <summary>
     /// Defines a film material.
@@ -19,5 +17,11 @@ namespace Materials
         /// Color of a film material.
         /// </summary>
         public Color Color { get; }
+
+        /// <summary>
+        /// Not-implemented for this material.
+        /// </summary>
+        /// <param name="color"></param>
+        void IMaterial.Paint(Color color) { }
     }
 }

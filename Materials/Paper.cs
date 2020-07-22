@@ -36,7 +36,7 @@ namespace Materials
         public bool IsRepainted { get; private set; }
 
         /// <summary>
-        /// Paints paper in 
+        /// Paints paper in a specified color.
         /// </summary>
         /// <param name="color"></param>
         public void Paint(Color color)

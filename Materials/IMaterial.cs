@@ -9,5 +9,11 @@
         /// Defines a material color.
         /// </summary>
         Color Color { get; }
+
+        /// <summary>
+        /// Paints a material in a specified color.
+        /// </summary>
+        /// <param name="color"></param>
+        void Paint(Color color);
     }
 }
