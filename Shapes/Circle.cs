@@ -13,12 +13,42 @@ namespace Shapes
         /// Default ctor that inits a circle.
         /// </summary>
         /// <param name="radius"></param>
+        public Circle(double radius)
+        {
+            this.radius = radius;
+            this.Name = "Circle";
+        }
+
+        /// <summary>
+        /// Ctor that inits a circle with
+        /// a specific material.
+        /// </summary>
+        /// <param name="radius"></param>
         /// <param name="material"></param>
         public Circle(IMaterial material, double radius)
+            : this(radius)
         {
             this.Material = material;
-            this.radius = radius;   
-            this.Name = "Circle";
+        }
+
+        /// <summary>
+        /// Copy-ctor for creating a circle
+        /// from another shape.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <param name="radius"></param>
+        public Circle(IShape shape, double radius)
+        {
+            var circle = new Circle(shape.Material, radius); // ???
+            if (!(circle.GetArea() <= shape.GetArea()))
+                throw new ApplicationException("There is impossible to cut out" +
+                    "a bigger shape from a smaller one.");
+            else
+            {
+                this.Material = circle.Material;
+                this.Radius = circle.radius;
+                this.Name = circle.Name;
+            }
         }
 
         /// <summary>

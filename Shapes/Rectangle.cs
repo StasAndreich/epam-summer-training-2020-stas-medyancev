@@ -13,13 +13,45 @@ namespace Shapes
         /// </summary>
         /// <param name="height"></param>
         /// <param name="width"></param>
-        /// <param name="material"></param>
-        public Rectangle(IMaterial material, double height, double width)
+        public Rectangle(double height, double width)
         {
-            this.Material = material;
             this.Height = height;
             this.Width = width;
             this.Name = "Rectangle";
+        }
+        /// <summary>
+        /// Ctor that inits a rectangle with 2 sides
+        /// and a specific material.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="material"></param>
+        public Rectangle(IMaterial material, double height, double width)
+            : this(height, width)
+        {
+            this.Material = material;
+        }
+
+        /// <summary>
+        /// Copy-ctor for creating a rectangle
+        /// from another shape.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        public Rectangle(IShape shape, double height, double width)
+        {
+            var rect = new Rectangle(shape.Material, height, width);
+            if (!(rect.GetArea() <= shape.GetArea()))
+                throw new ApplicationException("There is impossible to cut out" +
+                    "a bigger shape from a smaller one.");
+            else
+            {
+                this.Material = rect.Material;
+                this.Height = rect.Height;
+                this.Width = rect.Width;
+                this.Name = rect.Name;
+            }
         }
 
         /// <summary>
@@ -75,6 +107,15 @@ namespace Shapes
         public double GetArea()
         {
             return Height * Width;
+        }
+
+        /// <summary>
+        /// Paints shape in a specific color.
+        /// </summary>
+        /// <param name="color"></param>
+        public void ChangeColor(Color color)
+        {
+            this.Material.Paint(color);
         }
 
         /// <summary>

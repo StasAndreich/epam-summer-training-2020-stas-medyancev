@@ -12,12 +12,41 @@ namespace Shapes
         /// Creates an equilateral triangle.
         /// </summary>
         /// <param name="side"></param>
-        /// <param name="material"></param>
-        public Triangle(IMaterial material, double side)
+        public Triangle(double side)
         {
-            this.Material = material;
             this.Side = side;
             this.Name = "Triangle";
+        }
+        /// <summary>
+        /// Creates an equilateral triangle
+        /// with a specific material.
+        /// </summary>
+        /// <param name="side"></param>
+        /// <param name="material"></param>
+        public Triangle(IMaterial material, double side)
+            : this(side)
+        {
+            this.Material = material;
+        }
+
+        /// <summary>
+        /// Copy-ctor for creating a circle
+        /// from another shape.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <param name="side"></param>
+        public Triangle(IShape shape, double side)
+        {
+            var triangle = new Triangle(shape.Material, side);
+            if (!(triangle.GetArea() <= shape.GetArea()))
+                throw new ApplicationException("There is impossible to cut out" +
+                    "a bigger shape from a smaller one.");
+            else
+            {
+                this.Material = triangle.Material;
+                this.Side = triangle.Side;
+                this.Name = triangle.Name;
+            }
         }
 
         /// <summary>
@@ -67,6 +96,15 @@ namespace Shapes
                 (halfPerimeter - Side) *
                 (halfPerimeter - Side) *
                 (halfPerimeter - Side));
+        }
+
+        /// <summary>
+        /// Paints shape in a specific color.
+        /// </summary>
+        /// <param name="color"></param>
+        public void ChangeColor(Color color)
+        {
+            this.Material.Paint(color);
         }
 
         /// <summary>
