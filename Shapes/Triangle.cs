@@ -132,7 +132,7 @@ namespace Shapes
         {
             unchecked
             {
-                return (int)(GetArea() * GetPerimeter() / 2);
+                return (int)(GetArea() * GetPerimeter() / 2) ^ Name.GetHashCode();
             }
         }
 
