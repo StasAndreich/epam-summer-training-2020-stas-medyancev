@@ -89,7 +89,7 @@ namespace Materials
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format($"{Name} {Color}");
+            return string.Format($"{Name}");
         }
     }
 }

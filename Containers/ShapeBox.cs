@@ -251,5 +251,62 @@ namespace Containers
 
             return resultList;
         }
+
+        public void LoadShapesFromXml(string filePath)
+        {
+            foreach (var shape in ShapeXmlParser.GetShapesListFromXmlFileSax(filePath))
+            {
+                this.Add(shape);
+            } 
+        }
+
+
+        public void ParseShapesToXml(string outputFilePath)
+        {
+
+        }
+
+        /// <summary>
+        /// Check the equality of this ShapeBox instance and other object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !(this.GetType().Equals(obj.GetType())))
+                return false;
+
+            var shapeBox = (ShapeBox)obj;
+
+            for (int i = 0; i < shapes.Length; i++)
+            {
+                // If even a shapes order is different
+                // than the shape boxes are not equal.
+                if (!shapes[i].Equals(shapeBox.shapes[i]))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Returns a hash-code for a ShapeBox object.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return shapes.GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns a formatted string filled with ShapeBox elements.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format($"ShapeBox capacity: {Capacity};\n" +
+                $"ShapeBox elements: {Count}.");
+        }
     }
 }
