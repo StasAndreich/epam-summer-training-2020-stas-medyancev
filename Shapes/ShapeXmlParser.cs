@@ -1,24 +1,62 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections;
+﻿using Materials;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Shapes
 {
-    public class ShapeXmlParser
+    /// <summary>
+    /// Contains static methods for IShape objects
+    /// parsing from/to XML-files.
+    /// </summary>
+    public static class ShapeXmlParser
     {
         #region Read XML
-        public static IList<IShape> GetShapesListFromXmlFileSax(string filePath)
+        /// <summary>
+        /// Parses IShape objects from an
+        /// XML-file via XmlReader class.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static IList<IShape> StreamReaderParseFromXmlFile(string filePath)
         {
             var shapes = new List<IShape>();
 
-            using (var xReader = XmlReader.Create(filePath))
+            using (var stream = new StreamReader(filePath))
             {
+                var data = stream.ReadToEnd();
+
+                var shapeRegex = new Regex("");
+                var MaterialRegex = new Regex("");
+            }
+        }
+
+        /// <summary>
+        /// Parses IShape objects from an
+        /// XML-file via XmlReader class.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static IList<IShape> XmlReaderParseFromXmlFile(string filePath)
+        {
+            var shapes = new List<IShape>();
+
+            using (var xReader = XmlReader.Create("this.xml"))
+            {
+                // IShape elements tmp holders.
+                var shapeName = "";
+                var material = "";
+                var color = "";
+                double radius = 0;
+                double height = 0;
+                double width = 0;
+                double side = 0;
+
+                // XML parts tmp name holders.
                 var currentElement = "";
-                var currentAttribute = "";
 
                 while (xReader.Read())
                 {
@@ -29,36 +67,245 @@ namespace Shapes
                             break;
 
                         case XmlNodeType.Attribute:
-                            currentAttribute = xReader.Name;
+                            switch (xReader.Name)
+                            {
+                                case "Name":
+                                    shapeName = xReader.Value;
+                                    break;
+                                case "Color":
+                                    color = xReader.Value;
+                                    break;
+                            }
                             break;
 
                         case XmlNodeType.Text:
                             switch (currentElement)
                             {
                                 case "Material":
-
+                                    material = xReader.Value;
+                                    break;
+                                case "Radius":
+                                    if (!double.TryParse(xReader.Value, out radius))
+                                        throw new ApplicationException("Radius must be a double value.");
+                                    break;
+                                case "Height":
+                                    if (!double.TryParse(xReader.Value, out height))
+                                        throw new ApplicationException("Height must be a double value.");
+                                    break;
+                                case "Width":
+                                    if (!double.TryParse(xReader.Value, out width))
+                                        throw new ApplicationException("Width must be a double value.");
+                                    break;
+                                case "Side":
+                                    if (!double.TryParse(xReader.Value, out side))
+                                        throw new ApplicationException("Side must be a double value.");
                                     break;
                             }
                             break;
 
                         case XmlNodeType.EndElement:
-                            if (xReader.Name.Equals("Shape"))
-                                shapes.Add(new );
+                            if (xReader.Name == "Shape")
+                            {
+                                switch (shapeName)
+                                {
+                                    case "Circle":
+                                        if (material == "Paper")
+                                            shapes.Add(new Circle(new Paper(), radius));
+                                        else if (material == "Film")
+                                            shapes.Add(new Circle(new Film(), radius));
+                                        break;
+                                    case "Rectangle":
+                                        if (material == "Paper")
+                                            shapes.Add(new Rectangle(new Paper(), height, width));
+                                        else if (material == "Film")
+                                            shapes.Add(new Rectangle(new Film(), height, width));
+                                        break;
+                                    case "Triangle":
+                                        if (material == "Paper")
+                                            shapes.Add(new Triangle(new Paper(), side));
+                                        else if (material == "Film")
+                                            shapes.Add(new Triangle(new Film(), side));
+                                        break;
+                                }
+                            }
                             break;
-
                     }
                 }
             }
-
             return shapes;
-        } 
+        }
+
+        /// <summary>
+        /// Parses IShape objects from an
+        /// XML-file with XmlWriter class
+        /// that is using a stream of StreamReader class.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static IList<IShape> CombinedParseFromXmlFile(StreamReader stream)
+        {
+            var shapes = new List<IShape>();
+
+            using (var xReader = XmlReader.Create(stream))
+            {
+                // IShape elements tmp holders.
+                var shapeName = "";
+                var material = "";
+                var color = "";
+                double radius = 0;
+                double height = 0;
+                double width = 0;
+                double side = 0;
+
+                // XML parts tmp name holders.
+                var currentElement = "";
+
+                while (xReader.Read())
+                {
+                    switch (xReader.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            currentElement = xReader.Name;
+                            break;
+
+                        case XmlNodeType.Attribute:
+                            switch (xReader.Name)
+                            {
+                                case "Name":
+                                    shapeName = xReader.Value;
+                                    break;
+                                case "Color":
+                                    color = xReader.Value;
+                                    break;
+                            }
+                            break;
+
+                        case XmlNodeType.Text:
+                            switch (currentElement)
+                            {
+                                case "Material":
+                                    material = xReader.Value;
+                                    break;
+                                case "Radius":
+                                    if (!double.TryParse(xReader.Value, out radius))
+                                        throw new ApplicationException("Radius must be a double value.");
+                                    break;
+                                case "Height":
+                                    if (!double.TryParse(xReader.Value, out height))
+                                        throw new ApplicationException("Height must be a double value.");
+                                    break;
+                                case "Width":
+                                    if (!double.TryParse(xReader.Value, out width))
+                                        throw new ApplicationException("Width must be a double value.");
+                                    break;
+                                case "Side":
+                                    if (!double.TryParse(xReader.Value, out side))
+                                        throw new ApplicationException("Side must be a double value.");
+                                    break;
+                            }
+                            break;
+
+                        case XmlNodeType.EndElement:
+                            if (xReader.Name == "Shape")
+                            {
+                                switch (shapeName)
+                                {
+                                    case "Circle":
+                                        if (material == "Paper")
+                                            shapes.Add(new Circle(new Paper(), radius));
+                                        else if (material == "Film")
+                                            shapes.Add(new Circle(new Film(), radius));
+                                        break;
+                                    case "Rectangle":
+                                        if (material == "Paper")
+                                            shapes.Add(new Rectangle(new Paper(), height, width));
+                                        else if (material == "Film")
+                                            shapes.Add(new Rectangle(new Film(), height, width));
+                                        break;
+                                    case "Triangle":
+                                        if (material == "Paper")
+                                            shapes.Add(new Triangle(new Paper(), side));
+                                        else if (material == "Film")
+                                            shapes.Add(new Triangle(new Film(), side));
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+            return shapes;
+        }
         #endregion
 
 
         #region Write XML
-        public static void ParseToXmlViaDom(IEnumerable<IShape> shapes, string outputFilePath)
+        /// <summary>
+        /// Parses IShape objects to an XML-file
+        /// via DOM parsing using StreamWriter.
+        /// </summary>
+        /// <param name="shapes"></param>
+        /// <param name="outputFilePath"></param>
+        public static void StreamWriterParseToXmlFile(IEnumerable<IShape> shapes, string outputFilePath)
         {
+            // Create an empty output string.
+            var output = new StringBuilder();
 
+            // Append XML data to that string.
+            //
+            // Append a processing instruction.
+            output.Append("<?xml version='1.0' encoding='UTF-8'?>\t");
+            // Main tag.
+            output.Append("<Shapes>\t");
+
+            // Append data.
+            foreach (var shape in shapes)
+            {
+                // Start Shape tag.
+                output.Append($"<Shape Name=\"{shape.Name}\">\t");
+                output.Append($"Material Color=\"{shape.Material.Color}\">{shape.Material}</Material>\t");
+
+                // Additional data.
+                switch (shape.Name)
+                {
+                    // Check a shape type.
+                    case "Circle":
+                        output.Append($"<Radius>{((Circle)shape).Radius}</Radius>\t");
+                        break;
+                    case "Rectangle":
+                        output.Append($"<Height>{((Rectangle)shape).Height}</Height>\t");
+                        output.Append($"<Width>{((Rectangle)shape).Width}</Width>\t");
+                        break;
+                    case "Triangle":
+                        output.Append($"<Side>{((Triangle)shape).Side}</Side>\t");
+                        break;
+                    default:
+                        break;
+                }
+
+                // Close Shape tag.
+                output.Append("</Shape>\t");
+            }
+
+            // Close main tag.
+            output.Append("</Shapes>");
+
+            // Pass a created string to an XML file.
+            using (var strWriter = new StreamWriter(outputFilePath))
+            {
+                try
+                {
+                    strWriter.Write(output.ToString());
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    strWriter.Close();
+                }
+            }
         }
 
         /// <summary>
@@ -67,7 +314,7 @@ namespace Shapes
         /// </summary>
         /// <param name="shapes"></param>
         /// <param name="outputFilePath"></param>
-        public static void ParseToXmlViaSax(IEnumerable<IShape> shapes, string outputFilePath)
+        public static void XmlWriterParseToXmlFile(IEnumerable<IShape> shapes, string outputFilePath)
         {
             // Using XmlWriter.
             XmlWriter xWriter = null;
@@ -97,7 +344,7 @@ namespace Shapes
                         // Additional shape params.
                         switch (shape.Name)
                         {
-                            // Define a shape type.
+                            // Check a shape type.
                             case "Circle":
                                 // Ex.: <Radius>Double-value</Radius>.
                                 xWriter.WriteElementString("Radius", ((Circle)shape).Radius.ToString());
@@ -112,7 +359,10 @@ namespace Shapes
                             default:
                                 break;
                         }
+                        // Close Shape tag.
+                        xWriter.WriteEndElement();
                     }
+                    // Close Shapes tag.
                     xWriter.WriteEndElement();
                 }
             }
@@ -134,7 +384,7 @@ namespace Shapes
         /// </summary>
         /// <param name="shapes"></param>
         /// <param name="outputStream"></param>
-        public static void ParseToXmlViaSax(IEnumerable<IShape> shapes, StreamWriter outputStream)
+        public static void CombinedParseToXmlFile(IEnumerable<IShape> shapes, StreamWriter outputStream)
         {
             // Using XmlWriter.
             XmlWriter xWriter = null;
@@ -165,7 +415,7 @@ namespace Shapes
                         // Additional shape params.
                         switch (shape.Name)
                         {
-                            // Define a shape type.
+                            // Check a shape type.
                             case "Circle":
                                 // Ex.: <Radius>Double-value</Radius>.
                                 xWriter.WriteElementString("Radius", ((Circle)shape).Radius.ToString());
@@ -180,7 +430,10 @@ namespace Shapes
                             default:
                                 break;
                         }
+                        // Close Shape tag.
+                        xWriter.WriteEndElement();
                     }
+                    // Close Shapes tag.
                     xWriter.WriteEndElement();
                 }
             }

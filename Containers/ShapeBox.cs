@@ -211,17 +211,17 @@ namespace Containers
         /// </summary>
         /// <typeparam name="TMaterial"></typeparam>
         /// <returns>Extracted shapes made of the same material.</returns>
-        public ICollection<TMaterial> ExtractByMaterial<TMaterial>() where TMaterial : IMaterial
+        public ICollection<IShape> ExtractByMaterial<TMaterial>() where TMaterial : IMaterial
         {
-            var resultList = new List<TMaterial>();
+            var resultList = new List<IShape>();
 
             for (int i = 0; i < shapes.Length; i++)
             {
                 if (shapes[i] != null)
                 {
-                    if (shapes[i].Material.Equals(typeof(TMaterial)))
+                    if (shapes[i].Material.GetType().Equals(typeof(TMaterial)))
                     {
-                        resultList.Add((TMaterial)shapes[i]);
+                        resultList.Add(shapes[i]);
                         RemoveAt(i);
                     }
                 }
@@ -252,19 +252,134 @@ namespace Containers
             return resultList;
         }
 
-        public void LoadShapesFromXml(string filePath)
+
+        #region Load from XML-file
+        /// <summary>
+        /// Loads all shapes from XML-file
+        /// using XmlReader.
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void LoadAllShapesFromXmlViaXmlReader(string filePath)
         {
-            foreach (var shape in ShapeXmlParser.GetShapesListFromXmlFileSax(filePath))
+            foreach (var shape in ShapeXmlParser.XmlReaderParseFromXmlFile(filePath))
             {
-                this.Add(shape);
-            } 
+                try
+                {
+                    this.Add(shape);
+                }
+                catch (ApplicationException)
+                {
+                    // If the space is out.
+                    if (this.Capacity == this.Count)
+                        return;
+                }
+            }
         }
 
-
-        public void ParseShapesToXml(string outputFilePath)
+        /// <summary>
+        /// Loads all shapes from XML-file
+        /// using StreamReader.
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void LoadAllShapesFromXmlViaStreamReader(string filePath)
         {
-
+            foreach (var shape in ShapeXmlParser.StreamReaderParseFromXmlFile(filePath))
+            {
+                try
+                {
+                    this.Add(shape);
+                }
+                catch (ApplicationException)
+                {
+                    // If the space is out.
+                    if (this.Capacity == this.Count)
+                        return;
+                }
+            }
         }
+        #endregion
+
+
+        #region Save to XML-file
+        /// <summary>
+        /// Saves all shapes from the container
+        /// to XML-file via StreamWriter.
+        /// </summary>
+        /// <param name="outputFilePath"></param>
+        public void SaveAllShapesToXmlFileViaStreamWriter(string outputFilePath)
+        {
+            var savingList = new List<IShape>();
+            foreach (var shape in shapes)
+            {
+                if (shape != null)
+                    savingList.Add(shape);
+            }
+
+            ShapeXmlParser.StreamWriterParseToXmlFile(savingList, outputFilePath);
+        }
+
+        /// <summary>
+        /// Saves all shapes from the container
+        /// to XML-file via XmlWriter.
+        /// </summary>
+        /// <param name="outputFilePath"></param>
+        public void SaveAllShapesToXmlFileViaXmlWriter(string outputFilePath)
+        {
+            var savingList = new List<IShape>();
+            foreach (var shape in shapes)
+            {
+                if (shape != null)
+                    savingList.Add(shape);
+            }
+
+            ShapeXmlParser.XmlWriterParseToXmlFile(savingList, outputFilePath);
+        }
+
+        /// <summary>
+        /// Saves shapes of a specified
+        /// material from the container
+        /// to XML-file via StreamWriter.
+        /// </summary>
+        /// <typeparam name="TMaterial"></typeparam>
+        /// /// <param name="outputFilePath"></param>
+        public void SaveShapesToXmlFileViaStreamWriterByMaterial<TMaterial>(string outputFilePath)
+            where TMaterial : IMaterial
+        {
+            var savingList = new List<IShape>();
+
+            foreach (var shape in shapes)
+            {
+                if (shape != null)
+                    if (shape.Material.GetType().Equals(typeof(TMaterial)))
+                        savingList.Add(shape);
+            }
+
+            ShapeXmlParser.StreamWriterParseToXmlFile(savingList, outputFilePath);
+        }
+
+        /// <summary>
+        /// Saves shapes of a specified
+        /// material from the container
+        /// to XML-file via XmlWriter.
+        /// </summary>
+        /// <typeparam name="TMaterial"></typeparam>
+        /// /// <param name="outputFilePath"></param>
+        public void SaveShapesToXmlFileViaXmlWriterByMaterial<TMaterial>(string outputFilePath)
+            where TMaterial : IMaterial
+        {
+            var savingList = new List<IShape>();
+
+            foreach (var shape in shapes)
+            {
+                if (shape != null)
+                    if (shape.Material.GetType().Equals(typeof(TMaterial)))
+                        savingList.Add(shape);
+            }
+
+            ShapeXmlParser.XmlWriterParseToXmlFile(savingList, outputFilePath);
+        }
+        #endregion
+
 
         /// <summary>
         /// Check the equality of this ShapeBox instance and other object.
