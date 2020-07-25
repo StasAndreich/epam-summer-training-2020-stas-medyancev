@@ -118,13 +118,22 @@ namespace Containers
         /// </summary>
         /// <param name="shape"></param>
         /// <exception cref="ApplicationException"/>
+        /// <exception cref="ArgumentOutOfRangeException"/>
         public void Add(IShape shape)
         {
+            if (this.Capacity == this.Count)
+                throw new ArgumentOutOfRangeException("Shape box is full.");
+
             for (int i = 0; i < shapes.Length; i++)
             {
-                if (shapes[i].Equals(shape))
+                if (shapes[i] == null)
+                {
+                    shapes[i] = shape;
+                    return;
+                }
+                else if (shapes[i].Equals(shape))
                     throw new ApplicationException("An object duplicate can not" +
-                        "be stored in this container.");
+                            "be stored in this container.");
             }
         }
 
@@ -136,9 +145,17 @@ namespace Containers
         /// <param name="shape"></param>
         public void TryAdd(IShape shape)
         {
+            if (this.Capacity == this.Count)
+                return;
+
             for (int i = 0; i < shapes.Length; i++)
             {
-                if (shapes[i].Equals(shape))
+                if (shapes[i] == null)
+                {
+                    shapes[i] = shape;
+                    return;
+                }
+                else if (shapes[i].Equals(shape))
                     return;
             }
         }

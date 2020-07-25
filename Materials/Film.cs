@@ -1,4 +1,6 @@
-﻿namespace Materials
+﻿using System;
+
+namespace Materials
 {
     /// <summary>
     /// Defines a film material.
@@ -28,7 +30,10 @@
         /// Not-implemented for this material.
         /// </summary>
         /// <param name="color"></param>
-        void IMaterial.Paint(Color color) { }
+        void IMaterial.Paint(Color color) 
+        { 
+            throw new ApplicationException("Film has a constant color and can't be changed.");
+        }
 
         /// <summary>
         /// Check the equality of this film material instance and other object.

@@ -235,37 +235,37 @@ namespace Shapes
             // Append XML data to that string.
             //
             // Append a processing instruction.
-            output.Append("<?xml version='1.0' encoding='UTF-8'?>\t");
+            output.Append("<?xml version='1.0' encoding='UTF-8'?>\n");
             // Main tag.
-            output.Append("<Shapes>\t");
+            output.Append("<Shapes>\n");
 
             // Append data.
             foreach (var shape in shapes)
             {
                 // Start Shape tag.
-                output.Append($"<Shape Name=\"{shape.Name}\">\t");
-                output.Append($"Material Color=\"{shape.Material.Color}\">{shape.Material}</Material>\t");
+                output.Append($"\t<Shape Name=\"{shape.Name}\">\n");
+                output.Append($"\t\t<Material Color=\"{shape.Material.Color}\">{shape.Material}</Material>\n");
 
                 // Additional data.
                 switch (shape.Name)
                 {
                     // Check a shape type.
                     case "Circle":
-                        output.Append($"<Radius>{((Circle)shape).Radius}</Radius>\t");
+                        output.Append($"\t\t<Radius>{((Circle)shape).Radius}</Radius>\n");
                         break;
                     case "Rectangle":
-                        output.Append($"<Height>{((Rectangle)shape).Height}</Height>\t");
-                        output.Append($"<Width>{((Rectangle)shape).Width}</Width>\t");
+                        output.Append($"\t\t<Height>{((Rectangle)shape).Height}</Height>\n");
+                        output.Append($"\t\t<Width>{((Rectangle)shape).Width}</Width>\n");
                         break;
                     case "Triangle":
-                        output.Append($"<Side>{((Triangle)shape).Side}</Side>\t");
+                        output.Append($"\t\t<Side>{((Triangle)shape).Side}</Side>\n");
                         break;
                     default:
                         break;
                 }
 
                 // Close Shape tag.
-                output.Append("</Shape>\t");
+                output.Append("\t</Shape>\n");
             }
 
             // Close main tag.
