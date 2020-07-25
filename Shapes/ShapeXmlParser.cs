@@ -25,12 +25,11 @@ namespace Shapes
         {
             var shapes = new List<IShape>();
 
-            using (var xReader = XmlReader.Create("this.xml"))
+            using (var xReader = XmlReader.Create(filePath))
             {
                 // IShape elements tmp holders.
                 var shapeName = "";
                 var material = "";
-                var color = "";
                 double radius = 0;
                 double height = 0;
                 double width = 0;
@@ -45,18 +44,8 @@ namespace Shapes
                     {
                         case XmlNodeType.Element:
                             currentElement = xReader.Name;
-                            break;
-
-                        case XmlNodeType.Attribute:
-                            switch (xReader.Name)
-                            {
-                                case "Name":
-                                    shapeName = xReader.Value;
-                                    break;
-                                case "Color":
-                                    color = xReader.Value;
-                                    break;
-                            }
+                            if (xReader.GetAttribute("Name") != null)
+                                shapeName = xReader.GetAttribute("Name");
                             break;
 
                         case XmlNodeType.Text:

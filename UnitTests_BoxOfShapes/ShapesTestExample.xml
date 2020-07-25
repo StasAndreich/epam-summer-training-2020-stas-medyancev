@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shapes>
+  <Shape Name='Circle'>
+    <Material Color="White">Paper</Material>
+    <Radius>15</Radius>
+  </Shape>
+  <Shape Name="Rectangle">
+    <Material Color="Transparent">Film</Material>
+    <Height>25</Height>
+    <Width>10</Width>
+  </Shape>
+  <Shape Name="Triangle">
+    <Material Color="White">Paper</Material>
+    <Side>7</Side>
+  </Shape>
+</Shapes>
