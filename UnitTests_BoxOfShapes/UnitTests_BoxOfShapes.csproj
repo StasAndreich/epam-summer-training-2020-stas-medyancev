@@ -60,6 +60,10 @@
       <Project>{c6c84d2b-c7a7-4ce1-a39a-c5cf36e32850}</Project>
       <Name>Containers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Materials\Materials.csproj">
+      <Project>{f155e513-1f24-4d86-a446-08b3e3389f9b}</Project>
+      <Name>Materials</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Shapes\Shapes.csproj">
       <Project>{5b29e198-81df-4ff8-939d-6be12f88da23}</Project>
       <Name>Shapes</Name>
