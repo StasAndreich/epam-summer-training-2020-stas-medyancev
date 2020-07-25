@@ -256,28 +256,6 @@ namespace Containers
         #region Load from XML-file
         /// <summary>
         /// Loads all shapes from XML-file
-        /// using XmlReader.
-        /// </summary>
-        /// <param name="filePath"></param>
-        public void LoadAllShapesFromXmlViaXmlReader(string filePath)
-        {
-            foreach (var shape in ShapeXmlParser.XmlReaderParseFromXmlFile(filePath))
-            {
-                try
-                {
-                    this.Add(shape);
-                }
-                catch (ApplicationException)
-                {
-                    // If the space is out.
-                    if (this.Capacity == this.Count)
-                        return;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Loads all shapes from XML-file
         /// using StreamReader.
         /// </summary>
         /// <param name="filePath"></param>
@@ -285,16 +263,28 @@ namespace Containers
         {
             foreach (var shape in ShapeXmlParser.StreamReaderParseFromXmlFile(filePath))
             {
-                try
-                {
-                    this.Add(shape);
-                }
-                catch (ApplicationException)
-                {
-                    // If the space is out.
-                    if (this.Capacity == this.Count)
-                        return;
-                }
+                // If the space is out.
+                if (this.Capacity == this.Count)
+                    return;
+
+                this.TryAdd(shape);
+            }
+        }
+
+        /// <summary>
+        /// Loads all shapes from XML-file
+        /// using XmlReader.
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void LoadAllShapesFromXmlViaXmlReader(string filePath)
+        {
+            foreach (var shape in ShapeXmlParser.XmlReaderParseFromXmlFile(filePath))
+            {
+                // If the space is out.
+                if (this.Capacity == this.Count)
+                    return;
+
+                this.TryAdd(shape);
             }
         }
         #endregion

@@ -21,25 +21,6 @@ namespace Shapes
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static IList<IShape> StreamReaderParseFromXmlFile(string filePath)
-        {
-            var shapes = new List<IShape>();
-
-            using (var stream = new StreamReader(filePath))
-            {
-                var data = stream.ReadToEnd();
-
-                var shapeRegex = new Regex("");
-                var MaterialRegex = new Regex("");
-            }
-        }
-
-        /// <summary>
-        /// Parses IShape objects from an
-        /// XML-file via XmlReader class.
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
         public static IList<IShape> XmlReaderParseFromXmlFile(string filePath)
         {
             var shapes = new List<IShape>();
@@ -446,7 +427,29 @@ namespace Shapes
                 if (xWriter != null)
                     xWriter.Close();
             }
-        } 
+        }
         #endregion
+
+        /// <summary>
+        /// Parses IShape objects from an
+        /// XML-file via XmlReader class.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static IList<IShape> StreamReaderParseFromXmlFile(string filePath)
+        {
+            //var shapes = new List<IShape>();
+
+            //using (var stream = new StreamReader(filePath))
+            //{
+            //    var line = stream.ReadLine();
+
+            //    var shapeRegex = new Regex("");
+            //    var materialRegex = new Regex("");
+            //}
+
+            throw new NotImplementedException("Are you kidding me? Parsing XML with a regex? " +
+                "What's the idea of using StreamReader without any wrappers here?");
+        }
     }
 }
