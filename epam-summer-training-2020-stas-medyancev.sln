@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuclideanAlgo", "EuclideanAlgo\EuclideanAlgo.csproj", "{91B0419A-21BF-4167-BC84-B60393BF994E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "task04_NET_Delegates_Events", "task04_NET_Delegates_Events", "{89797D77-3E32-46DC-A023-30AE970FC1A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpIpProvider", "TcpIpProvider\TcpIpProvider.csproj", "{7C7441A4-47F7-48F0-A7B6-4AE31E6D4813}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +13,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{91B0419A-21BF-4167-BC84-B60393BF994E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91B0419A-21BF-4167-BC84-B60393BF994E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91B0419A-21BF-4167-BC84-B60393BF994E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91B0419A-21BF-4167-BC84-B60393BF994E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C7441A4-47F7-48F0-A7B6-4AE31E6D4813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C7441A4-47F7-48F0-A7B6-4AE31E6D4813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C7441A4-47F7-48F0-A7B6-4AE31E6D4813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C7441A4-47F7-48F0-A7B6-4AE31E6D4813}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7C7441A4-47F7-48F0-A7B6-4AE31E6D4813} = {89797D77-3E32-46DC-A023-30AE970FC1A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9008F188-1616-4B42-AFA5-E5B492673C98}
