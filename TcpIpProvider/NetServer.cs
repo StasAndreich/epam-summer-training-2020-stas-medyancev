@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using TcpIpProvider.ProviderEventArgs;
+using System.Text;
 
 namespace TcpIpProvider
 {
@@ -11,6 +14,19 @@ namespace TcpIpProvider
     public class NetServer
     {
         /// <summary>
+        /// Main server listener.
+        /// </summary>
+        private TcpListener listener;
+        /// <summary>
+        /// Connected clients list.
+        /// </summary>
+        private List<TcpClient> serverClients = new List<TcpClient>();
+
+
+        // Move to another class.
+        //private IDictionary<NetClient, List<NetMessage>> messageHistory;
+
+        /// <summary>
         /// Inits a TCP server listening to any
         /// client activity on a defined port.
         /// </summary>
@@ -18,11 +34,7 @@ namespace TcpIpProvider
         public NetServer(int port)
         {
             listener = new TcpListener(IPAddress.Any, port);
-
-            this.MessageReceived += (sender, e) =>
-            {
-
-            };
+            this.ClientConnected += (sender, e) => ReadMessage(e.client);
         }
 
         /// <summary>
@@ -31,19 +43,11 @@ namespace TcpIpProvider
         /// </summary>
         /// <param name="address"></param>
         /// <param name="port"></param>
-        public NetServer(IPAddress address, int port)
+        public NetServer(string address, int port)
             : this(port)
         {
-            listener = new TcpListener(address, port);
+            listener = new TcpListener(IPAddress.Parse(address), port);
         }
-        
-        private TcpListener listener;
-
-        ///// <summary>
-        ///// Indicates whether a server is
-        ///// listening to incoming clients.
-        ///// </summary>
-        //public bool IsListening;
 
         /// <summary>
         /// Local server IP address.
@@ -60,11 +64,27 @@ namespace TcpIpProvider
             get => ((IPEndPoint)listener.LocalEndpoint).Port;
         }
 
+
+        #region Server Events
         /// <summary>
-        /// Triggers when some message comes to a server.
+        /// Triggers when a new client connects to a server.
+        /// </summary>
+        public event EventHandler<ClientConnectedEventArgs> ClientConnected;
+        /// <summary>
+        /// Method that invokes a ClientConnected event
+        /// with ClientConnectedEventArgs.
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnClientConnected(ClientConnectedEventArgs e)
+        {
+            var handler = ClientConnected;
+            handler?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Triggers when some message received by a server.
         /// </summary>
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
-
         /// <summary>
         /// Method that invokes a MessageReceived event
         /// with MessageReceivedEventArgs.
@@ -75,96 +95,100 @@ namespace TcpIpProvider
             var handler = MessageReceived;
             handler?.Invoke(this, e);
         }
+        #endregion
 
 
         #region Server Methods
         /// <summary>
         /// Starts listening for incoming
         /// connection requests.
+        /// (Default backlog = 10).
         /// </summary>
-        public void Start()
+        public void Start(int backLogSize = 10)
         {
-            listener.Start();
+            listener.Start(backLogSize);
+
+            while (true)
+            {
+                // Accept a client if there is one.
+                var newClient = listener.AcceptTcpClient();
+                OnClientConnected(new ClientConnectedEventArgs(newClient));
+            }
         }
 
         /// <summary>
-        /// Closes the server.
+        /// Closes the server and
+        /// disconnects all clients.
         /// </summary>
         public void Stop()
         {
+            // Stop the server.
             listener.Stop();
+
+            // Close all the clients.
+            foreach (var client in serverClients)
+                client?.Close();
         }
 
         /// <summary>
-        /// Waits for a client connection and
-        /// reads an income data.
+        /// Reads a received message.
         /// </summary>
-        public void Accept()
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public NetMessage ReadMessage(TcpClient client)
         {
-            // Accept a client if there is one.
-            var client = listener.AcceptTcpClient();
-            // Get a client NetworkStream.
+            // Get a client's NetworkStream.
             var netStream = client.GetStream();
+            var mes = "";
 
-            var message = "";
+            // Read message data.
+            //if (netStream.DataAvailable)
+            //{
+            //    //using (var reader = new BinaryReader(netStream))
+            //    //{
+            //    //    data = reader.ReadString();
+            //    //}
 
-            if (netStream.DataAvailable)
+            //}
+            byte[] data = new byte[256];
+            var tmp = new StringBuilder();
+            while (netStream.DataAvailable)
             {
-                var reader = new StreamReader(netStream);
-                message = reader.ReadToEnd();
+                int bytes = netStream.Read(data, 0, data.Length);
+                tmp.Append(Encoding.UTF8.GetString(data, 0, bytes));
             }
-
-            // Invoke an event.
-            OnMessageReceived(new MessageReceivedEventArgs(client,
-                                                           timeStamp: DateTime.Now,
-                                                           message));
+            netStream.Close();
+            // Create a NetMessage.
+            return new NetMessage(mes, timeStamp: DateTime.Now);
         }
 
         /// <summary>
         /// Sends a string message via 
         /// </summary>
         /// <param name="message"></param>
-        public void Send(string message)
+        public void SendMessage(string message)
         {
+            var netStream = currentClient.GetStream();
 
+            byte[] bytes = Encoding.UTF8.GetBytes(message);
+            //using (var writer = new BinaryWriter(netStream))
+            //{
+            //    writer.Write(message);
+            //}
+            netStream.Write(bytes, 0, bytes.Length);
+
+            netStream.Close();
         }
 
-        public void SendTo(string message, IPAddress address)
-        {
+        //public void SendMessageTo(string message, IPAddress address)
+        //{
 
-        } 
+        //}
+
+        public void SubscribeToReceivedMessages(EventHandler<MessageReceivedEventArgs> handler)
+        {
+            this.MessageReceived += (sender, e) => handler(e.);
+        }
         #endregion
-    }
-
-    /// <summary>
-    /// Defines a MessageReceived event args.
-    /// </summary>
-    public class MessageReceivedEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Inits MessageReceivedEventArgs with
-        /// a client and a message.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="timeStamp"></param>
-        /// <param name="message"></param>
-        public MessageReceivedEventArgs(NetClient client,
-                                        DateTime timeStamp,
-                                        string message)
-        {
-            this.client = client;
-            this.timeStamp = timeStamp;
-            this.message = message;
-        }
-
-        
-        /// <summary>
-        /// A time stamp of a received message.
-        /// </summary>
-        public readonly DateTime timeStamp;
-        /// <summary>
-        /// Keeps a message pushed on a server.
-        /// </summary>
-        public readonly string message;
     }
 }
