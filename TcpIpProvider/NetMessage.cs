@@ -26,6 +26,6 @@ namespace TcpIpProvider
         /// Message time stamp when
         /// it has been received.
         /// </summary>
-        public DateTime TimeStamp { get; }        
+        public DateTime TimeStamp { get; }
     }
 }

@@ -11,20 +11,13 @@ namespace TcpIpProvider
     /// <summary>
     /// Defines a simple TCP\IP server.
     /// </summary>
-    public class NetServer
+    public class NetServer //: IDisposable
     {
         /// <summary>
         /// Main server listener.
         /// </summary>
-        private TcpListener listener;
-        /// <summary>
-        /// Connected clients list.
-        /// </summary>
-        private List<TcpClient> serverClients = new List<TcpClient>();
-
-
-        // Move to another class.
-        //private IDictionary<NetClient, List<NetMessage>> messageHistory;
+        private TcpListener tcpListener;
+        public string mes;
 
         /// <summary>
         /// Inits a TCP server listening to any
@@ -33,20 +26,8 @@ namespace TcpIpProvider
         /// <param name="port"></param>
         public NetServer(int port)
         {
-            listener = new TcpListener(IPAddress.Any, port);
-            this.ClientConnected += (sender, e) => ReadMessage(e.client);
-        }
-
-        /// <summary>
-        /// Inits a TCP server listening to 
-        /// defined address and port.
-        /// </summary>
-        /// <param name="address"></param>
-        /// <param name="port"></param>
-        public NetServer(string address, int port)
-            : this(port)
-        {
-            listener = new TcpListener(IPAddress.Parse(address), port);
+            tcpListener = TcpListener.Create(port);
+            this.ClientConnected += (sender, e) => ReceiveMessage(e.client);
         }
 
         /// <summary>
@@ -54,14 +35,14 @@ namespace TcpIpProvider
         /// </summary>
         public IPAddress LocalAddress
         {
-            get => ((IPEndPoint)listener.LocalEndpoint).Address;
+            get => ((IPEndPoint)tcpListener.LocalEndpoint).Address;
         }
         /// <summary>
         /// Server port.
         /// </summary>
         public int Port
         {
-            get => ((IPEndPoint)listener.LocalEndpoint).Port;
+            get => ((IPEndPoint)tcpListener.LocalEndpoint).Port;
         }
 
 
@@ -104,17 +85,26 @@ namespace TcpIpProvider
         /// connection requests.
         /// (Default backlog = 10).
         /// </summary>
-        public void Start(int backLogSize = 10)
+        /// <param name="backLogSize"></param>
+        public async void StartServer(int backLogSize = 10)
         {
-            listener.Start(backLogSize);
-
+            tcpListener.Start(backLogSize);
+            
             while (true)
             {
-                // Accept a client if there is one.
-                var newClient = listener.AcceptTcpClient();
+                var newClient = await tcpListener.AcceptTcpClientAsync();
                 OnClientConnected(new ClientConnectedEventArgs(newClient));
             }
         }
+        
+        //public async void Listen()
+        //{
+        //    while (true)
+        //    {
+        //        var newClient = await tcpListener.AcceptTcpClientAsync();
+        //        OnClientConnected(new ClientConnectedEventArgs(newClient)); 
+        //    }
+        //}
 
         /// <summary>
         /// Closes the server and
@@ -123,71 +113,79 @@ namespace TcpIpProvider
         public void Stop()
         {
             // Stop the server.
-            listener.Stop();
-
-            // Close all the clients.
-            foreach (var client in serverClients)
-                client?.Close();
+            tcpListener.Stop();
         }
 
         /// <summary>
         /// Reads a received message.
         /// </summary>
-        /// <param name="client"></param>
         /// <returns></returns>
-        public NetMessage ReadMessage(TcpClient client)
+        public async void ReceiveMessageAsync(TcpClient client)
         {
             // Get a client's NetworkStream.
-            var netStream = client.GetStream();
-            var mes = "";
-
-            // Read message data.
-            //if (netStream.DataAvailable)
-            //{
-            //    //using (var reader = new BinaryReader(netStream))
-            //    //{
-            //    //    data = reader.ReadString();
-            //    //}
-
-            //}
-            byte[] data = new byte[256];
-            var tmp = new StringBuilder();
-            while (netStream.DataAvailable)
+            var netStream = client?.GetStream();
+            var data = new byte[client.ReceiveBufferSize];
+            
+            // Check if there is some data
+            // is available.
+            if (netStream.DataAvailable)
             {
-                int bytes = netStream.Read(data, 0, data.Length);
-                tmp.Append(Encoding.UTF8.GetString(data, 0, bytes));
+                try
+                {
+                    var bytesCount = netStream.Read(data, 0, (int)client.ReceiveBufferSize);
+                    mes = Encoding.UTF8.GetString(data, 0, bytesCount);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
+            netStream.Flush();
             netStream.Close();
-            // Create a NetMessage.
-            return new NetMessage(mes, timeStamp: DateTime.Now);
+            // Create a new NetMessage
+            // and invoke the event.
+            var message = new NetMessage(mes,
+                                         timeStamp: DateTime.Now);
+            OnMessageReceived(new MessageReceivedEventArgs(client, message));
         }
 
         /// <summary>
-        /// Sends a string message via 
+        /// Sends a string message
+        /// to a TCP client.
         /// </summary>
+        /// <param name="client"></param>
         /// <param name="message"></param>
-        public void SendMessage(string message)
+        public void SendMessage(TcpClient client, string message)
         {
-            var netStream = currentClient.GetStream();
+            var netStream = client?.GetStream();
 
-            byte[] bytes = Encoding.UTF8.GetBytes(message);
-            //using (var writer = new BinaryWriter(netStream))
-            //{
-            //    writer.Write(message);
-            //}
-            netStream.Write(bytes, 0, bytes.Length);
-
-            netStream.Close();
+            BinaryWriter writer = null;
+            try
+            {
+                // Try to write data.
+                using (writer = new BinaryWriter(netStream, Encoding.UTF8))
+                {
+                    writer.Write(message);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                writer?.Dispose();
+            }
         }
 
-        //public void SendMessageTo(string message, IPAddress address)
-        //{
-
-        //}
-
+        /// <summary>
+        /// Subscribes a handler on when some
+        /// message received by a server.
+        /// </summary>
+        /// <param name="handler"></param>
         public void SubscribeToReceivedMessages(EventHandler<MessageReceivedEventArgs> handler)
         {
-            this.MessageReceived += (sender, e) => handler(e.);
+            this.MessageReceived += handler;
         }
         #endregion
     }

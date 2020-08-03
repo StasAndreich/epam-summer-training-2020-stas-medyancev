@@ -10,12 +10,15 @@ namespace TcpIpProvider.ProviderEventArgs
     {
         /// <summary>
         /// Default ctor that inits args
-        /// with a TcpClient.
+        /// with a TcpClient and a formed message.
         /// </summary>
         /// <param name="client"></param>
-        public MessageReceivedEventArgs(TcpClient client)
+        /// <param name="message"></param>
+        public MessageReceivedEventArgs(TcpClient client,
+                                        NetMessage message)
         {
             this.client = client;
+            this.message = message;
         }
 
         /// <summary>
@@ -23,5 +26,9 @@ namespace TcpIpProvider.ProviderEventArgs
         /// received message.
         /// </summary>
         public readonly TcpClient client;
+        /// <summary>
+        /// Stores a message itself.
+        /// </summary>
+        public readonly NetMessage message;
     }
 }
