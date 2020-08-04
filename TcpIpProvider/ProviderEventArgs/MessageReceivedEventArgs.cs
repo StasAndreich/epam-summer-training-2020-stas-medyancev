@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Sockets;
 
 namespace TcpIpProvider.ProviderEventArgs
 {
@@ -14,7 +13,7 @@ namespace TcpIpProvider.ProviderEventArgs
         /// </summary>
         /// <param name="client"></param>
         /// <param name="message"></param>
-        public MessageReceivedEventArgs(TcpClient client,
+        public MessageReceivedEventArgs(NetClient client,
                                         NetMessage message)
         {
             this.client = client;
@@ -22,10 +21,10 @@ namespace TcpIpProvider.ProviderEventArgs
         }
 
         /// <summary>
-        /// Stores a TcpClient that sent
+        /// Stores a NetClient that sent
         /// received message.
         /// </summary>
-        public readonly TcpClient client;
+        public readonly NetClient client;
         /// <summary>
         /// Stores a message itself.
         /// </summary>

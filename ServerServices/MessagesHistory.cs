@@ -7,7 +7,7 @@ namespace ServerServices
 {
     public class MessagesHistory
     {
-        public Dictionary<TcpClient, List<NetMessage>> messages;
+        public Dictionary<NetClient, List<NetMessage>> messages;
 
         public MessagesHistory(NetServer server)
         {

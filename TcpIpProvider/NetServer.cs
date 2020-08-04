@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using TcpIpProvider.ProviderEventArgs;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TcpIpProvider
 {
@@ -17,7 +18,7 @@ namespace TcpIpProvider
         /// Main server listener.
         /// </summary>
         private TcpListener tcpListener;
-        public string mes;
+        public List<NetMessage> messages = new List<NetMessage>();
 
         /// <summary>
         /// Inits a TCP server listening to any
@@ -27,7 +28,8 @@ namespace TcpIpProvider
         public NetServer(int port)
         {
             tcpListener = TcpListener.Create(port);
-            this.ClientConnected += (sender, e) => ReceiveMessage(e.client);
+            this.MessageReceived += (sender, e) => AddMessage(e.message);
+            tcpListener.Start(10);
         }
 
         /// <summary>
@@ -47,21 +49,6 @@ namespace TcpIpProvider
 
 
         #region Server Events
-        /// <summary>
-        /// Triggers when a new client connects to a server.
-        /// </summary>
-        public event EventHandler<ClientConnectedEventArgs> ClientConnected;
-        /// <summary>
-        /// Method that invokes a ClientConnected event
-        /// with ClientConnectedEventArgs.
-        /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnClientConnected(ClientConnectedEventArgs e)
-        {
-            var handler = ClientConnected;
-            handler?.Invoke(this, e);
-        }
-
         /// <summary>
         /// Triggers when some message received by a server.
         /// </summary>
@@ -86,25 +73,17 @@ namespace TcpIpProvider
         /// (Default backlog = 10).
         /// </summary>
         /// <param name="backLogSize"></param>
-        public async void StartServer(int backLogSize = 10)
+        public void StartServer(int backLogSize = 10)
         {
-            tcpListener.Start(backLogSize);
+            
             
             while (true)
             {
-                var newClient = await tcpListener.AcceptTcpClientAsync();
-                OnClientConnected(new ClientConnectedEventArgs(newClient));
+                var newTcpClient = tcpListener.AcceptTcpClient();
+                var netClient = new NetClient(newTcpClient);
+                var process = Task.Run(() => ReceiveMessageAsync(netClient));
             }
         }
-        
-        //public async void Listen()
-        //{
-        //    while (true)
-        //    {
-        //        var newClient = await tcpListener.AcceptTcpClientAsync();
-        //        OnClientConnected(new ClientConnectedEventArgs(newClient)); 
-        //    }
-        //}
 
         /// <summary>
         /// Closes the server and
@@ -120,20 +99,20 @@ namespace TcpIpProvider
         /// Reads a received message.
         /// </summary>
         /// <returns></returns>
-        public async void ReceiveMessageAsync(TcpClient client)
+        public void ReceiveMessageAsync(NetClient client)
         {
-            // Get a client's NetworkStream.
-            var netStream = client?.GetStream();
-            var data = new byte[client.ReceiveBufferSize];
+            var netStream = client.networkStream;
+            var data = new byte[1024];
+            var str = new StringBuilder();
             
             // Check if there is some data
             // is available.
-            if (netStream.DataAvailable)
+            if (client.networkStream.DataAvailable) // while
             {
                 try
                 {
-                    var bytesCount = netStream.Read(data, 0, (int)client.ReceiveBufferSize);
-                    mes = Encoding.UTF8.GetString(data, 0, bytesCount);
+                    var bytesCount = netStream.Read(data, 0, 1024);
+                    str.Append(Encoding.UTF8.GetString(data, 0, bytesCount));
                 }
                 catch (Exception)
                 {
@@ -142,11 +121,15 @@ namespace TcpIpProvider
             }
             netStream.Flush();
             netStream.Close();
-            // Create a new NetMessage
-            // and invoke the event.
-            var message = new NetMessage(mes,
-                                         timeStamp: DateTime.Now);
+
+            // Create a new NetMessage and invoke the event.
+            var message = new NetMessage(str.ToString());
             OnMessageReceived(new MessageReceivedEventArgs(client, message));
+        }
+
+        public void AddMessage(NetMessage message)
+        {
+            this.messages.Add(message);
         }
 
         /// <summary>

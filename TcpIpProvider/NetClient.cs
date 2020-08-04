@@ -2,7 +2,6 @@
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Text;
 using TcpIpProvider.ProviderEventArgs;
 
@@ -22,33 +21,30 @@ namespace TcpIpProvider
     public class NetClient
     {
         /// <summary>
-        /// Represents a TCP client
-        /// functional.
+        /// Represents a TCP client functional.
         /// </summary>
-        private TcpClient client;
+        private TcpClient tcpClient;
+        /// <summary>
+        /// Keeps current client network stream.
+        /// </summary>
+        public NetworkStream networkStream;
 
         /// <summary>
         /// Creates a TCP client without connection.
         /// </summary>
         public NetClient()
         {
-            client = new TcpClient();
+            tcpClient = new TcpClient();
         }
 
         /// <summary>
-        /// Creates a TCP client using
-        /// a host name and a port to connect.
-        /// This constructor will automatically 
-        /// attempt a connection.
+        /// Creates a NetClient from a TcpClient.
         /// </summary>
-        /// <param name="hostname">
-        /// The DNS name of the remote 
-        /// host to which you intend 
-        /// to connect.</param>
-        /// <param name="port"></param>
-        public NetClient(string hostname, int port)
+        /// <param name="client"></param>
+        public NetClient(TcpClient client)
         {
-            client = new TcpClient(hostname, port);
+            tcpClient = client;
+            networkStream = tcpClient.GetStream();
         }
 
         /// <summary>
@@ -61,7 +57,7 @@ namespace TcpIpProvider
         /// <param name="port"></param>
         public NetClient(IPAddress address, int port)
         {
-            client = new TcpClient(new IPEndPoint(address, port));
+            tcpClient = new TcpClient(new IPEndPoint(address, port));
         }
 
         /// <summary>
@@ -70,7 +66,7 @@ namespace TcpIpProvider
         public IPAddress LocalEndPointAddress
         {
             get => IPAddress.Parse(
-                ((IPEndPoint)client?.Client.LocalEndPoint)
+                ((IPEndPoint)tcpClient?.Client.LocalEndPoint)
                 .Address.ToString());
         }
         /// <summary>
@@ -78,7 +74,7 @@ namespace TcpIpProvider
         /// </summary>
         public int LocalEndPointPort
         {
-            get => ((IPEndPoint)client?.Client.LocalEndPoint)
+            get => ((IPEndPoint)tcpClient?.Client.LocalEndPoint)
                 .Port;
         }
 
@@ -109,7 +105,7 @@ namespace TcpIpProvider
         /// <param name="message"></param>
         public void SendMessage(string message)
         {
-            var netStream = client.GetStream();
+            var netStream = tcpClient.GetStream();
 
             try
             {
@@ -160,9 +156,8 @@ namespace TcpIpProvider
 
             // Create a new NetMessage
             // and invoke the event.
-            var message = new NetMessage(data.ToString(),
-                                         timeStamp: DateTime.Now);
-            OnMessageReceived(new MessageReceivedEventArgs(client, message));
+            var message = new NetMessage(data.ToString());
+            OnMessageReceived(new MessageReceivedEventArgs(new NetClient(client), message));
         }
 
         /// <summary>
@@ -173,7 +168,8 @@ namespace TcpIpProvider
         /// <param name="port"></param>
         public void Connect(string hostname, int port)
         {
-            client.Connect(hostname, port);
+            tcpClient.Connect(hostname, port);
+            networkStream = tcpClient.GetStream();
         }
 
         /// <summary>
@@ -184,7 +180,7 @@ namespace TcpIpProvider
         /// <param name="port"></param>
         public void Connect(IPAddress address, int port)
         {
-            client.Connect(address, port);
+            tcpClient.Connect(address, port);
         }
 
         /// <summary>
@@ -193,7 +189,7 @@ namespace TcpIpProvider
         /// </summary>
         public void Close()
         {
-            client.Close();
+            tcpClient.Close();
         }
         #endregion
 

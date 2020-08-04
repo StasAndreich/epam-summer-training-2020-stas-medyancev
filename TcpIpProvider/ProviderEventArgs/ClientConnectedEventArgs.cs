@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Sockets;
 
 namespace TcpIpProvider.ProviderEventArgs
 {
@@ -12,7 +11,7 @@ namespace TcpIpProvider.ProviderEventArgs
         /// Inits event args with a TcpClient.
         /// </summary>
         /// <param name="newClient"></param>
-        public ClientConnectedEventArgs(TcpClient newClient)
+        public ClientConnectedEventArgs(NetClient newClient)
         {
             this.client = newClient;
         }
@@ -20,6 +19,6 @@ namespace TcpIpProvider.ProviderEventArgs
         /// <summary>
         /// Connected client.
         /// </summary>
-        public readonly TcpClient client;
+        public readonly NetClient client;
     }
 }

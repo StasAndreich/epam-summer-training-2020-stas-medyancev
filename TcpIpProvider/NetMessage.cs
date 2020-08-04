@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TcpIpProvider
+﻿namespace TcpIpProvider
 {
     /// <summary>
     /// Defines a network message.
@@ -11,21 +9,14 @@ namespace TcpIpProvider
         /// Default ctor.
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="timeStamp"></param>
-        public NetMessage(string data, DateTime timeStamp)
+        public NetMessage(string data)
         {
             this.Data = data;
-            this.TimeStamp = timeStamp;
         }
 
         /// <summary>
         /// Message data.
         /// </summary>
         public string Data { get; }
-        /// <summary>
-        /// Message time stamp when
-        /// it has been received.
-        /// </summary>
-        public DateTime TimeStamp { get; }
     }
 }
