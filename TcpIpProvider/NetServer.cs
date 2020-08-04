@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using TcpIpProvider.ProviderEventArgs;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace TcpIpProvider
 {
@@ -11,6 +13,7 @@ namespace TcpIpProvider
     /// </summary>
     public class NetServer
     {
+        CancellationTokenSource tokenSource = new CancellationTokenSource();
         /// <summary>
         /// Main server listener.
         /// </summary>
@@ -24,7 +27,7 @@ namespace TcpIpProvider
         public NetServer(int port)
         {
             tcpListener = TcpListener.Create(port);
-            this.ClientAccepted += (sender, e) => ReceiveMessage(e.client);
+            this.ClientAccepted += (sender, e) =>ReceiveMessage(e.client);
         }
 
         /// <summary>
@@ -86,19 +89,21 @@ namespace TcpIpProvider
         public void Start(int backLogSize = 10)
         {
             tcpListener.Start(backLogSize);
-            WaitForNetClient();
+            var token = tokenSource.Token;
+            Task.Run(() 
+                => WaitForNetClient(tokenSource.Token), token);
         }
 
         /// <summary>
         /// Operation of accepting a TCP NetClient.
         /// </summary>
-        private void WaitForNetClient()
+        private void WaitForNetClient(CancellationToken token)
         { 
-            while (true)
+            while (!token.IsCancellationRequested)
             {
                 var newTcpClient = tcpListener.AcceptTcpClient();
                 var netClient = new NetClient(newTcpClient);
-                OnClientAccepted(new ClientAcceptedEventArgs(netClient));
+               OnClientAccepted(new ClientAcceptedEventArgs(netClient));
             }
         }
 
@@ -107,6 +112,7 @@ namespace TcpIpProvider
         /// </summary>
         public void Stop()
         {
+            tokenSource.Cancel();
             // Stop the server.
             tcpListener.Stop();
         }
@@ -137,7 +143,7 @@ namespace TcpIpProvider
             }
             netStream.Flush();
 
-            OnMessageReceived(new MessageReceivedEventArgs(client, message.ToString())); ;
+            OnMessageReceived(new MessageReceivedEventArgs(client, message.ToString()));
         }
 
         /// <summary>

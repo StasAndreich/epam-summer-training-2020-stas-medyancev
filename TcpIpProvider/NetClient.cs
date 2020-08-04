@@ -7,14 +7,6 @@ using TcpIpProvider.ProviderEventArgs;
 namespace TcpIpProvider
 {
     /// <summary>
-    /// Represents a delegate that refers to a method
-    /// that encodes an input string.
-    /// </summary>
-    /// <param name="inputStr"></param>
-    /// <returns></returns>
-    public delegate string ProcessString(string inputStr);// ???
-
-    /// <summary>
     /// Defines a TCP client.
     /// </summary>
     public class NetClient
@@ -131,22 +123,18 @@ namespace TcpIpProvider
             var data = new byte[ReceiveBufferSize];
             var message = new StringBuilder();
 
-            // Check if there is some data is available.
-            if (NetStream.DataAvailable)
+            try
             {
-                try
-                {
-                    var bytesCount = NetStream.Read(data, 0, ReceiveBufferSize);
-                    message.Append(Encoding.UTF8.GetString(data, 0, bytesCount));
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
+                var bytesCount = NetStream.Read(data, 0, ReceiveBufferSize);
+                message.Append(Encoding.UTF8.GetString(data, 0, bytesCount));
+            }
+            catch (Exception)
+            {
+                throw;
             }
             NetStream.Flush();
 
-            OnMessageReceived(new MessageReceivedEventArgs(this, message.ToString())); ;
+            OnMessageReceived(new MessageReceivedEventArgs(this, message.ToString()));
         }
 
         /// <summary>
