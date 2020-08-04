@@ -3,21 +3,21 @@
 namespace TcpIpProvider.ProviderEventArgs
 {
     /// <summary>
-    /// Represents args for ClientConnected event.
+    /// Represents args for ClientAccepted event.
     /// </summary>
-    public class ClientConnectedEventArgs : EventArgs
+    public class ClientAcceptedEventArgs : EventArgs
     {
         /// <summary>
-        /// Inits event args with a TcpClient.
+        /// Inits event args with a NetClient.
         /// </summary>
         /// <param name="newClient"></param>
-        public ClientConnectedEventArgs(NetClient newClient)
+        public ClientAcceptedEventArgs(NetClient newClient)
         {
             this.client = newClient;
         }
 
         /// <summary>
-        /// Connected client.
+        /// Accepted client.
         /// </summary>
         public readonly NetClient client;
     }

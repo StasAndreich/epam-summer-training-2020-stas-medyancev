@@ -3,28 +3,33 @@ using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TcpIpProvider;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace UnitTests_TcpIpProvider
 {
     [TestClass]
-    public class UnitTest1
+    public class UT_NetServer
     {
         [TestMethod]
         public void TestMethod1()
         {
             var server = new NetServer(5555);
 
-            var cTask = Task.Run(() =>
+            var clientTask = Task.Run(() =>
             {
-                server.StartServer();
+                var client = new NetClient();
+                client.Connect(IPAddress.Parse("127.0.0.1"), 5555);
+                client.SendMessage("Message");
+                client.SendMessage("Message1");
             });
 
-            var client = new NetClient();
-            client.Connect(IPAddress.Parse("127.0.0.1"), 5555);
-            client.SendMessage("Message");
-            client.Close();
-            cTask.Wait();
-            var message = new NetMessage("Message");
+            server.Start();
+            
+
+            Thread.Sleep(100);
+            server.Stop();
+
+            var message = new NetMessage("MessageMessage1");
             if (server.messages[0].Data.Equals(message.Data))
             {
                 Assert.IsTrue(true);

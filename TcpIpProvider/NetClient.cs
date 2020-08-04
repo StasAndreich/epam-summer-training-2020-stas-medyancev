@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -13,7 +12,7 @@ namespace TcpIpProvider
     /// </summary>
     /// <param name="inputStr"></param>
     /// <returns></returns>
-    public delegate string EncodeString(string inputStr);// ???
+    public delegate string ProcessString(string inputStr);// ???
 
     /// <summary>
     /// Defines a TCP client.
@@ -24,10 +23,6 @@ namespace TcpIpProvider
         /// Represents a TCP client functional.
         /// </summary>
         private TcpClient tcpClient;
-        /// <summary>
-        /// Keeps current client network stream.
-        /// </summary>
-        public NetworkStream networkStream;
 
         /// <summary>
         /// Creates a TCP client without connection.
@@ -44,7 +39,6 @@ namespace TcpIpProvider
         public NetClient(TcpClient client)
         {
             tcpClient = client;
-            networkStream = tcpClient.GetStream();
         }
 
         /// <summary>
@@ -77,11 +71,22 @@ namespace TcpIpProvider
             get => ((IPEndPoint)tcpClient?.Client.LocalEndPoint)
                 .Port;
         }
+        /// <summary>
+        /// Gets a buffer size of a client.
+        /// </summary>
+        public int ReceiveBufferSize { get => tcpClient.ReceiveBufferSize; }
+        /// <summary>
+        /// Gets a current client network stream.
+        /// </summary>
+        public NetworkStream NetStream
+        {
+            get => tcpClient.GetStream();
+        }
 
 
         #region Client Events
         /// <summary>
-        /// Triggers when some message comes to a client.
+        /// Triggers when some message comes from a server.
         /// </summary>
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
         /// <summary>
@@ -105,59 +110,43 @@ namespace TcpIpProvider
         /// <param name="message"></param>
         public void SendMessage(string message)
         {
-            var netStream = tcpClient.GetStream();
-
             try
             {
                 var data = Encoding.UTF8.GetBytes(message);
-                netStream.Write(data, 0, data.Length);
+                NetStream.Write(data, 0, data.Length);
             }
             catch (Exception)
             {
                 throw;
             }
-            netStream.Flush();
-            netStream.Close();
+            NetStream.Flush();
         }
 
         /// <summary>
         /// Reads a received message.
         /// </summary>
-        /// <param name="client"></param>
         /// <returns></returns>
-        public void ReadMessage(TcpClient client)
+        public void ReceiveMessage()
         {
-            // Get a server's NetworkStream.
-            var netStream = client.GetStream();
-            var data = new StringBuilder();
+            var data = new byte[ReceiveBufferSize];
+            var message = new StringBuilder();
 
-            // Check if there is some data
-            // available.
-            if (netStream.DataAvailable)
+            // Check if there is some data is available.
+            if (NetStream.DataAvailable)
             {
-                BinaryReader reader = null;
                 try
                 {
-                    // Try to read data.
-                    using (reader = new BinaryReader(netStream, Encoding.UTF8))
-                    {
-                        data.Append(reader.ReadString());
-                    }
+                    var bytesCount = NetStream.Read(data, 0, ReceiveBufferSize);
+                    message.Append(Encoding.UTF8.GetString(data, 0, bytesCount));
                 }
                 catch (Exception)
                 {
                     throw;
                 }
-                finally
-                {
-                    reader?.Dispose();
-                }
             }
+            NetStream.Flush();
 
-            // Create a new NetMessage
-            // and invoke the event.
-            var message = new NetMessage(data.ToString());
-            OnMessageReceived(new MessageReceivedEventArgs(new NetClient(client), message));
+            OnMessageReceived(new MessageReceivedEventArgs(this, message.ToString())); ;
         }
 
         /// <summary>
@@ -169,7 +158,6 @@ namespace TcpIpProvider
         public void Connect(string hostname, int port)
         {
             tcpClient.Connect(hostname, port);
-            networkStream = tcpClient.GetStream();
         }
 
         /// <summary>

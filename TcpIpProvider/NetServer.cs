@@ -1,24 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using TcpIpProvider.ProviderEventArgs;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TcpIpProvider
 {
     /// <summary>
     /// Defines a simple TCP\IP server.
     /// </summary>
-    public class NetServer //: IDisposable
+    public class NetServer
     {
         /// <summary>
         /// Main server listener.
         /// </summary>
         private TcpListener tcpListener;
-        public List<NetMessage> messages = new List<NetMessage>();
 
         /// <summary>
         /// Inits a TCP server listening to any
@@ -28,8 +24,7 @@ namespace TcpIpProvider
         public NetServer(int port)
         {
             tcpListener = TcpListener.Create(port);
-            this.MessageReceived += (sender, e) => AddMessage(e.message);
-            tcpListener.Start(10);
+            this.ClientAccepted += (sender, e) => ReceiveMessage(e.client);
         }
 
         /// <summary>
@@ -52,7 +47,7 @@ namespace TcpIpProvider
         /// <summary>
         /// Triggers when some message received by a server.
         /// </summary>
-        internal event EventHandler<MessageReceivedEventArgs> MessageReceived;
+        public event EventHandler<MessageReceivedEventArgs> MessageReceived;
         /// <summary>
         /// Method that invokes a MessageReceived event
         /// with MessageReceivedEventArgs.
@@ -61,6 +56,21 @@ namespace TcpIpProvider
         protected virtual void OnMessageReceived(MessageReceivedEventArgs e)
         {
             var handler = MessageReceived;
+            handler?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Triggers when a new client accepted to a server.
+        /// </summary>
+        public event EventHandler<ClientAcceptedEventArgs> ClientAccepted;
+        /// <summary>
+        /// Method that invokes a ClientConnected event
+        /// with ClientConnectedEventArgs.
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnClientAccepted(ClientAcceptedEventArgs e)
+        {
+            var handler = ClientAccepted;
             handler?.Invoke(this, e);
         }
         #endregion
@@ -73,23 +83,27 @@ namespace TcpIpProvider
         /// (Default backlog = 10).
         /// </summary>
         /// <param name="backLogSize"></param>
-        public void StartServer(int backLogSize = 10)
+        public void Start(int backLogSize = 10)
         {
+            tcpListener.Start(backLogSize);
+            WaitForNetClient();
+        }
 
-            bool i = true;
-            while (i)
+        /// <summary>
+        /// Operation of accepting a TCP NetClient.
+        /// </summary>
+        private void WaitForNetClient()
+        { 
+            while (true)
             {
                 var newTcpClient = tcpListener.AcceptTcpClient();
                 var netClient = new NetClient(newTcpClient);
-                var process = Task.Run(() => ReceiveMessageAsync(netClient));
-                process.Wait();
-                i = false;
+                OnClientAccepted(new ClientAcceptedEventArgs(netClient));
             }
         }
 
         /// <summary>
-        /// Closes the server and
-        /// disconnects all clients.
+        /// Stops the server.
         /// </summary>
         public void Stop()
         {
@@ -101,20 +115,20 @@ namespace TcpIpProvider
         /// Reads a received message.
         /// </summary>
         /// <returns></returns>
-        public void ReceiveMessageAsync(NetClient client)
+        public void ReceiveMessage(NetClient client)
         {
-            var netStream = client.networkStream;
-            var data = new byte[1024];
-            var str = new StringBuilder();
-            
-            // Check if there is some data
-            // is available.
-            if (client.networkStream.DataAvailable) // while
+            var netStream = client.NetStream;
+            var data = new byte[client.ReceiveBufferSize];
+            var message = new StringBuilder();
+
+            // Check if there is some data is available.
+            if (netStream.DataAvailable)
             {
                 try
                 {
-                    var bytesCount = netStream.Read(data, 0, 1024);
-                    str.Append(Encoding.UTF8.GetString(data, 0, bytesCount));
+                    var bytesCount = netStream.Read(data, 0,
+                        client.ReceiveBufferSize);
+                    message.Append(Encoding.UTF8.GetString(data, 0, bytesCount));
                 }
                 catch (Exception)
                 {
@@ -122,16 +136,8 @@ namespace TcpIpProvider
                 }
             }
             netStream.Flush();
-            netStream.Close();
 
-            // Create a new NetMessage and invoke the event.
-            var message = new NetMessage(str.ToString());
-            OnMessageReceived(new MessageReceivedEventArgs(client, message));
-        }
-
-        public void AddMessage(NetMessage message)
-        {
-            this.messages.Add(message);
+            OnMessageReceived(new MessageReceivedEventArgs(client, message.ToString())); ;
         }
 
         /// <summary>
@@ -142,7 +148,7 @@ namespace TcpIpProvider
         /// <param name="message"></param>
         public void SendMessage(NetClient client, string message)
         {
-            var netStream = client?.networkStream;
+            var netStream = client?.NetStream;
 
             try
             {
@@ -154,27 +160,6 @@ namespace TcpIpProvider
                 throw;
             }
             netStream.Flush();
-            netStream.Close();
-        }
-
-        /// <summary>
-        /// Subscribes a handler method to
-        /// MessageReceived event.
-        /// </summary>
-        /// <param name="handler"></param>
-        public void SubscribeToMessageReceived(EventHandler<MessageReceivedEventArgs> handler)
-        {
-            this.MessageReceived += handler;
-        }
-
-        /// <summary>
-        /// Unsubscribes a handler method from
-        /// MessageReceived event.
-        /// </summary>
-        /// <param name="handler"></param>
-        public void UnsubscribeFromMessageReceived(EventHandler<MessageReceivedEventArgs> handler)
-        {
-            this.MessageReceived -= handler;
         }
         #endregion
 

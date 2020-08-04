@@ -10,8 +10,8 @@ namespace ServerServices
     /// </summary>
     public class MessagesHistory
     {
-        private Dictionary<NetClient, List<NetMessage>> messages =
-            new Dictionary<NetClient, List<NetMessage>>();
+        private Dictionary<NetClient, List<string>> messages =
+            new Dictionary<NetClient, List<string>>();
 
         /// <summary>
         /// Ctor that creates a history
@@ -20,8 +20,8 @@ namespace ServerServices
         /// <param name="server"></param>
         public MessagesHistory(NetServer server)
         {
-            server?.SubscribeToMessageReceived(
-                (sender, e) => Add(e.client, e.message));
+            server.MessageReceived += 
+                (sender, e) => Add(e.client, e.message);
         }
 
         /// <summary>
@@ -29,19 +29,19 @@ namespace ServerServices
         /// </summary>
         /// <param name="client"></param>
         /// <param name="message"></param>
-        public void Add(NetClient client, NetMessage message)
+        public void Add(NetClient client, string message)
         {
             if (!messages.ContainsKey(client))
             {
                 // Add new Key - Value pair.
-                var newList = new List<NetMessage>();
+                var newList = new List<string>();
                 newList.Add(message);
                 messages.Add(client, newList);
             }
             else
             {
                 // Add new message to existing client.
-                messages.TryGetValue(client, out List<NetMessage> list);
+                messages.TryGetValue(client, out List<string> list);
                 list.Add(message);
             }
         }
@@ -61,11 +61,11 @@ namespace ServerServices
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public List<NetMessage> this[NetClient client]
+        public List<string> this[NetClient client]
         {
             get
             {
-                if (messages.TryGetValue(client, out List<NetMessage> list))
+                if (messages.TryGetValue(client, out List<string> list))
                     return list;
                 else
                     return null;

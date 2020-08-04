@@ -13,8 +13,7 @@ namespace TcpIpProvider.ProviderEventArgs
         /// </summary>
         /// <param name="client"></param>
         /// <param name="message"></param>
-        public MessageReceivedEventArgs(NetClient client,
-                                        NetMessage message)
+        public MessageReceivedEventArgs(NetClient client, string message)
         {
             this.client = client;
             this.message = message;
@@ -26,8 +25,8 @@ namespace TcpIpProvider.ProviderEventArgs
         /// </summary>
         public readonly NetClient client;
         /// <summary>
-        /// Stores a message itself.
+        /// Client message.
         /// </summary>
-        public readonly NetMessage message;
+        public readonly string message;
     }
 }
