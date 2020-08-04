@@ -35,11 +35,8 @@ namespace UnitTests_TcpIpProvider
             });
 
             // Start the server.
-            //var serverTask = Task.Run(() => server.Start(), token);
             server.Start();
-
             clientTask.Wait();
-            //tokenSource.Cancel();
             server.Stop();
 
             if (receivedMessage.Equals(messageForSending))

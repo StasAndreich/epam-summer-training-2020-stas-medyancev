@@ -57,6 +57,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ServerServices\ServerServices.csproj">
+      <Project>{000b3a11-e298-40ed-8451-f4b9197020ae}</Project>
+      <Name>ServerServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TcpIpProvider\TcpIpProvider.csproj">
       <Project>{7c7441a4-47f7-48f0-a7b6-4ae31e6d4813}</Project>
       <Name>TcpIpProvider</Name>
