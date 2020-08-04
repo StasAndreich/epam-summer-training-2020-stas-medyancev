@@ -23,7 +23,7 @@ namespace UnitTests_TcpIpProvider
             client.Connect(IPAddress.Parse("127.0.0.1"), 5555);
             client.SendMessage("Message");
             client.Close();
-
+            cTask.Wait();
             var message = new NetMessage("Message");
             if (server.messages[0].Data.Equals(message.Data))
             {

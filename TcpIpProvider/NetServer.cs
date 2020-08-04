@@ -52,7 +52,7 @@ namespace TcpIpProvider
         /// <summary>
         /// Triggers when some message received by a server.
         /// </summary>
-        public event EventHandler<MessageReceivedEventArgs> MessageReceived;
+        internal event EventHandler<MessageReceivedEventArgs> MessageReceived;
         /// <summary>
         /// Method that invokes a MessageReceived event
         /// with MessageReceivedEventArgs.
@@ -75,13 +75,15 @@ namespace TcpIpProvider
         /// <param name="backLogSize"></param>
         public void StartServer(int backLogSize = 10)
         {
-            
-            
-            while (true)
+
+            bool i = true;
+            while (i)
             {
                 var newTcpClient = tcpListener.AcceptTcpClient();
                 var netClient = new NetClient(newTcpClient);
                 var process = Task.Run(() => ReceiveMessageAsync(netClient));
+                process.Wait();
+                i = false;
             }
         }
 
@@ -138,38 +140,79 @@ namespace TcpIpProvider
         /// </summary>
         /// <param name="client"></param>
         /// <param name="message"></param>
-        public void SendMessage(TcpClient client, string message)
+        public void SendMessage(NetClient client, string message)
         {
-            var netStream = client?.GetStream();
+            var netStream = client?.networkStream;
 
-            BinaryWriter writer = null;
             try
             {
-                // Try to write data.
-                using (writer = new BinaryWriter(netStream, Encoding.UTF8))
-                {
-                    writer.Write(message);
-                }
+                var data = Encoding.UTF8.GetBytes(message);
+                netStream.Write(data, 0, data.Length);
             }
             catch (Exception)
             {
                 throw;
             }
-            finally
-            {
-                writer?.Dispose();
-            }
+            netStream.Flush();
+            netStream.Close();
         }
 
         /// <summary>
-        /// Subscribes a handler on when some
-        /// message received by a server.
+        /// Subscribes a handler method to
+        /// MessageReceived event.
         /// </summary>
         /// <param name="handler"></param>
-        public void SubscribeToReceivedMessages(EventHandler<MessageReceivedEventArgs> handler)
+        public void SubscribeToMessageReceived(EventHandler<MessageReceivedEventArgs> handler)
         {
             this.MessageReceived += handler;
         }
+
+        /// <summary>
+        /// Unsubscribes a handler method from
+        /// MessageReceived event.
+        /// </summary>
+        /// <param name="handler"></param>
+        public void UnsubscribeFromMessageReceived(EventHandler<MessageReceivedEventArgs> handler)
+        {
+            this.MessageReceived -= handler;
+        }
         #endregion
+
+
+        /// <summary>
+        /// Check the equality of this server
+        /// instance and other object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !(this.GetType().Equals(obj.GetType())))
+                return false;
+
+            var server = (NetServer)obj;
+
+            return this.tcpListener.Equals(server.tcpListener);
+        }
+
+        /// <summary>
+        /// Returns a hash-code for a server obj.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return tcpListener.GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns a formatted string filled with
+        /// server data.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Server: {LocalAddress}:{Port}";
+        }
     }
 }

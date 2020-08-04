@@ -63,7 +63,7 @@ namespace TcpIpProvider
         /// <summary>
         /// Local endpoint IP address.
         /// </summary>
-        public IPAddress LocalEndPointAddress
+        public IPAddress LocalAddress
         {
             get => IPAddress.Parse(
                 ((IPEndPoint)tcpClient?.Client.LocalEndPoint)
@@ -72,7 +72,7 @@ namespace TcpIpProvider
         /// <summary>
         /// Local endpoint port.
         /// </summary>
-        public int LocalEndPointPort
+        public int LocalPort
         {
             get => ((IPEndPoint)tcpClient?.Client.LocalEndPoint)
                 .Port;
@@ -194,9 +194,40 @@ namespace TcpIpProvider
         #endregion
 
 
+        /// <summary>
+        /// Check the equality of this client
+        /// instance and other object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !(this.GetType().Equals(obj.GetType())))
+                return false;
+
+            var client = (NetClient)obj;
+
+            return this.tcpClient.Equals(client.tcpClient);
+        }
+
+        /// <summary>
+        /// Returns a hash-code for a NetClient object.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return tcpClient.GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns a formatted string filled with
+        /// NetClient data.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Client: {LocalAddress}:{LocalPort}";
         }
     }
 }
