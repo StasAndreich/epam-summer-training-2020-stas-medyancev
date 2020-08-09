@@ -6,7 +6,8 @@ namespace BinaryTree
     /// Defines a generic binary tree node.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BinaryTreeNode<T> where T : IComparable
+    public class BinaryTreeNode<T> 
+        where T : IComparable, IComparable<T>
     {
         /// <summary>
         /// Default ctor that inits a tree node.
