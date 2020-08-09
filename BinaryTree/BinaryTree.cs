@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace BinaryTree
 {
@@ -8,7 +6,7 @@ namespace BinaryTree
     /// Defines a generic binary tree.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BinaryTree<T> : ICollection, ICollection<T>
+    public class BinaryTree<T>
         where T : IComparable, IComparable<T>
     {
         /// <summary>
@@ -17,56 +15,127 @@ namespace BinaryTree
         public BinaryTreeNode<T> RootNode { get; set; }
 
         /// <summary>
-        /// Adds data into the binary-tree.
+        /// Adds a node into a tree.
         /// </summary>
+        /// <param name="node"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public BinaryTreeNode<T> Add(T data)
+        public BinaryTreeNode<T> Add(BinaryTreeNode<T> node, T data)
         {
-            return Add(new BinaryTreeNode<T>(data));
+            if (node != null) return new BinaryTreeNode<T>(data);
+            if (data.CompareTo(node.Data) <= -1)
+                node.LeftNode = Add(node.LeftNode, data);
+            else
+                node.RightNode = Add(node.RightNode, data);
+
+            return node.Balance();
         }
 
         /// <summary>
-        /// Adds a new node to the binary-tree.
+        /// Finds the minimum node in a specific subtree.
         /// </summary>
-        /// <param name="node"></param>
-        /// <param name="currentNode"></param>
+        /// <param name="subtreeRoot"></param>
         /// <returns></returns>
-        public BinaryTreeNode<T> Add(BinaryTreeNode<T> node, BinaryTreeNode<T> currentNode = null)
+        public BinaryTreeNode<T> FindMinNode(BinaryTreeNode<T> subtreeRoot)
         {
-            if (RootNode == null)
-            {
-                node.ParentNode = null;
-                return RootNode = node;
-            }
+            return (subtreeRoot.LeftNode != null) 
+                ? FindMinNode(subtreeRoot.LeftNode) 
+                : subtreeRoot;
+        }
 
-            // Current node (from which we start) here is 
-            // a potential pointer to THIS node as a parent.
-            currentNode = currentNode ?? RootNode;
-            node.ParentNode = currentNode;
+        private BinaryTreeNode<T> RemoveMinNode(BinaryTreeNode<T> node)
+        {
+            if (node.LeftNode == null)
+                return node.RightNode;
 
-            var result = node.Data.CompareTo(currentNode.Data);
-            if (result == 0)
-            {
-                return currentNode;
-            }
+            node.LeftNode = RemoveMinNode(node.LeftNode);
+            return node.Balance();
+        }
+
+        /// <summary>
+        /// Removes a node with specified data from
+        /// a parameter subtree.
+        /// </summary>
+        /// <param name="subtreeRoot"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public BinaryTreeNode<T> Remove(BinaryTreeNode<T> subtreeRoot, T data)
+        {
+            if (subtreeRoot == null) return null;
+
+            if (data.CompareTo(subtreeRoot.Data) <= -1)
+                subtreeRoot.LeftNode = Remove(subtreeRoot.LeftNode, data);
+            else if (data.CompareTo(subtreeRoot.Data) >= 1)
+                subtreeRoot.RightNode = Remove(subtreeRoot.RightNode, data);
+            // Data equality. 
             else
             {
-                if (result < 0)
-                {
-                    if (currentNode.LeftNode == null)
-                        return currentNode.LeftNode = node;
-                    else
-                        return Add(node, currentNode.LeftNode);
-                }
-                else
-                {
-                    if (currentNode.RightNode == null)
-                        return currentNode.RightNode = node;
-                    else
-                        return Add(node, currentNode.RightNode);
-                }
+                var left = subtreeRoot.LeftNode;
+                var right = subtreeRoot.RightNode;
+                // Null to subtree.
+                subtreeRoot = null;
+
+                if (right == null) return right;
+                var min = FindMinNode(right);
+                min.RightNode = RemoveMinNode(right);
+                min.LeftNode = left;
+                return min.Balance();
             }
+
+            return subtreeRoot.Balance();
         }
+
+        ///// <summary>
+        ///// Adds data into the binary-tree.
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <returns></returns>
+        //public BinaryTreeNode<T> Add(T data)
+        //{
+        //    return Add(new BinaryTreeNode<T>(data));
+        //}
+
+        ///// <summary>
+        ///// Adds a new node to the binary-tree.
+        ///// </summary>
+        ///// <param name="node"></param>
+        ///// <param name="currentNode"></param>
+        ///// <returns></returns>
+        //public BinaryTreeNode<T> Add(BinaryTreeNode<T> node, BinaryTreeNode<T> currentNode = null)
+        //{
+        //    if (RootNode == null)
+        //    {
+        //        node.ParentNode = null;
+        //        return RootNode = node;
+        //    }
+
+        //    // Current node (from which we start) here is 
+        //    // a potential pointer to THIS node as a parent.
+        //    currentNode = currentNode ?? RootNode;
+        //    node.ParentNode = currentNode;
+
+        //    var result = node.Data.CompareTo(currentNode.Data);
+        //    if (result == 0)
+        //    {
+        //        return currentNode;
+        //    }
+        //    else
+        //    {
+        //        if (result < 0)
+        //        {
+        //            if (currentNode.LeftNode == null)
+        //                return currentNode.LeftNode = node;
+        //            else
+        //                return Add(node, currentNode.LeftNode);
+        //        }
+        //        else
+        //        {
+        //            if (currentNode.RightNode == null)
+        //                return currentNode.RightNode = node;
+        //            else
+        //                return Add(node, currentNode.RightNode);
+        //        }
+        //    }
+        //}
     }
 }
