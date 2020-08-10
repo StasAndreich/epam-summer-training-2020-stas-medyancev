@@ -6,6 +6,7 @@ namespace BinaryTree
     /// Defines a generic binary tree.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [Serializable]
     public class BinaryTree<T>
         where T : IComparable, IComparable<T>
     {
@@ -15,20 +16,36 @@ namespace BinaryTree
         public BinaryTreeNode<T> RootNode { get; set; }
 
         /// <summary>
-        /// Adds a node into a tree.
+        /// Adds a node into a specific subtree.
         /// </summary>
         /// <param name="node"></param>
         /// <param name="data"></param>
         /// <returns></returns>
         public BinaryTreeNode<T> Add(BinaryTreeNode<T> node, T data)
         {
-            if (node != null) return new BinaryTreeNode<T>(data);
+            if (RootNode == null)
+                return RootNode = node;
+
+            ////if (node != null) return new BinaryTreeNode<T>(data);
             if (data.CompareTo(node.Data) <= -1)
                 node.LeftNode = Add(node.LeftNode, data);
             else
                 node.RightNode = Add(node.RightNode, data);
 
             return node.Balance();
+        }
+
+        /// <summary>
+        /// Adds data to a whole binary tree (from the root).
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public BinaryTreeNode<T> Add(T data)
+        {
+            if (RootNode != null)
+                return Add(RootNode, data);
+            else
+                return Add(new BinaryTreeNode<T>(data), data);
         }
 
         /// <summary>

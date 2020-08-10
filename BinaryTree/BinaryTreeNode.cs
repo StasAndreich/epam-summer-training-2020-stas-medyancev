@@ -6,6 +6,7 @@ namespace BinaryTree
     /// Defines a generic binary tree node.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [Serializable]
     public class BinaryTreeNode<T> 
         where T : IComparable, IComparable<T>
     {
@@ -20,14 +21,19 @@ namespace BinaryTree
         }
 
         /// <summary>
-        /// Subtree height.
+        /// Node's subtree height.
         /// </summary>
         private int height;
+        private T data;
 
         /// <summary>
         /// Node's data.
         /// </summary>
-        public T Data { get; set; }
+        public T Data 
+        { 
+            get => data; 
+            set => data = value; 
+        }
         /// <summary>
         /// Reference to a left node.
         /// </summary>
@@ -36,40 +42,40 @@ namespace BinaryTree
         /// Reference to a right node.
         /// </summary>
         public BinaryTreeNode<T> RightNode { get; set; }
-        /// <summary>
-        /// Reference to a parent node.
-        /// </summary>
-        public BinaryTreeNode<T> ParentNode { get; set; }
+
+        ///// <summary>
+        ///// Reference to a parent node.
+        ///// </summary>
+        //public BinaryTreeNode<T> ParentNode { get; set; }
+
         /// <summary>
         /// Balancing factor for the current node.
         /// </summary>
         public int BalanceFactor
         {
-            get
-            {
-                return RightNode.height - LeftNode.height;
-            }
+            get => RightNode.height - LeftNode.height;
         }
-        /// <summary>
-        /// Returns the location of a node relatively to the parent node.
-        /// </summary>
-        public Side? NodeSide
-        {
-            get
-            {
-                if (ParentNode == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    if (ParentNode.LeftNode == this)
-                        return Side.Left;
-                    else
-                        return Side.Right;
-                }
-            }
-        }
+
+        ///// <summary>
+        ///// Returns the location of a node relatively to the parent node.
+        ///// </summary>
+        //public Side? NodeSide
+        //{
+        //    get
+        //    {
+        //        if (ParentNode == null)
+        //        {
+        //            return null;
+        //        }
+        //        else
+        //        {
+        //            if (ParentNode.LeftNode == this)
+        //                return Side.Left;
+        //            else
+        //                return Side.Right;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Recalculates the height for the current node.
@@ -139,6 +145,7 @@ namespace BinaryTree
             return tmpNode;
         }
 
+        #region Overrides
         /// <summary>
         /// Returns a result of ToString() of the node data.
         /// </summary>
@@ -169,6 +176,7 @@ namespace BinaryTree
         public override int GetHashCode()
         {
             return Data.GetHashCode();
-        }
+        } 
+        #endregion
     }
 }

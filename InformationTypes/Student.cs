@@ -1,18 +1,43 @@
-﻿namespace InformationTypes
+﻿using System;
+
+namespace InformationTypes
 {
     /// <summary>
     /// Defines a student.
     /// </summary>
+    [Serializable]
     public class Student
     {
         /// <summary>
+        /// Inits a student.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="surname"></param>
+        public Student(string name, string surname)
+        {
+            Name = name;
+            Surname = surname;
+        }
+
+        private string name;
+        private string surname;
+
+        /// <summary>
         /// Student name.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get => name;
+            set => name = value;
+        }
         /// <summary>
         /// Student surname.
         /// </summary>
-        public string Surname { get; set; }
+        public string Surname
+        {
+            get => surname;
+            set => surname = value;
+        }
 
         /// <summary>
         /// Check the equality of this student

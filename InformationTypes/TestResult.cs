@@ -5,24 +5,67 @@ namespace InformationTypes
     /// <summary>
     /// Defines a student test results class.
     /// </summary>
+    [Serializable]
     public class TestResult : IComparable<TestResult>
     {
         /// <summary>
+        /// Inits a test result.
+        /// </summary>
+        /// <param name="testName"></param>
+        /// <param name="student"></param>
+        /// <param name="date"></param>
+        /// <param name="mark"></param>
+        public TestResult(string testName, Student student,
+            DateTime date, int mark)
+        {
+            Student = student;
+            TestName = testName;
+            Date = date;
+            Mark = mark;
+        }
+
+        private Student student;
+        private string testName;
+        private DateTime date;
+        private int mark;
+
+        /// <summary>
         /// Student.
         /// </summary>
-        public Student Student { get; set; }
+        public Student Student
+        {
+            get => student; 
+            set => student = value; 
+        }
         /// <summary>
         /// Test name.
         /// </summary>
-        public string TestName { get; set; }
+        public string TestName
+        {
+            get => testName;
+            set => testName = value;
+        }
         /// <summary>
         /// Pass date.
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTime Date
+        {
+            get => date;
+            set => date = value;
+        }
         /// <summary>
         /// Test mark.
         /// </summary>
-        public int Mark { get; set; }
+        public int Mark
+        {
+            get => mark;
+            set
+            {
+                if (value >= 0 && value <= 10)
+                    mark = value;
+                throw new ApplicationException("Mark must be in range [0; 10].");
+            }
+        }
 
         /// <summary>
         /// Compares one object to another.
