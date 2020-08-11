@@ -81,8 +81,12 @@ namespace InformationTypes
             if (this.Equals(obj)) return 0;
 
             // Compare test names.
-            if (!this.TestName.Equals(obj.TestName))
-                return this.TestName.CompareTo(obj.TestName);
+            if (!this.TestName.ToUpper()
+                .Equals(obj.TestName.ToUpper()))
+            {
+                return this.TestName.ToUpper()
+                    .CompareTo(obj.TestName.ToUpper());
+            }
             // Compare tests by pass date.
             if (!this.Date.Equals(obj.Date))
                 return this.Date.CompareTo(obj.Date);

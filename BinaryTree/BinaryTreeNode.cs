@@ -8,8 +8,13 @@ namespace BinaryTree
     /// <typeparam name="T"></typeparam>
     [Serializable]
     public class BinaryTreeNode<T> 
-        where T : IComparable, IComparable<T>
+        where T : IComparable<T>
     {
+        /// <summary>
+        /// Parameterless ctor.
+        /// </summary>
+        public BinaryTreeNode() { }
+
         /// <summary>
         /// Default ctor that inits a tree node.
         /// </summary>
@@ -42,12 +47,6 @@ namespace BinaryTree
         /// Reference to a right node.
         /// </summary>
         public BinaryTreeNode<T> RightNode { get; set; }
-
-        ///// <summary>
-        ///// Reference to a parent node.
-        ///// </summary>
-        //public BinaryTreeNode<T> ParentNode { get; set; }
-
         /// <summary>
         /// Balancing factor for the current node.
         /// </summary>
@@ -67,27 +66,6 @@ namespace BinaryTree
                 return hRight - hLeft;
             }
         }
-
-        ///// <summary>
-        ///// Returns the location of a node relatively to the parent node.
-        ///// </summary>
-        //public Side? NodeSide
-        //{
-        //    get
-        //    {
-        //        if (ParentNode == null)
-        //        {
-        //            return null;
-        //        }
-        //        else
-        //        {
-        //            if (ParentNode.LeftNode == this)
-        //                return Side.Left;
-        //            else
-        //                return Side.Right;
-        //        }
-        //    }
-        //}
 
         /// <summary>
         /// Recalculates the height for the current node.

@@ -1,21 +1,23 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
 namespace BinaryTree
 {
     /// <summary>
-    /// Defines a generic binary tree.
+    /// Defines a generic self-balancing binary tree.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public class BinaryTree<T>
-        where T : IComparable, IComparable<T>
+    public class BinaryTree<T> : IEnumerable<T>
+        where T : IComparable<T>
     {
         /// <summary>
         /// Reference to a root node of the binary-tree.
         /// </summary>
-        public BinaryTreeNode<T> RootNode;
+        public BinaryTreeNode<T> rootNode;
 
         /// <summary>
         /// Adds a node into a specific subtree.
@@ -44,11 +46,11 @@ namespace BinaryTree
         public BinaryTreeNode<T> Add(T data)
         {
             // If the root exists.
-            if (RootNode != null)
-                return Add(RootNode, data);
+            if (rootNode != null)
+                return Add(rootNode, data);
             // If the root is null.
             else
-                return RootNode = new BinaryTreeNode<T>(data);
+                return rootNode = new BinaryTreeNode<T>(data);
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace BinaryTree
         /// </summary>
         /// <param name="subtreeRoot"></param>
         /// <returns></returns>
-        public BinaryTreeNode<T> FindMinNode(BinaryTreeNode<T> subtreeRoot)
+        public static BinaryTreeNode<T> FindMinNode(BinaryTreeNode<T> subtreeRoot)
         {
             return (subtreeRoot.LeftNode != null) 
                 ? FindMinNode(subtreeRoot.LeftNode) 
@@ -74,20 +76,20 @@ namespace BinaryTree
 
         /// <summary>
         /// Removes a node with specified data from
-        /// a parameter subtree.
+        /// a parameter subtree. No exceptions occured.
         /// </summary>
         /// <param name="subtreeRoot"></param>
         /// <param name="data"></param>
-        /// <returns></returns>
-        public BinaryTreeNode<T> Remove(BinaryTreeNode<T> subtreeRoot, T data)
+        /// <returns>Tree without removed node.</returns>
+        public BinaryTreeNode<T> TryRemove(BinaryTreeNode<T> subtreeRoot, T data)
         {
             if (subtreeRoot == null) return null;
 
             if (data.CompareTo(subtreeRoot.Data) <= -1)
-                subtreeRoot.LeftNode = Remove(subtreeRoot.LeftNode, data);
+                subtreeRoot.LeftNode = TryRemove(subtreeRoot.LeftNode, data);
             else if (data.CompareTo(subtreeRoot.Data) >= 1)
-                subtreeRoot.RightNode = Remove(subtreeRoot.RightNode, data);
-            // Data equality. 
+                subtreeRoot.RightNode = TryRemove(subtreeRoot.RightNode, data);
+            // In case of data equality. 
             else
             {
                 var left = subtreeRoot.LeftNode;
@@ -103,6 +105,15 @@ namespace BinaryTree
             }
 
             return subtreeRoot.Balance();
+        }
+
+        /// <summary>
+        /// Removes a node from a tree.
+        /// </summary>
+        /// <param name="data"></param>
+        public void Remove(T data)
+        {
+            rootNode = TryRemove(rootNode, data);
         }
 
         /// <summary>
@@ -143,57 +154,26 @@ namespace BinaryTree
             throw new FileNotFoundException("File does not exist.");
         }
 
-        ///// <summary>
-        ///// Adds data into the binary-tree.
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <returns></returns>
-        //public BinaryTreeNode<T> Add(T data)
-        //{
-        //    return Add(new BinaryTreeNode<T>(data));
-        //}
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<T> GetEnumerator()
+        {
+            var iterator = new BinaryTreeIterator<T>(rootNode);
+            while(iterator.MoveNext())
+            {
+                yield return iterator.Current; 
+            }
+        }
 
-        ///// <summary>
-        ///// Adds a new node to the binary-tree.
-        ///// </summary>
-        ///// <param name="node"></param>
-        ///// <param name="currentNode"></param>
-        ///// <returns></returns>
-        //public BinaryTreeNode<T> Add(BinaryTreeNode<T> node, BinaryTreeNode<T> currentNode = null)
-        //{
-        //    if (RootNode == null)
-        //    {
-        //        node.ParentNode = null;
-        //        return RootNode = node;
-        //    }
-
-        //    // Current node (from which we start) here is 
-        //    // a potential pointer to THIS node as a parent.
-        //    currentNode = currentNode ?? RootNode;
-        //    node.ParentNode = currentNode;
-
-        //    var result = node.Data.CompareTo(currentNode.Data);
-        //    if (result == 0)
-        //    {
-        //        return currentNode;
-        //    }
-        //    else
-        //    {
-        //        if (result < 0)
-        //        {
-        //            if (currentNode.LeftNode == null)
-        //                return currentNode.LeftNode = node;
-        //            else
-        //                return Add(node, currentNode.LeftNode);
-        //        }
-        //        else
-        //        {
-        //            if (currentNode.RightNode == null)
-        //                return currentNode.RightNode = node;
-        //            else
-        //                return Add(node, currentNode.RightNode);
-        //        }
-        //    }
-        //}
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            var iterator = new BinaryTreeIterator<T>(rootNode);
+            while (iterator.MoveNext())
+            {
+                yield return iterator.Current;
+            }
+        }
     }
 }

@@ -53,8 +53,8 @@ namespace InformationTypes
 
             var student = (Student)obj;
 
-            return this.Name.Equals(student.Name)
-                && this.Surname.Equals(student.Surname);
+            return this.Name.ToUpper().Equals(student.Name.ToUpper())
+                && this.Surname.ToUpper().Equals(student.Surname.ToUpper());
         }
 
         /// <summary>
