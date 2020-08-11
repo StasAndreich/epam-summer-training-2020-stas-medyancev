@@ -9,6 +9,11 @@ namespace InformationTypes
     public class TestResult : IComparable<TestResult>
     {
         /// <summary>
+        /// Parameterless ctor.
+        /// </summary>
+        public TestResult() { }
+
+        /// <summary>
         /// Inits a test result.
         /// </summary>
         /// <param name="testName"></param>
@@ -63,7 +68,8 @@ namespace InformationTypes
             {
                 if (value >= 0 && value <= 10)
                     mark = value;
-                throw new ApplicationException("Mark must be in range [0; 10].");
+                else
+                    throw new ApplicationException("Mark must be in range [0; 10].");
             }
         }
 

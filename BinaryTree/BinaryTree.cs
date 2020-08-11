@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace BinaryTree
@@ -11,13 +12,27 @@ namespace BinaryTree
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public class BinaryTree<T> : IEnumerable<T>
+    public class BinaryTree<T>
         where T : IComparable<T>
     {
         /// <summary>
         /// Reference to a root node of the binary-tree.
         /// </summary>
         public BinaryTreeNode<T> rootNode;
+
+        /// <summary>
+        /// Returns binary tree nodes count.
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                var i = 0;
+                foreach (var node in this)
+                    i++;
+                return i;
+            }
+        }
 
         /// <summary>
         /// Adds a node into a specific subtree.
@@ -146,13 +161,21 @@ namespace BinaryTree
                 // Read XML-file.
                 var file = new StreamReader(filePath);
                 // Create deserialized tree.
-                var @object = (BinaryTree<T>)deserializer.Deserialize(file);
+                var @object = deserializer.Deserialize(file);
                 file.Close();
 
-                return @object;
+                return (BinaryTree<T>)@object;
             }
             throw new FileNotFoundException("File does not exist.");
         }
+
+        //[System.Runtime.Serialization.OnDeserializing]
+        //public void OnDeserializing(System.Runtime.Serialization.StreamingContext context)
+        //{
+        //    var n = (BinaryTree<T>)context;
+
+        //    var t = 0;
+        //}
 
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
@@ -167,13 +190,81 @@ namespace BinaryTree
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    var iterator = new BinaryTreeIterator<T>(rootNode);
+        //    while (iterator.MoveNext())
+        //    {
+        //        yield return iterator.Current;
+        //    }
+        //}
+
+
+        #region Overrides
+        /// <summary>
+        /// Returns a result of ToString() of the node data.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
         {
-            var iterator = new BinaryTreeIterator<T>(rootNode);
-            while (iterator.MoveNext())
+            var str = new StringBuilder();
+            foreach (var node in this)
             {
-                yield return iterator.Current;
+                str.Append(node.ToString());
             }
+            return str.ToString();
         }
+
+        /// <summary>
+        /// Check the equality of this tree node
+        /// instance and other object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !(this.GetType().Equals(obj.GetType())))
+                return false;
+
+            var tree = (BinaryTree<T>)obj;
+
+            // Create lists for tree data.
+            var thisList = new List<T>();
+            var treeList = new List<T>();
+
+            // Get all the data from trees to a list.
+            foreach (var node in tree)
+                treeList.Add(node);
+
+            foreach (var node in this)
+                thisList.Add(node);
+
+            // Compare two lists.
+            if (thisList.Count != treeList.Count)
+                return false;
+
+            bool result = true;
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (!treeList[i].Equals(thisList[i]))
+                    result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a hash-code for a tree node object.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            int hash = rootNode.GetHashCode();
+            foreach (var node in this)
+                hash ^= node.GetHashCode();
+
+            return hash;
+        }
+        #endregion
     }
 }

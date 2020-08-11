@@ -142,6 +142,7 @@ namespace BinaryTree
             return tmpNode;
         }
 
+
         #region Overrides
         /// <summary>
         /// Returns a result of ToString() of the node data.

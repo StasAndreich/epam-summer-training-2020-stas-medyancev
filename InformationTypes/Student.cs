@@ -9,6 +9,10 @@ namespace InformationTypes
     public class Student
     {
         /// <summary>
+        /// Parameterless ctor.
+        /// </summary>
+        public Student() { }
+        /// <summary>
         /// Inits a student.
         /// </summary>
         /// <param name="name"></param>
