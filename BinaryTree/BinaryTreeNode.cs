@@ -53,7 +53,19 @@ namespace BinaryTree
         /// </summary>
         public int BalanceFactor
         {
-            get => RightNode.height - LeftNode.height;
+            get
+            {
+                // Init heights of child nodes.
+                var hLeft = 0;
+                var hRight = 0;
+
+                if (this.LeftNode != null)
+                    hLeft = this.LeftNode.height;
+                if (this.RightNode != null)
+                    hRight = this.RightNode.height;
+
+                return hRight - hLeft;
+            }
         }
 
         ///// <summary>
@@ -82,8 +94,15 @@ namespace BinaryTree
         /// </summary>
         public static void ReCalcHeight(BinaryTreeNode<T> node)
         {
-            var hLeft = node.LeftNode.height;
-            var hRight = node.RightNode.height;
+            // Init heights of child nodes.
+            var hLeft = 0;
+            var hRight = 0;
+
+            if (node.LeftNode != null)
+                hLeft = node.LeftNode.height;
+            if (node.RightNode != null)
+                hRight = node.RightNode.height;
+
             node.height = ((hLeft > hRight) ? hLeft : hRight) + 1;
         }
 

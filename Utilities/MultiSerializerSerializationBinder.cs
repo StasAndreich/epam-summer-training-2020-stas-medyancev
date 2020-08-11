@@ -10,7 +10,7 @@ namespace Utilities
         public override Type BindToType(string assemblyName, string typeName)
         {
             var assemblyVersion1 = Assembly.GetExecutingAssembly().GetName();
-            assemblyVersion1.Version
+            assemblyVersion1.Version;
         }
     }
 }

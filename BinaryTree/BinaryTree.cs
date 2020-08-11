@@ -15,39 +15,40 @@ namespace BinaryTree
         /// <summary>
         /// Reference to a root node of the binary-tree.
         /// </summary>
-        public BinaryTreeNode<T> RootNode { get; set; }
+        public BinaryTreeNode<T> RootNode;
 
         /// <summary>
         /// Adds a node into a specific subtree.
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="startNode"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public BinaryTreeNode<T> Add(BinaryTreeNode<T> node, T data)
+        public BinaryTreeNode<T> Add(BinaryTreeNode<T> startNode, T data)
         {
-            if (RootNode == null)
-                return RootNode = node;
+            if (startNode == null)
+                return new BinaryTreeNode<T>(data);
 
-            ////if (node != null) return new BinaryTreeNode<T>(data);
-            if (data.CompareTo(node.Data) <= -1)
-                node.LeftNode = Add(node.LeftNode, data);
+            if (data.CompareTo(startNode.Data) <= -1)
+                startNode.LeftNode = Add(startNode.LeftNode, data);
             else
-                node.RightNode = Add(node.RightNode, data);
+                startNode.RightNode = Add(startNode.RightNode, data);
 
-            return node.Balance();
+            return startNode.Balance();
         }
 
         /// <summary>
-        /// Adds data to a whole binary tree (from the root).
+        /// Adds data to a binary tree (from the root node).
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
         public BinaryTreeNode<T> Add(T data)
         {
+            // If the root exists.
             if (RootNode != null)
                 return Add(RootNode, data);
+            // If the root is null.
             else
-                return Add(new BinaryTreeNode<T>(data), data);
+                return RootNode = new BinaryTreeNode<T>(data);
         }
 
         /// <summary>
@@ -130,7 +131,7 @@ namespace BinaryTree
             if (File.Exists(filePath))
             {
                 // Create an XML-deserializer of a tree type.
-                var deserializer = new XmlSerializer(typeof(T));
+                var deserializer = new XmlSerializer(typeof(BinaryTree<T>));
                 // Read XML-file.
                 var file = new StreamReader(filePath);
                 // Create deserialized tree.

@@ -14,6 +14,8 @@ namespace UnitTests_BinaryTree
             tree.Add(5);
             tree.Add(2);
             tree.Add(7);
+            tree.Add(8);
+            tree.Add(9);
 
 
         }
