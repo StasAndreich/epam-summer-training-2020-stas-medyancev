@@ -169,14 +169,6 @@ namespace BinaryTree
             throw new FileNotFoundException("File does not exist.");
         }
 
-        //[System.Runtime.Serialization.OnDeserializing]
-        //public void OnDeserializing(System.Runtime.Serialization.StreamingContext context)
-        //{
-        //    var n = (BinaryTree<T>)context;
-
-        //    var t = 0;
-        //}
-
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
@@ -189,15 +181,6 @@ namespace BinaryTree
                 yield return iterator.Current; 
             }
         }
-
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    var iterator = new BinaryTreeIterator<T>(rootNode);
-        //    while (iterator.MoveNext())
-        //    {
-        //        yield return iterator.Current;
-        //    }
-        //}
 
 
         #region Overrides

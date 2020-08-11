@@ -4,6 +4,8 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Utilities
 {
@@ -15,9 +17,6 @@ namespace Utilities
     public class MultiSerializer<T>
         where T : ISerializable
     {
-        //static MultiSerializer<T>()
-        // Check for only class instanses in static ctor.
-
         /// <summary>
         /// Serializes an object to a binary file.
         /// </summary>
@@ -26,18 +25,39 @@ namespace Utilities
         public static void SerializeToBinary(T @object, string filePath)
         {
             // Create a binary serializer of a specified type.
-            var serializer = new BinaryFormatter();
-            // Create a binary file.
-            var binFile = File.Create(filePath);
-            // Write to binary file.
-            serializer.Serialize(binFile, @object);
-            binFile.Close();
+            var binFormatter = new BinaryFormatter();
+
+            // Create and write to a binary file.
+            var fileStream = new FileStream(filePath, FileMode.OpenOrCreate);
+            binFormatter.Serialize(fileStream, @object);
+            fileStream.Close();
         }
 
-        public static void SerializeToJson(T @object, string filePath)
+        /// <summary>
+        /// Serialize object to JSON file.
+        /// </summary>
+        /// <typeparam name="M"></typeparam>
+        /// <param name="object"></param>
+        /// <param name="filePath"></param>
+        public static void SerializeToJson<M>(T @object, string filePath) where M: ICollection<T>
         {
-            
+            // Create an JSON-serializer of specified type.
+            var jsonStr = JsonConvert.SerializeObject(@object);
+            // Create an JSON-file.
+            var jsonFile = File.Create(filePath);
+            // Write to JSON-file.
+            using (var writer = new StreamWriter(jsonFile))
+            {
+                writer.Write(jsonStr);
+            }
+            jsonFile.Close();
         }
+
+        //public static void SerializeToJson<M>(T @object, string filePath) where M : ICollection<T>
+        //{
+        //    var str = JsonConvert.SerializeObject(@object);
+
+        //}
 
         /// <summary>
         /// Serializes an object to an XML file.
@@ -63,22 +83,41 @@ namespace Utilities
         {
             if (File.Exists(filePath))
             {
-                // Create an binary deserializer of specified type.
-                var deserializer = new BinaryFormatter();
+                // Create an bin formatter.
+                var binFormatter = new BinaryFormatter();
+                var binder = new MultiSerializerSerializationBinder();
+                binFormatter.Binder = binder;
+
                 // Read binary file.
-                var file = File.OpenRead(filePath);
+                var fileStream = new FileStream(filePath, FileMode.OpenOrCreate);
                 // Create deserialized obj.
-                var @object = (T)deserializer.Deserialize(file);
-                file.Close();
+                var @object = (T)binFormatter.Deserialize(fileStream);
+                fileStream.Close();
 
                 return @object;
             }
             throw new FileNotFoundException("File does not exist.");
         }
 
+        /// <summary>
+        /// Deserialize object from JSON file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static T DeserializeFromJson(string filePath)
         {
+            // Read JSON file.
+            var file = File.OpenRead(filePath);
+            // Create json string.
+            var jsonStr = "";
+            using (var reader = new StreamReader(file))
+            {
+                jsonStr = reader.ReadToEnd();
+            }
+            var @object = JsonConvert.DeserializeObject<T>(jsonStr);
+            file.Close();
 
+            return @object;
         }
 
         /// <summary>

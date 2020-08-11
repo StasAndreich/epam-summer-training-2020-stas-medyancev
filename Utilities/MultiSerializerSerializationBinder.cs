@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Utilities
 {
-    internal sealed class MultiSerializerSerializationBinder
+    public sealed class MultiSerializerSerializationBinder
         : SerializationBinder
     {
         public override Type BindToType(string assemblyName, string typeName)
