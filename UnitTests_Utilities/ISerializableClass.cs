@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace UnitTests_Utilities
 {
+    /// <summary>
+    /// Test class that implements ISerializable interface.
+    /// </summary>
     [Serializable]
     public class ISerializableClass : ISerializable
     {
@@ -14,7 +16,7 @@ namespace UnitTests_Utilities
         {
         }
 
-        protected ISerializableClass(SerializationInfo info, 
+        protected ISerializableClass(SerializationInfo info,
             StreamingContext context)
         {
             if (info == null)
@@ -42,8 +44,25 @@ namespace UnitTests_Utilities
             if (info == null)
                 throw new ArgumentNullException("Info");
 
-            info.AddValue("AltName", true);
-            info.AddValue("AltIntValue", true);
+            info.AddValue("AltName", name);
+            info.AddValue("AltIntValue", intValue);
+        }
+
+        public override bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !(this.GetType().Equals(obj.GetType())))
+                return false;
+
+            var @class = (ISerializableClass)obj;
+
+            return this.Name.ToUpper().Equals(@class.Name.ToUpper())
+                && this.IntValue.Equals(@class.IntValue);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode() ^ IntValue.GetHashCode();
         }
     }
 }
