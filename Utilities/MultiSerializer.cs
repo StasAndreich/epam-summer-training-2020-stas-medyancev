@@ -5,7 +5,6 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Utilities
 {
@@ -26,7 +25,6 @@ namespace Utilities
         {
             // Create a binary serializer of a specified type.
             var binFormatter = new BinaryFormatter();
-
             // Create and write to a binary file.
             var fileStream = new FileStream(filePath, FileMode.OpenOrCreate);
             binFormatter.Serialize(fileStream, @object);
@@ -36,10 +34,9 @@ namespace Utilities
         /// <summary>
         /// Serialize object to JSON file.
         /// </summary>
-        /// <typeparam name="M"></typeparam>
         /// <param name="object"></param>
         /// <param name="filePath"></param>
-        public static void SerializeToJson<M>(T @object, string filePath) where M: ICollection<T>
+        public static void SerializeToJson(T @object, string filePath)
         {
             // Create an JSON-serializer of specified type.
             var jsonStr = JsonConvert.SerializeObject(@object);
@@ -52,12 +49,6 @@ namespace Utilities
             }
             jsonFile.Close();
         }
-
-        //public static void SerializeToJson<M>(T @object, string filePath) where M : ICollection<T>
-        //{
-        //    var str = JsonConvert.SerializeObject(@object);
-
-        //}
 
         /// <summary>
         /// Serializes an object to an XML file.
@@ -85,6 +76,8 @@ namespace Utilities
             {
                 // Create an bin formatter.
                 var binFormatter = new BinaryFormatter();
+                
+                // Check assembly versions.
                 var binder = new MultiSerializerSerializationBinder();
                 binFormatter.Binder = binder;
 
@@ -141,5 +134,139 @@ namespace Utilities
             }
             throw new FileNotFoundException("File does not exist.");
         }
+
+
+        #region ICollection methods.
+        /// <summary>
+        /// Serializes an ICollection`1 object to a binary file.
+        /// </summary>
+        /// <typeparam name="TCollection"></typeparam>
+        /// <param name="object"></param>
+        /// <param name="filePath"></param>
+        public static void SerializeCollectionToBinary<TCollection>(TCollection @object, string filePath)
+            where TCollection : ICollection<T>
+        {
+            // Create a binary serializer of a specified type.
+            var binFormatter = new BinaryFormatter();
+
+            // Create and write to a binary file.
+            var fileStream = new FileStream(filePath, FileMode.OpenOrCreate);
+            binFormatter.Serialize(fileStream, @object);
+            fileStream.Close();
+        }
+
+        /// <summary>
+        /// Serialize an ICollection`1 object to JSON file.
+        /// </summary>
+        /// <typeparam name="TCollection"></typeparam>
+        /// <param name="object"></param>
+        /// <param name="filePath"></param>
+        public static void SerializeCollectionToJson<TCollection>(TCollection @object, string filePath)
+            where TCollection : ICollection<T>
+        {
+            // Create an JSON-serializer of specified type.
+            var jsonStr = JsonConvert.SerializeObject(@object);
+            // Create an JSON-file.
+            var jsonFile = File.Create(filePath);
+            // Write to JSON-file.
+            using (var writer = new StreamWriter(jsonFile))
+            {
+                writer.Write(jsonStr);
+            }
+            jsonFile.Close();
+        }
+
+        /// <summary>
+        /// Serializes an ICollection`1 object to an XML file.
+        /// </summary>
+        /// <typeparam name="TCollection"></typeparam>
+        /// <param name="object"></param>
+        /// <param name="filePath"></param>
+        public static void SerializeCollectionToXml<TCollection>(TCollection @object, string filePath)
+            where TCollection : ICollection<T>
+        {
+            // Create an XML-serializer of specified type.
+            var serializer = new XmlSerializer(typeof(TCollection));
+            // Create an XML-file.
+            var xmlFile = File.Create(filePath);
+            // Write to XML-file.
+            serializer.Serialize(xmlFile, @object);
+            xmlFile.Close();
+        }
+
+        /// <summary>
+        /// Deserializes an ICollection`1 object from the binary file.
+        /// </summary>
+        /// <typeparam name="TCollection"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static TCollection DeserializeCollectionFromBinary<TCollection>(string filePath)
+            where TCollection : ICollection<T>
+        {
+            if (File.Exists(filePath))
+            {
+                // Create an bin formatter.
+                var binFormatter = new BinaryFormatter();
+                var binder = new MultiSerializerSerializationBinder();
+                binFormatter.Binder = binder;
+
+                // Read binary file.
+                var fileStream = new FileStream(filePath, FileMode.OpenOrCreate);
+                // Create deserialized obj.
+                var @object = (TCollection)binFormatter.Deserialize(fileStream);
+                fileStream.Close();
+
+                return @object;
+            }
+            throw new FileNotFoundException("File does not exist.");
+        }
+
+        /// <summary>
+        /// Deserialize an ICollection`1 object from JSON file.
+        /// </summary>
+        /// <typeparam name="TCollection"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static TCollection DeserializeCollectionFromJson<TCollection>(string filePath)
+            where TCollection : ICollection<T>
+        {
+            // Read JSON file.
+            var file = File.OpenRead(filePath);
+            // Create json string.
+            var jsonStr = "";
+            using (var reader = new StreamReader(file))
+            {
+                jsonStr = reader.ReadToEnd();
+            }
+            var @object = JsonConvert.DeserializeObject<TCollection>(jsonStr);
+            file.Close();
+
+            return @object;
+        }
+
+        /// <summary>
+        /// Deserializes an ICollection`1 object from the XML file.
+        /// </summary>
+        /// <typeparam name="TCollection"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static TCollection DeserializeCollectionFromXml<TCollection>(string filePath)
+            where TCollection : ICollection<T>
+        {
+            if (File.Exists(filePath))
+            {
+                // Create an XML-deserializer of specified type.
+                var deserializer = new XmlSerializer(typeof(TCollection));
+                // Read XML-file.
+                var file = new StreamReader(filePath);
+                // Create deserialized obj.
+                var @object = (TCollection)deserializer.Deserialize(file);
+                file.Close();
+
+                return @object;
+            }
+            throw new FileNotFoundException("File does not exist.");
+        }
+        #endregion
     }
 }
