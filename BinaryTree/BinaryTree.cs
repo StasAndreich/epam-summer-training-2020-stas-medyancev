@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace BinaryTree
 {
@@ -100,6 +102,44 @@ namespace BinaryTree
             }
 
             return subtreeRoot.Balance();
+        }
+
+        /// <summary>
+        /// Serializes this binary tree to an XML-file.
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <param name="filePath"></param>
+        public static void SerializeToXml(BinaryTree<T> tree, string filePath)
+        {
+            // Create an XML-serializer of a tree type.
+            var serializer = new XmlSerializer(typeof(BinaryTree<T>));
+            // Create an XML-file.
+            var xmlFile = File.Create(filePath);
+            // Write to XML-file.
+            serializer.Serialize(xmlFile, tree);
+            xmlFile.Close();
+        }
+
+        /// <summary>
+        /// Deserializes a binary tree from an XML-file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static BinaryTree<T> DeserializeFromXml(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                // Create an XML-deserializer of a tree type.
+                var deserializer = new XmlSerializer(typeof(T));
+                // Read XML-file.
+                var file = new StreamReader(filePath);
+                // Create deserialized tree.
+                var @object = (BinaryTree<T>)deserializer.Deserialize(file);
+                file.Close();
+
+                return @object;
+            }
+            throw new FileNotFoundException("File does not exist.");
         }
 
         ///// <summary>
