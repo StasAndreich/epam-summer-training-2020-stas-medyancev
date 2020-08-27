@@ -5,6 +5,13 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomORM", "CustomORM\CustomORM.csproj", "{6A4996A0-D8E1-4013-9584-8A9F83B644C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessToDb", "AccessToDb\AccessToDb.csproj", "{7170CD17-345A-4F06-95CE-90FC548D5C79}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlCode", "SqlCode", "{1461B433-DAE3-4E6F-B495-CBC00C1AF0FE}"
+	ProjectSection(SolutionItems) = preProject
+		DataBaseCreationFile.sql = DataBaseCreationFile.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +22,10 @@ Global
 		{6A4996A0-D8E1-4013-9584-8A9F83B644C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A4996A0-D8E1-4013-9584-8A9F83B644C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A4996A0-D8E1-4013-9584-8A9F83B644C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7170CD17-345A-4F06-95CE-90FC548D5C79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7170CD17-345A-4F06-95CE-90FC548D5C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7170CD17-345A-4F06-95CE-90FC548D5C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7170CD17-345A-4F06-95CE-90FC548D5C79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
