@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\DAO.cs" />
+    <Compile Include="DataAccess\IDAO.cs" />
     <Compile Include="Mapping\DbColumnAttribute.cs" />
     <Compile Include="Mapping\DbTableAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -17,7 +17,7 @@ namespace AccessToDb.Models
         /// <summary>
         /// SubjectName field.
         /// </summary>
-        [DbColumn]
+        [DbColumn(CanBeNull = false)]
         public string SubjectName { get; set; }
     }
 }

@@ -18,31 +18,31 @@ namespace AccessToDb.Models
         /// <summary>
         /// FirstName field.
         /// </summary>
-        [DbColumn]
+        [DbColumn(CanBeNull = false)]
         public string FirstName { get; set; }
 
         /// <summary>
         /// LastName field.
         /// </summary>
-        [DbColumn]
+        [DbColumn(CanBeNull = false)]
         public string LastName { get; set; }
 
         /// <summary>
         /// PatronymicName field.
         /// </summary>
-        [DbColumn]
+        [DbColumn(CanBeNull = false)]
         public string PatronymicName { get; set; }
 
         /// <summary>
         /// Sex field.
         /// </summary>
-        [DbColumn]
+        [DbColumn(CanBeNull = false)]
         public string Sex { get; set; }
 
         /// <summary>
         /// BirthDate field.
         /// </summary>
-        [DbColumn]
+        [DbColumn(CanBeNull = false)]
         public DateTime BirthDate { get; set; }
 
         /// <summary>

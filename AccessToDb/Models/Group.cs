@@ -17,7 +17,7 @@ namespace AccessToDb.Models
         /// <summary>
         /// GroupName field.
         /// </summary>
-        [DbColumn]
+        [DbColumn(CanBeNull = false)]
         public string GroupName { get; set; }
     }
 }

@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contexts\GroupDAO.cs" />
     <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\Exam.cs" />
     <Compile Include="Models\Group.cs" />
