@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Assessments.cs" />
-    <Compile Include="Models\Exams.cs" />
+    <Compile Include="Models\Assessment.cs" />
+    <Compile Include="Models\Exam.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\Subject.cs" />
