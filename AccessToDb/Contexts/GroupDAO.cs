@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AccessToDb.Models;
+using CustomORM.DataAccess;
 
 namespace AccessToDb.Contexts
 {
-    class GroupDAO
+    public class GroupDAO : Repository<Group>
     {
     }
 }

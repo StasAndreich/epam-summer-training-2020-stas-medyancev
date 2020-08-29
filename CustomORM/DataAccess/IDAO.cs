@@ -1,31 +1,23 @@
-﻿using System.Collections.Generic;
-
-namespace CustomORM.DataAccess
+﻿namespace CustomORM.DataAccess
 {
     /// <summary>
     /// Describes a data access object.
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    public interface IDAO<TModel>
+    public interface IDao<TModel>
         where TModel : class
     {
         /// <summary>
-        /// Entity creation method.
+        /// Entity insertion method.
         /// </summary>
-        void Create(TModel entity);
+        void Insert(TModel entity);
         /// <summary>
         /// Entity deletion method.
         /// </summary>
         void Delete(TModel entity);
         /// <summary>
-        /// Entity upd method.
+        /// Submits all changes made to models.
         /// </summary>
-        void Update(TModel entity);
-
-        /// <summary>
-        /// Keeps DB rows by TModel type.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<TModel> GetData();
+        void SubmitChanges();
     }
 }

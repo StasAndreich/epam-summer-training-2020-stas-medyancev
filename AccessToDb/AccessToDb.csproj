@@ -43,6 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contexts\GroupDAO.cs" />
+    <Compile Include="Contracts\IAssessmentDao.cs" />
+    <Compile Include="Contracts\IExamDao.cs" />
+    <Compile Include="Contracts\IGroupDao.cs" />
+    <Compile Include="Contracts\IStudentDao.cs" />
+    <Compile Include="Contracts\ISubjectDao.cs" />
     <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\Exam.cs" />
     <Compile Include="Models\Group.cs" />

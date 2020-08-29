@@ -6,25 +6,20 @@ namespace CustomORM.DataAccess
     /// <summary>
     /// Provides an access to a database table.
     /// </summary>
-    public class DAO<TModel> : IDAO<TModel>
+    public abstract class Dao<TModel> : IDao<TModel>
         where TModel : class
     {
-        public void Create(TModel entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Delete(TModel entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(TModel entity)
+        public void Insert(TModel entity)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TModel> GetData()
+        public void SubmitChanges()
         {
             throw new NotImplementedException();
         }

@@ -1,7 +1,5 @@
-﻿CREATE DATABASE UniversityDB;
+﻿USE  UniversityDB;
 GO
-
-USE UniversityDB;
 
 CREATE TABLE Groups
 (
