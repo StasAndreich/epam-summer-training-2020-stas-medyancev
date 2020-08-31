@@ -7,8 +7,13 @@ namespace CustomORM.DataAccess
     /// Provides an access to a database table.
     /// </summary>
     public abstract class ModelDao<TModel> : IDao<TModel>
-        where TModel : class
+        where TModel : class, new()
     {
+        protected DbContextManager Context
+        {
+            get => DbContextManager.Context;
+        }
+
         public void Insert(TModel entity)
         {
             throw new NotImplementedException();
