@@ -8,16 +8,23 @@
         where TModel : class
     {
         /// <summary>
+        /// Entity selection method.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        TModel Get(int id);
+        /// <summary>
+        /// Entity updation method.
+        /// </summary>
+        /// <param name="entity"></param>
+        void Update(TModel entity);
+        /// <summary>
         /// Entity insertion method.
         /// </summary>
-        void Insert(TModel entity);
+        void Add(TModel entity);
         /// <summary>
         /// Entity deletion method.
         /// </summary>
-        void Delete(TModel entity);
-        /// <summary>
-        /// Submits all changes made to models.
-        /// </summary>
-        void SubmitChanges();
+        void Remove(TModel entity);
     }
 }

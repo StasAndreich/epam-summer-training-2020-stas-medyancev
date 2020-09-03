@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace CustomORM.DataAccess
 {
@@ -9,14 +9,24 @@ namespace CustomORM.DataAccess
     public abstract class ModelDao<TModel> : IDao<TModel>
         where TModel : class, new()
     {
-        protected DbContextManager Context
+        protected SqlConnection Context
         {
             get => DbContextManager.Context;
         }
 
         public void Insert(TModel entity)
         {
-            throw new NotImplementedException();
+            var conn = Context;
+            conn.Open();
+
+
+
+            var parameter = new SqlParameter("@name", );
+            // get table names from reflection.
+            var sqlExp = "INSERT INTO ";
+            var commnand = new SqlCommand("d", conn);
+
+            conn.Close();
         }
 
         public void Delete(TModel entity)
