@@ -1,30 +1,43 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace CustomORM.DataAccess
 {
-    public class DbContextManager
+    /// <summary>
+    /// Describes an SQL database context.
+    /// </summary>
+    public class SqlDbContext
     {
-        private DbContextManager()
+        private static string connectionString = "";
+        private static IDbConnection connection;
+
+        private SqlDbContext()
         {
             ConnectionStringChanged += (sender, e) =>
             {
-                if (connection != null)
-                    connection = new SqlConnection(connectionString);
+                connection = new SqlConnection(connectionString);
             };
-        }
+        }        
 
-        private static string connectionString = "";
-        private static SqlConnection connection;
-
+        /// <summary>
+        /// Fires when a connetion string changed.
+        /// </summary>
         public static event EventHandler<PropertyChangedEventArgs> ConnectionStringChanged;
+        /// <summary>
+        /// Invokes a ConnectionStringChanged event.
+        /// </summary>
+        /// <param name="e"></param>
         protected static void OnConnectionStringChanged(PropertyChangedEventArgs e)
         {
             var handler = ConnectionStringChanged;
-            handler?.Invoke(typeof(DbContextManager), e);
+            handler?.Invoke(typeof(SqlDbContext), e);
         }
 
+        /// <summary>
+        /// Gets or sets the string used to open the connection.
+        /// </summary>
         public static string ConnectionString
         {
             get => connectionString;
@@ -35,7 +48,10 @@ namespace CustomORM.DataAccess
             }
         }
 
-        public static SqlConnection Context
+        /// <summary>
+        /// Holds a context connection.
+        /// </summary>
+        public static IDbConnection Context
         {
             get
             {

@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,9 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\IDbContext.cs" />
     <Compile Include="DataAccess\SqlDao.cs" />
-    <Compile Include="DataAccess\DbContextManager.cs" />
+    <Compile Include="DataAccess\SqlDbContext.cs" />
     <Compile Include="DataAccess\IDao.cs" />
+    <Compile Include="DbNamesConverter.cs" />
     <Compile Include="Mapping\DbColumnAttribute.cs" />
     <Compile Include="Mapping\DbTableAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
