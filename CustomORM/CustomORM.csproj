@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\ModelDao.cs" />
+    <Compile Include="DataAccess\SqlDao.cs" />
     <Compile Include="DataAccess\DbContextManager.cs" />
     <Compile Include="DataAccess\IDao.cs" />
     <Compile Include="Mapping\DbColumnAttribute.cs" />

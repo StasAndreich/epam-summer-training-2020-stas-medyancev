@@ -16,17 +16,7 @@ namespace CustomORM.DataAccess
 
         public void Insert(TModel entity)
         {
-            var conn = Context;
-            conn.Open();
-
-
-
-            var parameter = new SqlParameter("@name", );
-            // get table names from reflection.
-            var sqlExp = "INSERT INTO ";
-            var commnand = new SqlCommand("d", conn);
-
-            conn.Close();
+            
         }
 
         public void Delete(TModel entity)
