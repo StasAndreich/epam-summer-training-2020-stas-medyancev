@@ -8,7 +8,7 @@ namespace CustomORM.DataAccess
     /// <summary>
     /// Describes an SQL database context.
     /// </summary>
-    public class SqlDbContext
+    public class SqlDbContext : IDbContext
     {
         private static string connectionString = "";
         private static IDbConnection connection;
@@ -51,7 +51,7 @@ namespace CustomORM.DataAccess
         /// <summary>
         /// Holds a context connection.
         /// </summary>
-        public static IDbConnection Context
+        public static IDbConnection Connection
         {
             get
             {

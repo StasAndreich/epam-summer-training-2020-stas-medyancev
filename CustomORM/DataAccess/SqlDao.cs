@@ -1,5 +1,7 @@
-﻿using System;
-using System.Data;
+﻿using CustomORM.Mapping;
+using System;
+using System.Data.SqlClient;
+using System.Reflection;
 
 namespace CustomORM.DataAccess
 {
@@ -9,14 +11,6 @@ namespace CustomORM.DataAccess
     public abstract class SqlDao<TModel> : IDao<TModel>
         where TModel : class, new()
     {
-        /// <summary>
-        /// Returns a context connection to a DB.
-        /// </summary>
-        protected IDbConnection Context
-        {
-            get => SqlDbContext.Context;
-        }
-
         /// <summary>
         /// Creates a new entity in its table.
         /// </summary>
@@ -33,10 +27,60 @@ namespace CustomORM.DataAccess
         /// <returns></returns>
         public TModel Get(int id)
         {
-            // Get a table name.
-            var tableName = DbNamesConverter.GetPluralName(typeof(TModel).Name);
-            // Get fields names. (first or default)
-            var cmd = $"SELECT * FROM {tableName} WHERE ";
+            var type = typeof(TModel);
+
+            // Check table attrib.
+            var tableAttrib = (DbTableAttribute) DbModelMappingCheker
+                .CheckDbTableAttrib(type);
+
+            if (tableAttrib != null)
+            {
+                // Get a table name.
+                var tableName = tableAttrib.Name;
+                var idFieldName = "";
+
+                // Find primary key.
+                var members = type.GetMembers();
+                foreach (var member in members)
+                {
+                    var colAttrib = (DbColumnAttribute)member
+                        .GetCustomAttribute(typeof(DbColumnAttribute));
+                    if (colAttrib.IsPrimaryKey == true)
+                    {
+                        idFieldName = member.Name;
+                        break;
+                    }
+                }
+
+                // Open connection.
+                SqlDbContext.Connection.Open();
+
+                var command = SqlDbContext.Connection.CreateCommand();
+                command.CommandText = $"SELECT * FROM {tableName} WHERE {idFieldName}=@id;";
+                command.CommandType = System.Data.CommandType.Text;
+
+                command.Parameters.Add(new SqlParameter("@id", id));
+                var reader = (SqlDataReader) command.ExecuteReader();
+                object[] objects = null;
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        reader.GetValues(objects);
+                    }
+                }
+                else
+                    throw new ApplicationException("There is nothing to get by this ID.");
+
+                reader.Close();
+
+                // Close connection.
+                SqlDbContext.Connection.Close();
+                return (TModel) Activator.CreateInstance(type, objects);
+            }
+            else
+                throw new ApplicationException("Current TModel is not a DB table.");
         }
 
         public void Remove(TModel entity)
