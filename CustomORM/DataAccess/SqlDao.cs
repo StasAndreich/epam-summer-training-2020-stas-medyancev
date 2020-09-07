@@ -1,5 +1,6 @@
 ﻿using CustomORM.Mapping;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Reflection;
 
@@ -21,7 +22,7 @@ namespace CustomORM.DataAccess
         }
 
         /// <summary>
-        /// Selects an entity by its ID.
+        /// Selects an entity from database by its ID.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -39,12 +40,13 @@ namespace CustomORM.DataAccess
                 var tableName = tableAttrib.Name;
                 var idFieldName = "";
 
-                // Find primary key.
+                // Find primary key member.
                 var members = type.GetMembers();
                 foreach (var member in members)
                 {
                     var colAttrib = (DbColumnAttribute) DbModelMappingCheker
                         .CheckDbColumnAttrib(member);
+
                     if (colAttrib == null) continue;
                     if (colAttrib.IsPrimaryKey == true)
                     {
@@ -97,6 +99,11 @@ namespace CustomORM.DataAccess
         public void Update(TModel entity)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<TModel> GetAll()
+        {
+
         }
     }
 }

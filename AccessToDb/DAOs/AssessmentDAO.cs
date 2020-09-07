@@ -17,7 +17,7 @@ namespace AccessToDb.DAOs
         /// <returns>Assessment IEnumerable.</returns>
         public IEnumerable<Assessment> GetAssessments()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

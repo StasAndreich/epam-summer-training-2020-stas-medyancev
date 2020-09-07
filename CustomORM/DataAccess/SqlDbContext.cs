@@ -11,7 +11,7 @@ namespace CustomORM.DataAccess
     public class SqlDbContext : IDbContext
     {
         private static string connectionString = "";
-        private static IDbConnection connection;
+        private static IDbConnection connection; // sqlcontext
 
         private SqlDbContext()
         {

@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlCode", "SqlCode", "{1461B433-DAE3-4E6F-B495-CBC00C1AF0FE}"
 	ProjectSection(SolutionItems) = preProject
 		DataBaseCreationFile.sql = DataBaseCreationFile.sql
+		DataBaseInsertionFile.sql = DataBaseInsertionFile.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests_CustomORM", "UnitTests_CustomORM\UnitTests_CustomORM.csproj", "{CD757FC9-7C86-460E-ACC9-C1863BF52C4F}"
