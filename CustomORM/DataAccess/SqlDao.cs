@@ -43,12 +43,14 @@ namespace CustomORM.DataAccess
                 var members = type.GetMembers();
                 foreach (var member in members)
                 {
-                    var colAttrib = (DbColumnAttribute)member
-                        .GetCustomAttribute(typeof(DbColumnAttribute));
+                    var colAttrib = (DbColumnAttribute) DbModelMappingCheker
+                        .CheckDbColumnAttrib(member);
                     if (colAttrib == null) continue;
                     if (colAttrib.IsPrimaryKey == true)
                     {
                         // temp!
+                        // replace with name from attrib (use reflection to
+                        // init the name)
                         idFieldName = member.Name;
                         break;
                     }
@@ -65,7 +67,7 @@ namespace CustomORM.DataAccess
 
                 command.Parameters.Add(new SqlParameter("@id", id));
                 var reader = (SqlDataReader) command.ExecuteReader();
-                object[] objects = new object[2];
+                object[] objects = new object[2];// temp
 
                 if (reader.HasRows)
                 {
@@ -82,7 +84,6 @@ namespace CustomORM.DataAccess
                 // Close connection.
                 SqlDbContext.Connection.Close();
                 return (TModel) Activator.CreateInstance(type, objects);
-
             }
             else
                 throw new ApplicationException("Current TModel is not a DB table.");

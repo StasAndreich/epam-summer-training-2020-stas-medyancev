@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAOs\AssessmentDAO.cs" />
     <Compile Include="DAOs\DaoFactory.cs" />
+    <Compile Include="DAOs\ExamDAO.cs" />
     <Compile Include="DAOs\GroupDAO.cs" />
     <Compile Include="Contracts\IAssessmentDao.cs" />
     <Compile Include="Contracts\IDaoFactory.cs" />
@@ -50,6 +52,8 @@
     <Compile Include="Contracts\IGroupDao.cs" />
     <Compile Include="Contracts\IStudentDao.cs" />
     <Compile Include="Contracts\ISubjectDao.cs" />
+    <Compile Include="DAOs\StudentDAO.cs" />
+    <Compile Include="DAOs\SubjectDAO.cs" />
     <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\Exam.cs" />
     <Compile Include="Models\Group.cs" />

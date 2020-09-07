@@ -20,5 +20,17 @@ namespace CustomORM
         {
             return modelType.GetCustomAttribute(typeof(DbTableAttribute));
         }
+
+        /// <summary>
+        /// Check whether a model has DbColumnAttribute applied.
+        /// </summary>
+        /// <param name="modelMember"></param>
+        /// <returns>DbTableAttribute instance or null, if no such
+        /// attribute found.
+        /// </returns>
+        public static Attribute CheckDbColumnAttrib(MemberInfo modelMember)
+        {
+            return modelMember.GetCustomAttribute(typeof(DbColumnAttribute));
+        }
     }
 }

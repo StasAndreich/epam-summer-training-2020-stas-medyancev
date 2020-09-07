@@ -1,4 +1,5 @@
-﻿using AccessToDb.Contracts;
+﻿using AccessToDb.Contexts;
+using AccessToDb.Contracts;
 
 namespace AccessToDb.DAOs
 {
@@ -9,7 +10,7 @@ namespace AccessToDb.DAOs
     {
         public IAssessmentDao GetAssessmentDao()
         {
-            throw new System.NotImplementedException();
+            return new 
         }
 
         public IExamDao GetExamDao()
@@ -19,7 +20,7 @@ namespace AccessToDb.DAOs
 
         public IGroupDao GetGroupDao()
         {
-            throw new System.NotImplementedException();
+            return new GroupDAO();
         }
 
         public IStudentDao GetStudentDao()

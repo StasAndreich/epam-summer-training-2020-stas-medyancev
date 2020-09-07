@@ -6,8 +6,14 @@ using CustomORM.DataAccess;
 
 namespace AccessToDb.Contexts
 {
+    /// <summary>
+    /// Describes a Group DAO.
+    /// </summary>
     public class GroupDAO : SqlDao<Group>, IGroupDao
     {
+        /// <summary>
+        /// </summary>
+        /// <returns>Groups IEnumerable.</returns>
         public IEnumerable<Group> GetGroups()
         {
             throw new NotImplementedException();

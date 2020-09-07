@@ -19,7 +19,12 @@ namespace CustomORM.DataAccess
             {
                 connection = new SqlConnection(connectionString);
             };
-        }        
+        }
+
+        internal SqlDbContext()
+        {
+
+        }
 
         /// <summary>
         /// Fires when a connetion string changed.
