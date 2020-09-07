@@ -12,7 +12,7 @@ namespace UnitTests_CustomORM
         public void TestMethod1()
         {
             var dao = new GroupDAO();
-            var group = dao.Get(1);
+            var group = dao.Get(2);
 
 
         }

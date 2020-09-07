@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAOs\DaoFactory.cs" />
     <Compile Include="DAOs\GroupDAO.cs" />
     <Compile Include="Contracts\IAssessmentDao.cs" />
     <Compile Include="Contracts\IDaoFactory.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomORM\CustomORM.csproj">
