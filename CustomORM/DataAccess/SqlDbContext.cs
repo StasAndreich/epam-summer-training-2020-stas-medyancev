@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace CustomORM.DataAccess
 {
@@ -9,35 +8,15 @@ namespace CustomORM.DataAccess
     /// Describes an SQL database context.
     /// </summary>
     public class SqlDbContext : IDbContext
-    {
-        private static string connectionString = "";
-        private static IDbConnection connection; // sqlcontext
+    { 
+        private static string connectionString;
+        private static IDbConnection connection;
+        private static SqlDbContext context;
 
         private SqlDbContext()
         {
-            ConnectionStringChanged += (sender, e) =>
-            {
-                connection = new SqlConnection(connectionString);
-            };
-        }
-
-        internal SqlDbContext()
-        {
-
-        }
-
-        /// <summary>
-        /// Fires when a connetion string changed.
-        /// </summary>
-        public static event EventHandler<PropertyChangedEventArgs> ConnectionStringChanged;
-        /// <summary>
-        /// Invokes a ConnectionStringChanged event.
-        /// </summary>
-        /// <param name="e"></param>
-        protected static void OnConnectionStringChanged(PropertyChangedEventArgs e)
-        {
-            var handler = ConnectionStringChanged;
-            handler?.Invoke(typeof(SqlDbContext), e);
+            connectionString = ConfigurationManager
+                .ConnectionStrings["UniversityDBConnection"].ConnectionString;
         }
 
         /// <summary>
@@ -46,11 +25,7 @@ namespace CustomORM.DataAccess
         public static string ConnectionString
         {
             get => connectionString;
-            set
-            {
-                connectionString = value;
-                OnConnectionStringChanged(new PropertyChangedEventArgs("ConnectionString"));
-            }
+            set => connectionString = value;
         }
 
         /// <summary>

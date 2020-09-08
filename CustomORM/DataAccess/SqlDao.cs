@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Reflection;
 
 namespace CustomORM.DataAccess
 {
@@ -12,6 +11,18 @@ namespace CustomORM.DataAccess
     public abstract class SqlDao<TModel> : IDao<TModel>
         where TModel : class, new()
     {
+        #region Additional props
+
+        /// <summary>
+        /// Gets a database connection.
+        /// </summary>
+        protected SqlConnection Connection
+        {
+            get => (SqlConnection) SqlDbContext.Connection;
+        }
+
+        #endregion
+
         /// <summary>
         /// Creates a new entity in its table.
         /// </summary>
@@ -61,7 +72,7 @@ namespace CustomORM.DataAccess
                 // temp!
                 SqlDbContext.ConnectionString = @"Data Source=DESKTOP-PF22DB1\SQLEXPRESS;Initial Catalog=UniversityDB;Integrated Security=True";
                 // Open connection.
-                SqlDbContext.Connection.Open();
+                Connection.Open();
 
                 var command = SqlDbContext.Connection.CreateCommand();
                 command.CommandText = $"SELECT * FROM {tableName} WHERE {idFieldName}=@id;";
@@ -70,6 +81,10 @@ namespace CustomORM.DataAccess
                 command.Parameters.Add(new SqlParameter("@id", id));
                 var reader = (SqlDataReader) command.ExecuteReader();
                 object[] objects = new object[2];// temp
+
+                // Create list, not array.
+                //
+                // ???
 
                 if (reader.HasRows)
                 {
@@ -84,7 +99,7 @@ namespace CustomORM.DataAccess
                 reader.Close();
 
                 // Close connection.
-                SqlDbContext.Connection.Close();
+                Connection.Close();
                 return (TModel) Activator.CreateInstance(type, objects);
             }
             else
