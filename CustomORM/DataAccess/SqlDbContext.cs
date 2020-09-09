@@ -8,37 +8,41 @@ namespace CustomORM.DataAccess
     /// Describes an SQL database context.
     /// </summary>
     public class SqlDbContext : IDbContext
-    { 
-        private static string connectionString;
-        private static IDbConnection connection;
+    {
         private static SqlDbContext context;
+        private readonly IDbConnection connection;
 
         private SqlDbContext()
         {
-            connectionString = ConfigurationManager
+            var connectionString = ConfigurationManager
                 .ConnectionStrings["UniversityDBConnection"].ConnectionString;
+            connection = new SqlConnection(connectionString);
         }
 
         /// <summary>
-        /// Gets or sets the string used to open the connection.
+        /// Creates and returns a database context.
         /// </summary>
-        public static string ConnectionString
-        {
-            get => connectionString;
-            set => connectionString = value;
-        }
-
-        /// <summary>
-        /// Holds a context connection.
-        /// </summary>
-        public static IDbConnection Connection
+        public static SqlDbContext Context
         {
             get
             {
-                if (connection == null)
-                    connection = new SqlConnection(connectionString);
-                return connection;
+                if (context == null)
+                    context = new SqlDbContext();
+                return context;
             }
+        }
+
+        /// <summary>
+        /// Gets the string used to open the connection.
+        /// </summary>
+        public string ConnectionString => connection.ConnectionString;
+
+        /// <summary>
+        /// Gets a DB context.
+        /// </summary>
+        public IDbConnection Connection
+        {
+            get => context.connection;
         }
     }
 }

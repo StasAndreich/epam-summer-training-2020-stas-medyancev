@@ -7,5 +7,9 @@ namespace CustomORM.DataAccess
     /// </summary>
     public interface IDbContext
     {
+        /// <summary>
+        /// Provides a connection to a database.
+        /// </summary>
+        IDbConnection Connection { get; }
     }
 }

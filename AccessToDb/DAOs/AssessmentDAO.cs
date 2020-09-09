@@ -6,18 +6,18 @@ using System.Collections.Generic;
 
 namespace AccessToDb.DAOs
 {
-    /// <summary>
-    /// Describes a Assessment DAO.
-    /// </summary>
-    public class AssessmentDAO : SqlDao<Assessment>, IAssessmentDao
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>Assessment IEnumerable.</returns>
-        public IEnumerable<Assessment> GetAssessments()
-        {
+    ///// <summary>
+    ///// Describes a Assessment DAO.
+    ///// </summary>
+    //public class AssessmentDAO : SqlDao<Assessment>, IAssessmentDao
+    //{
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    /// <returns>Assessment IEnumerable.</returns>
+    //    public IEnumerable<Assessment> GetAssessments()
+    //    {
             
-        }
-    }
+    //    }
+    //}
 }
