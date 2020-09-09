@@ -70,10 +70,7 @@ namespace CustomORM.DataAccess
                     if (colAttrib == null) continue;
                     if (colAttrib.IsPrimaryKey == true)
                     {
-                        // temp!
-                        // replace with name from attrib (use reflection to
-                        // init the name)
-                        idFieldName = member.Name;
+                        idFieldName = colAttrib.Name;
                         break;
                     }
                 }
@@ -85,10 +82,9 @@ namespace CustomORM.DataAccess
                 command.CommandText = $"SELECT * FROM {tableName} " +
                     $"WHERE {idFieldName}=@id;";
                 command.CommandType = System.Data.CommandType.Text;
-
                 command.Parameters.Add(new SqlParameter("@id", id));
 
-                //var reader = (SqlDataReader) command.ExecuteReader();
+                var reader = (SqlDataReader) command.ExecuteReader();
 
                 //var values = new List<object>();
                 // Create list, not array.
@@ -97,31 +93,38 @@ namespace CustomORM.DataAccess
 
                 // sqladapter -> datarow.itemarray
 
-                var adapter = new SqlDataAdapter(command);
-                var dataTable = new DataTable();
-                adapter.Fill(dataTable);
+                //var adapter = new SqlDataAdapter(command);
+                //var ds = new DataSet();
 
-                //if (reader.HasRows)
-                //{
-                //    while (reader.Read())
-                //    {
-                //        values.Add(reader.GetValue());
-                //    }
-                //}
-                //else
-                //    throw new ApplicationException("There is nothing to get by this ID.");
-                //
-                //reader.Close();
+                //adapter.Fill(ds);
+                var values = new object[reader.FieldCount];
 
-                object[] obj = null;
-                foreach (DataRow row in dataTable.Rows)
+                if (reader.HasRows)
                 {
-                    obj = row.ItemArray;
+                    while (reader.Read())
+                    {
+                        reader.GetValues(values);
+                    }
                 }
+                else
+                    throw new ApplicationException("There is nothing to get by this ID.");
+
+                reader.Close();
+
+                //var dataTable = ds.Tables[0];
+                //object[] obj = null;
+                //foreach (DataRow row in dataTable.Rows)
+                //{
+                //    obj = row.ItemArray;
+                //}
 
                 // Close connection.
                 Connection.Close();
-                return (TModel) Activator.CreateInstance(type, obj);
+
+                var model = (TModel)Activator.CreateInstance(type, values);
+                var props = model.GetType().GetProperties();
+                
+                return 
             }
             else
                 throw new ApplicationException("Current TModel is not a DB table.");

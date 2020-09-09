@@ -5,13 +5,13 @@ namespace AccessToDb.Models
     /// <summary>
     /// Represents a Group entity.
     /// </summary>
-    [DbTable(Name = "Groups")]
+    [DbTable("Groups")]
     public class Group
     {
         /// <summary>
         /// GroupID field.
         /// </summary>
-        [DbColumn(IsPrimaryKey = true)]
+        [DbColumn(IsPrimaryKey = true, Name = "GroupID")]
         public int GroupID { get; set; }
 
         /// <summary>

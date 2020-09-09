@@ -6,7 +6,7 @@ namespace AccessToDb.Models
     /// <summary>
     /// Represents a Exam entity.
     /// </summary>
-    [DbTable(Name = "Exams")]
+    [DbTable("Exams")]
     public class Exam
     {
         /// <summary>

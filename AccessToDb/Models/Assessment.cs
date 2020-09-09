@@ -6,7 +6,7 @@ namespace AccessToDb.Models
     /// <summary>
     /// Represents a Assessment entity.
     /// </summary>
-    [DbTable(Name = "Assessments")]
+    [DbTable("Assessments")]
     public class Assessment
     {
         /// <summary>

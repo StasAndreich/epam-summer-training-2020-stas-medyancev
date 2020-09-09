@@ -5,7 +5,7 @@ namespace AccessToDb.Models
     /// <summary>
     /// Represents a Subject entity.
     /// </summary>
-    [DbTable(Name = "Subjects")]
+    [DbTable("Subjects")]
     public class Subject
     {
         /// <summary>

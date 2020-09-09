@@ -11,7 +11,11 @@ namespace CustomORM.Mapping
         /// <summary>
         /// Initializes a new instance of the CustomORM.Mapping.DbTableAttribute class.
         /// </summary>
-        public DbTableAttribute() { }
+        /// <param name="tableName"></param>
+        public DbTableAttribute(string tableName) 
+        {
+            Name = tableName;
+        }
 
         /// <summary>
         /// Gets or sets the name of the table or view.

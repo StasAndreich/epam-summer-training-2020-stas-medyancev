@@ -49,7 +49,6 @@
     <Compile Include="DataAccess\SqlDbContext.cs" />
     <Compile Include="DataAccess\IDao.cs" />
     <Compile Include="DbModelMappingCheker.cs" />
-    <Compile Include="DbNamesConverter.cs" />
     <Compile Include="Mapping\DbColumnAttribute.cs" />
     <Compile Include="Mapping\DbTableAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
