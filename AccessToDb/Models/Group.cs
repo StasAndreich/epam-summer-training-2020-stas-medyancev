@@ -19,16 +19,5 @@ namespace AccessToDb.Models
         /// </summary>
         [DbColumn(CanBeNull = false)]
         public string GroupName { get; set; }
-
-        public Group()
-        {
-
-        }
-
-        public Group(int id, string name)
-        {
-            GroupID = id;
-            GroupName = name;
-        }
     }
 }

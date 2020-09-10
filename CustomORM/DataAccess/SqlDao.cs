@@ -103,6 +103,7 @@ namespace CustomORM.DataAccess
                 {
                     while (reader.Read())
                     {
+                        reader.GetName(1);
                         reader.GetValues(values);
                     }
                 }
@@ -123,8 +124,8 @@ namespace CustomORM.DataAccess
 
                 var model = (TModel)Activator.CreateInstance(type, values);
                 var props = model.GetType().GetProperties();
-                
-                return 
+
+                return model;
             }
             else
                 throw new ApplicationException("Current TModel is not a DB table.");
