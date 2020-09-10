@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="DataAccess\IDbContext.cs" />
     <Compile Include="DataAccess\SqlDao.cs" />
+    <Compile Include="DataAccess\SqlDaoExtensions.cs" />
     <Compile Include="DataAccess\SqlDbContext.cs" />
     <Compile Include="DataAccess\IDao.cs" />
     <Compile Include="DbModelMappingCheker.cs" />
