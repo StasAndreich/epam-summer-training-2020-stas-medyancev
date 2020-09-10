@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace CustomORM.DataAccess
 {
@@ -81,51 +82,21 @@ namespace CustomORM.DataAccess
                 var command = Connection.CreateCommand();
                 command.CommandText = $"SELECT * FROM {tableName} " +
                     $"WHERE {idFieldName}=@id;";
-                command.CommandType = System.Data.CommandType.Text;
+                command.CommandType = CommandType.Text;
                 command.Parameters.Add(new SqlParameter("@id", id));
 
+                // Execute reader.
                 var reader = (SqlDataReader) command.ExecuteReader();
-
-                //var values = new List<object>();
-                // Create list, not array.
-                //
-                // ???
-
-                // sqladapter -> datarow.itemarray
-
-                //var adapter = new SqlDataAdapter(command);
-                //var ds = new DataSet();
-
-                //adapter.Fill(ds);
-                var values = new object[reader.FieldCount];
-
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        reader.GetName(1);
-                        reader.GetValues(values);
-                    }
-                }
-                else
-                    throw new ApplicationException("There is nothing to get by this ID.");
-
+                var namedValues = GetNamedValuesPairs(reader);
                 reader.Close();
 
-                //var dataTable = ds.Tables[0];
-                //object[] obj = null;
-                //foreach (DataRow row in dataTable.Rows)
-                //{
-                //    obj = row.ItemArray;
-                //}
+                // Get models.
+                var models = InstantiateModelsFromNamedValues(namedValues);
 
                 // Close connection.
                 Connection.Close();
 
-                var model = (TModel)Activator.CreateInstance(type, values);
-                var props = model.GetType().GetProperties();
-
-                return model;
+                return models.FirstOrDefault();
             }
             else
                 throw new ApplicationException("Current TModel is not a DB table.");
@@ -139,6 +110,73 @@ namespace CustomORM.DataAccess
         public void Update(TModel entity)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Reads data from a database as named values pairs belonging to a table.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        /// <exception cref="ApplicationException"/>
+        internal IEnumerable<IDictionary<string, object>> GetNamedValuesPairs(SqlDataReader reader)
+        {
+            var namedValuesDictionariesList = new List<Dictionary<string, object>>();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    var nameValueDictionary = new Dictionary<string, object>();
+
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        var name = reader.GetName(i);
+                        var value = reader.GetValue(i);
+                        nameValueDictionary.Add(name, value);
+                    }
+
+                    namedValuesDictionariesList.Add(nameValueDictionary);
+                }
+            }
+            else
+                throw new ApplicationException("There is nothing to get by this ID.");
+
+            return namedValuesDictionariesList;
+        }
+
+        /// <summary>
+        /// Instantiates TModel objects from name-value dictionary
+        /// and inits TModel properties using reflection.
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        /// <exception cref="ApplicationException"/>
+        internal IEnumerable<TModel> InstantiateModelsFromNamedValues(
+            IEnumerable<IDictionary<string, object>> namedValuesList)
+        {
+            // Resulting models list.
+            var modelsList = new List<TModel>();
+
+            foreach (var namedValues in namedValuesList)
+            {
+                var model = (TModel)Activator.CreateInstance(typeof(TModel), null);
+                var props = model.GetType().GetProperties();
+
+                foreach (var prop in props)
+                {
+                    if (namedValues.ContainsKey(prop.Name))
+                    {
+                        var value = namedValues[prop.Name];
+                        prop.SetValue(model, value);
+                    }
+                    else
+                        throw new ApplicationException($"Missing value of a TModel property: {prop.Name}.");
+                }
+
+                modelsList.Add(model);
+            }
+
+            return modelsList;
         }
 
         //public IEnumerable<TModel> GetAll()
