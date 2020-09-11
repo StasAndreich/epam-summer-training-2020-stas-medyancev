@@ -106,9 +106,59 @@ namespace CustomORM.DataAccess
                 throw new ApplicationException("Current TModel is not a DB table.");
         }
 
+        /// <summary>
+        /// Deletes an entity object from a database table.
+        /// </summary>
+        /// <param name="entity"></param>
         public void Remove(TModel entity)
         {
-            throw new NotImplementedException();
+            var type = typeof(TModel);
+
+            // Check table attrib.
+            var tableAttrib = (DbTableAttribute)DbModelMappingCheker
+                .CheckDbTableAttrib(type);
+
+            if (tableAttrib != null)
+            {
+                // Get a table name.
+                var tableName = tableAttrib.Name;
+                // Get field id and value.
+                var idFieldName = "";
+                var idFieldValue = 0;
+
+                // Find primary key member.
+                var members = type.GetMembers();
+                foreach (var member in members)
+                {
+                    var colAttrib = (DbColumnAttribute)DbModelMappingCheker
+                        .CheckDbColumnAttrib(member);
+
+                    if (colAttrib == null) continue;
+                    if (colAttrib.IsPrimaryKey == true)
+                    {
+                        idFieldName = colAttrib.Name;
+                        idFieldValue = (int) type.GetProperty(idFieldName)
+                            .GetValue(entity);
+                        break;
+                    }
+                }
+
+                // Open connection.
+                Connection.Open();
+
+                var command = Connection.CreateCommand();
+                command.CommandText = $"DELETE FROM {tableName} " +
+                    $"WHERE {idFieldName}=@id;";
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SqlParameter("@id", idFieldValue));
+                // Execute cmd.
+                command.ExecuteNonQuery();
+
+                // Close connection.
+                Connection.Close();
+            }
+            else
+                throw new ApplicationException("Current TModel is not a DB table.");
         }
 
         public void Update(TModel entity)

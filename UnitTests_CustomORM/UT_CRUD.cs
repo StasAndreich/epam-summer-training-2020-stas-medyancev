@@ -14,6 +14,7 @@ namespace UnitTests_CustomORM
             var dao = new GroupDAO();
             var group = dao.Get(1);
             var i = 5;
+            dao.Remove(group);
 
         }
     }
