@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CustomORM.Mapping;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -72,13 +73,49 @@ namespace CustomORM.DataAccess
                         prop.SetValue(model, value);
                     }
                     else
-                        throw new ApplicationException($"Missing value of a TModel property: {prop.Name}.");
+                        throw new ApplicationException($"Missing value of a TModel" +
+                            $" property: {prop.Name}.");
                 }
 
                 modelsList.Add(model);
             }
 
             return modelsList;
+        }
+
+        /// <summary>
+        /// Gets a primary key model member name and value.
+        /// </summary>
+        /// <param name="_"></param>
+        /// <param name="entity"></param>
+        /// <param name="idFieldValue">Model ID.</param>
+        /// <returns>Model primary key name.</returns>
+        public static string GetModelPrimaryKeyNameAndIdValue<TModel>(
+            this SqlDao<TModel> _, TModel entity, out int idFieldValue)
+            where TModel : class
+        {
+            var idFieldName = "";
+            idFieldValue = 0;
+
+            // Find primary key member.
+            var members = typeof(TModel).GetMembers();
+            foreach (var member in members)
+            {
+                var colAttrib = (DbColumnAttribute)DbModelMappingCheker
+                    .CheckDbColumnAttrib(member);
+
+                if (colAttrib == null) continue;
+                if (colAttrib.IsPrimaryKey == true)
+                {
+                    idFieldName = colAttrib.Name;
+                    if (entity != null)
+                        idFieldValue = (int)typeof(TModel).GetProperty(idFieldName)
+                            .GetValue(entity);
+                    break;
+                }
+            }
+
+            return idFieldName;
         }
     }
 }

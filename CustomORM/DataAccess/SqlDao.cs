@@ -38,11 +38,43 @@ namespace CustomORM.DataAccess
         /// <param name="entity"></param>
         public void Add(TModel entity)
         {
-            var type = typeof(TModel);
+            //var type = typeof(TModel);
 
-            // Check table attrib.
-            var tableAttrib = (DbTableAttribute)DbModelMappingCheker
-                .CheckDbTableAttrib(type);
+            //// Check table attrib.
+            //var tableAttrib = (DbTableAttribute)DbModelMappingCheker
+            //    .CheckDbTableAttrib(type);
+
+            //if (tableAttrib != null)
+            //{
+            //    // Get a table name.
+            //    var tableName = tableAttrib.Name;               
+
+            //    // Open connection.
+            //    Connection.Open();
+
+            //    var command = Connection.CreateCommand();
+            //    var cmd = $"INSERT INTO {tableName} (";
+                
+            //    var props = type.GetProperties();
+            //    foreach (var prop in props)
+            //    {
+            //        cmd += $"{prop.Name}";
+            //    }
+            //    cmd += $") VALUES{idFieldName}=@id;";
+            //    command.CommandText = cmd;
+            //    command.CommandType = CommandType.Text;
+            //    command.Parameters.Add(new SqlParameter("@id", id));
+
+            //    // Execute reader.
+            //    var reader = (SqlDataReader)command.ExecuteReader();
+            //    var namedValues = this.GetNamedValuesPairs(reader);
+            //    reader.Close();
+
+            //    // Close connection.
+            //    Connection.Close();
+            //}
+            //else
+            //    throw new ApplicationException("Current TModel is not a DB table.");
         }
 
         /// <summary>
@@ -63,22 +95,9 @@ namespace CustomORM.DataAccess
             {
                 // Get a table name.
                 var tableName = tableAttrib.Name;
-                var idFieldName = "";
-
-                // Find primary key member.
-                var members = type.GetMembers();
-                foreach (var member in members)
-                {
-                    var colAttrib = (DbColumnAttribute) DbModelMappingCheker
-                        .CheckDbColumnAttrib(member);
-
-                    if (colAttrib == null) continue;
-                    if (colAttrib.IsPrimaryKey == true)
-                    {
-                        idFieldName = colAttrib.Name;
-                        break;
-                    }
-                }
+                // Get id field name.
+                var idFieldName = this
+                    .GetModelPrimaryKeyNameAndIdValue(null, out int _);
 
                 // Open connection.
                 Connection.Open();
@@ -123,25 +142,8 @@ namespace CustomORM.DataAccess
                 // Get a table name.
                 var tableName = tableAttrib.Name;
                 // Get field id and value.
-                var idFieldName = "";
-                var idFieldValue = 0;
-
-                // Find primary key member.
-                var members = type.GetMembers();
-                foreach (var member in members)
-                {
-                    var colAttrib = (DbColumnAttribute)DbModelMappingCheker
-                        .CheckDbColumnAttrib(member);
-
-                    if (colAttrib == null) continue;
-                    if (colAttrib.IsPrimaryKey == true)
-                    {
-                        idFieldName = colAttrib.Name;
-                        idFieldValue = (int) type.GetProperty(idFieldName)
-                            .GetValue(entity);
-                        break;
-                    }
-                }
+                var idFieldName = this
+                    .GetModelPrimaryKeyNameAndIdValue(entity, out int idFieldValue);
 
                 // Open connection.
                 Connection.Open();
