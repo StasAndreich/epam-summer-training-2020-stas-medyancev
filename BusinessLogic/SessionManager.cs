@@ -18,6 +18,11 @@ namespace AccessToDb
             this.daoFactory = factory;
         }
 
+        public void GetSessionResultsTable()
+        {
 
+        }
+
+        
     }
 }

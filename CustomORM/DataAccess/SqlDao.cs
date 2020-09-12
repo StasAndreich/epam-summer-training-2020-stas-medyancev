@@ -164,6 +164,10 @@ namespace CustomORM.DataAccess
                 throw new ApplicationException("Current TModel is not a DB table.");
         }
 
+        /// <summary>
+        /// Updates an entity object in a database table.
+        /// </summary>
+        /// <param name="entity"></param>
         public void Update(TModel entity)
         {
             throw new NotImplementedException();
