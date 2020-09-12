@@ -1,5 +1,6 @@
 ﻿using CustomORM.Mapping;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -168,11 +169,45 @@ namespace CustomORM.DataAccess
             throw new NotImplementedException();
         }
 
-        
+        /// <summary>
+        /// Selects all entities from database table.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<TModel> GetAll()
+        {
+            var type = typeof(TModel);
 
-        //public IEnumerable<TModel> GetAll()
-        //{
+            // Check table attrib.
+            var tableAttrib = (DbTableAttribute)DbModelMappingCheker
+                .CheckDbTableAttrib(type);
 
-        //}
+            if (tableAttrib != null)
+            {
+                // Get a table name.
+                var tableName = tableAttrib.Name;
+
+                // Open connection.
+                Connection.Open();
+
+                var command = Connection.CreateCommand();
+                command.CommandText = $"SELECT * FROM {tableName};";
+                command.CommandType = CommandType.Text;
+
+                // Execute reader.
+                var reader = (SqlDataReader)command.ExecuteReader();
+                var namedValues = this.GetNamedValuesPairs(reader);
+                reader.Close();
+
+                // Get models.
+                var models = this.InstantiateModelsFromNamedValues(namedValues);
+
+                // Close connection.
+                Connection.Close();
+
+                return models;
+            }
+            else
+                throw new ApplicationException("Current TModel is not a DB table.");
+        }
     }
 }

@@ -63,18 +63,23 @@ namespace CustomORM.DataAccess
             foreach (var namedValues in namedValuesList)
             {
                 var model = (TModel)Activator.CreateInstance(typeof(TModel), null);
-                var props = model.GetType().GetProperties();
+                // Get all model props.
+                var modelProps = model.GetType().GetProperties();
 
-                foreach (var prop in props)
+                foreach (var prop in modelProps)
                 {
-                    if (namedValues.ContainsKey(prop.Name))
+                    var columnAttribute = (DbColumnAttribute)DbModelMappingCheker
+                        .CheckDbColumnAttrib(prop);
+
+                    // Find attrib column names in names values dictionary.
+                    if (namedValues.ContainsKey(columnAttribute.Name))
                     {
-                        var value = namedValues[prop.Name];
+                        var value = namedValues[columnAttribute.Name];
                         prop.SetValue(model, value);
                     }
                     else
                         throw new ApplicationException($"Missing value of a TModel" +
-                            $" property: {prop.Name}.");
+                            $" property: {prop.Name}. DbColumn: {columnAttribute.Name}.");
                 }
 
                 modelsList.Add(model);

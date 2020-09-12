@@ -11,7 +11,10 @@ namespace CustomORM.Mapping
         /// <summary>
         /// Initializes a new instance of the CustomORM.Mapping.DbColumnAttribute class.
         /// </summary>
-        public DbColumnAttribute() { }
+        public DbColumnAttribute(string columnName) 
+        {
+            Name = columnName;
+        }
 
         /// <summary>
         /// Gets or sets the name of a column.

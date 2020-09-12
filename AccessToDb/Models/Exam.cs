@@ -12,31 +12,31 @@ namespace AccessToDb.Models
         /// <summary>
         /// ExamID field.
         /// </summary>
-        [DbColumn(IsPrimaryKey = true)]
+        [DbColumn("ExamID", IsPrimaryKey = true)]
         public int ExamID { get; set; }
 
         /// <summary>
         /// SubjectID field.
         /// </summary>
-        [DbColumn]
+        [DbColumn("SubjectID")]
         public int SubjectID { get; set; }
 
         /// <summary>
         /// Date field.
         /// </summary>
-        [DbColumn]
+        [DbColumn("Date")]
         public DateTime Date { get; set; }
 
         /// <summary>
         /// StudentID field.
         /// </summary>
-        [DbColumn]
+        [DbColumn("StudentID")]
         public int StudentID { get; set; }
 
         /// <summary>
         /// Mark field.
         /// </summary>
-        [DbColumn]
+        [DbColumn("Mark")]
         public int Mark { get; set; }
     }
 }

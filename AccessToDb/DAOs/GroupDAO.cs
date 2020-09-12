@@ -16,7 +16,7 @@ namespace AccessToDb.Contexts
         /// <returns>Groups IEnumerable.</returns>
         public IEnumerable<Group> GetGroups()
         {
-            throw new NotImplementedException();
+            return GetAll();
         }
     }
 }

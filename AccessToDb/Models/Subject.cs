@@ -11,13 +11,13 @@ namespace AccessToDb.Models
         /// <summary>
         /// SubjectID field.
         /// </summary>
-        [DbColumn(IsPrimaryKey = true)]
+        [DbColumn("SubjectID", IsPrimaryKey = true)]
         public int SubjectID { get; set; }
 
         /// <summary>
         /// SubjectName field.
         /// </summary>
-        [DbColumn(CanBeNull = false)]
+        [DbColumn("SubjectName", CanBeNull = false)]
         public string SubjectName { get; set; }
     }
 }

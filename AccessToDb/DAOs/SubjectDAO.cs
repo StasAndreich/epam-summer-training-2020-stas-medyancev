@@ -17,7 +17,7 @@ namespace AccessToDb.DAOs
         /// <returns>Subject IEnumerable.</returns>
         public IEnumerable<Subject> GetSubjects()
         {
-            throw new NotImplementedException();
+            return GetAll();
         }
     }
 }

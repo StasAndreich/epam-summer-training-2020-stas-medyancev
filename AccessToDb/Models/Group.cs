@@ -11,13 +11,13 @@ namespace AccessToDb.Models
         /// <summary>
         /// GroupID field.
         /// </summary>
-        [DbColumn(IsPrimaryKey = true, Name = "GroupID")]
+        [DbColumn("GroupID", IsPrimaryKey = true)]
         public int GroupID { get; set; }
 
         /// <summary>
         /// GroupName field.
         /// </summary>
-        [DbColumn(CanBeNull = false)]
+        [DbColumn("GroupName", CanBeNull = false)]
         public string GroupName { get; set; }
     }
 }

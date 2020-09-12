@@ -12,43 +12,43 @@ namespace AccessToDb.Models
         /// <summary>
         /// StudentId field.
         /// </summary>
-        [DbColumn(IsPrimaryKey = true)]
+        [DbColumn("StudentId", IsPrimaryKey = true)]
         public int StudentId { get; set; }
 
         /// <summary>
         /// FirstName field.
         /// </summary>
-        [DbColumn(CanBeNull = false)]
+        [DbColumn("FirstName", CanBeNull = false)]
         public string FirstName { get; set; }
 
         /// <summary>
         /// LastName field.
         /// </summary>
-        [DbColumn(CanBeNull = false)]
+        [DbColumn("LastName", CanBeNull = false)]
         public string LastName { get; set; }
 
         /// <summary>
         /// PatronymicName field.
         /// </summary>
-        [DbColumn(CanBeNull = false)]
+        [DbColumn("PatronymicName", CanBeNull = false)]
         public string PatronymicName { get; set; }
 
         /// <summary>
         /// Sex field.
         /// </summary>
-        [DbColumn(CanBeNull = false)]
+        [DbColumn("Sex", CanBeNull = false)]
         public string Sex { get; set; }
 
         /// <summary>
         /// BirthDate field.
         /// </summary>
-        [DbColumn(CanBeNull = false)]
+        [DbColumn("BirthDate", CanBeNull = false)]
         public DateTime BirthDate { get; set; }
 
         /// <summary>
         /// GroupID field.
         /// </summary>
-        [DbColumn]
+        [DbColumn("GroupID")]
         public int GroupID { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace AccessToDb.DAOs
         /// <returns>Students IEnumerable.</returns>
         public IEnumerable<Student> GetStudents()
         {
-            throw new NotImplementedException();
+            return GetAll();
         }
     }
 }
