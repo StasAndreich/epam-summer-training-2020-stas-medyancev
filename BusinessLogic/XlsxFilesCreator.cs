@@ -4,8 +4,17 @@ using System.IO;
 
 namespace BusinessLogic
 {
+    /// <summary>
+    /// Defines all methods for creation xlsx files 
+    /// filled with session info.
+    /// </summary>
     public static class XlsxFilesCreator
     {
+        /// <summary>
+        /// Creates an xlsx file that holds session results
+        /// by each university group.
+        /// </summary>
+        /// <param name="filePath"></param>
         public static void CreateXslxResultsFile(string filePath)
         {
             using (var excelPackage = new ExcelPackage())

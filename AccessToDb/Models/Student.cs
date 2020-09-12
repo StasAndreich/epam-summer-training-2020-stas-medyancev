@@ -12,8 +12,8 @@ namespace AccessToDb.Models
         /// <summary>
         /// StudentId field.
         /// </summary>
-        [DbColumn("StudentId", IsPrimaryKey = true)]
-        public int StudentId { get; set; }
+        [DbColumn("StudentID", IsPrimaryKey = true)]
+        public int StudentID { get; set; }
 
         /// <summary>
         /// FirstName field.

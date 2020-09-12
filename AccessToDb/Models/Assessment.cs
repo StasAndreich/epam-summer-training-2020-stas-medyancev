@@ -24,8 +24,8 @@ namespace AccessToDb.Models
         /// <summary>
         /// Date field.
         /// </summary>
-        [DbColumn("Date")]
-        public DateTime Date { get; set; }
+        [DbColumn("AssessmentDate")]
+        public DateTime AssessmentDate { get; set; }
 
         /// <summary>
         /// StudentID field.

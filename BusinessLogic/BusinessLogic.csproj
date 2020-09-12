@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\BusinessLogic.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,6 +58,10 @@
     <ProjectReference Include="..\AccessToDb\AccessToDb.csproj">
       <Project>{7170cd17-345a-4f06-95ce-90fc548d5c79}</Project>
       <Name>AccessToDb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomORM\CustomORM.csproj">
+      <Project>{6A4996A0-D8E1-4013-9584-8A9F83B644C2}</Project>
+      <Name>CustomORM</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

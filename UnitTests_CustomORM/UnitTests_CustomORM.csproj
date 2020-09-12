@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="UT_CRUD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UT_XlsxFilesCreation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -60,6 +61,10 @@
     <ProjectReference Include="..\AccessToDb\AccessToDb.csproj">
       <Project>{7170cd17-345a-4f06-95ce-90fc548d5c79}</Project>
       <Name>AccessToDb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
+      <Project>{E7E79B34-08DF-4AF2-94EA-7F89A71B86D7}</Project>
+      <Name>BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\CustomORM\CustomORM.csproj">
       <Project>{6a4996a0-d8e1-4013-9584-8a9f83b644c2}</Project>
