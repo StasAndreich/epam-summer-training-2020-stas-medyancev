@@ -1,5 +1,7 @@
 ﻿using OfficeOpenXml;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace BusinessLogic
@@ -8,14 +10,16 @@ namespace BusinessLogic
     /// Defines all methods for creation xlsx files 
     /// filled with session info.
     /// </summary>
-    public static class XlsxFilesCreator
+    internal static class XlsxFilesCreator
     {
         /// <summary>
         /// Creates an xlsx file that holds session results
         /// by each university group.
         /// </summary>
         /// <param name="filePath"></param>
-        public static void CreateXslxResultsFile(string filePath)
+        /// <param name="results"></param>
+        internal static void CreateXslxResultsFile(string filePath, 
+                                                 IEnumerable<SessionGroupResults> results)
         {
             using (var excelPackage = new ExcelPackage())
             {

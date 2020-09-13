@@ -1,5 +1,6 @@
 ﻿using AccessToDb.Contracts;
 using AccessToDb.Models;
+using BusinessLogic;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -71,20 +72,27 @@ namespace AccessToDb
             return dao.GetGroups();
         }
 
-        public void GetSessionResults()
+        /// <summary>
+        /// Gets session results IEnumerable.
+        /// </summary>
+        internal IEnumerable<SessionGroupResults> GetSessionResults()
         {
             // Join tables.
             var results = from student in GetStudents()
                           join gr in GetGroups()
                             on student.GroupID equals gr.GroupID
-                          join assessment in GetAssessments()
-                            on student.StudentID equals assessment.StudentID
                           join exam in GetExams()
                             on student.StudentID equals exam.StudentID
                           join subject in GetSubjects()
-                            on assessment.SubjectID equals subject.SubjectID
-                          select student;
-            var t = 5;
+                            on exam.SubjectID equals subject.SubjectID
+                          select new SessionGroupResults(student.FirstName,
+                                                         student.LastName,
+                                                         student.PatronymicName,
+                                                         gr.GroupName,
+                                                         subject.SubjectName,
+                                                         exam.Mark);
+            //var t = 5;
+            return results;
         }
     }
 }
