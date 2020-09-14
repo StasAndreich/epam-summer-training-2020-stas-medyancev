@@ -1,6 +1,7 @@
 ﻿using AccessToDb.Contracts;
 using AccessToDb.Models;
 using BusinessLogic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -73,26 +74,50 @@ namespace AccessToDb
         }
 
         /// <summary>
-        /// Gets session results IEnumerable.
+        /// Gets session results IEnumerable by date.
         /// </summary>
-        internal IEnumerable<SessionGroupResults> GetSessionResults()
+        public IEnumerable<SessionResults> GetSessionResults(DateTime startDate,
+                                                                    DateTime endDate)
         {
-            // Join tables.
-            var results = from student in GetStudents()
+            // Join tables on exams.
+            var examResults = from student in GetStudents()
                           join gr in GetGroups()
                             on student.GroupID equals gr.GroupID
                           join exam in GetExams()
                             on student.StudentID equals exam.StudentID
                           join subject in GetSubjects()
                             on exam.SubjectID equals subject.SubjectID
-                          select new SessionGroupResults(student.FirstName,
+                          where exam.ExamDate >= startDate && exam.ExamDate <= endDate 
+                          select new SessionResults(student.FirstName,
                                                          student.LastName,
                                                          student.PatronymicName,
                                                          gr.GroupName,
                                                          subject.SubjectName,
-                                                         exam.Mark);
-            //var t = 5;
-            return results;
+                                                         exam.Mark.ToString());
+            
+            // Join tables on assessments.
+            var assessmentResults = from student in GetStudents()
+                              join gr in GetGroups()
+                                on student.GroupID equals gr.GroupID
+                              join assessment in GetAssessments()
+                                on student.StudentID equals assessment.StudentID
+                              join subject in GetSubjects()
+                                on assessment.SubjectID equals subject.SubjectID
+                              where assessment.AssessmentDate >= startDate &&
+                                    assessment.AssessmentDate <= endDate
+                              select new SessionResults(student.FirstName,
+                                                             student.LastName,
+                                                             student.PatronymicName,
+                                                             gr.GroupName,
+                                                             subject.SubjectName,
+                                                             assessment.Result);
+
+            var result = new List<SessionResults>(examResults.Count() +
+                                                         assessmentResults.Count());
+            result.AddRange(examResults);
+            result.AddRange(assessmentResults);
+
+            return result;
         }
     }
 }

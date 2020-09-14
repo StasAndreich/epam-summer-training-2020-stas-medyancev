@@ -34,51 +34,6 @@ namespace CustomORM.DataAccess
         #endregion
 
         /// <summary>
-        /// Creates a new entity in its table.
-        /// </summary>
-        /// <param name="entity"></param>
-        public void Add(TModel entity)
-        {
-            //var type = typeof(TModel);
-
-            //// Check table attrib.
-            //var tableAttrib = (DbTableAttribute)DbModelMappingCheker
-            //    .CheckDbTableAttrib(type);
-
-            //if (tableAttrib != null)
-            //{
-            //    // Get a table name.
-            //    var tableName = tableAttrib.Name;               
-
-            //    // Open connection.
-            //    Connection.Open();
-
-            //    var command = Connection.CreateCommand();
-            //    var cmd = $"INSERT INTO {tableName} (";
-                
-            //    var props = type.GetProperties();
-            //    foreach (var prop in props)
-            //    {
-            //        cmd += $"{prop.Name}";
-            //    }
-            //    cmd += $") VALUES{idFieldName}=@id;";
-            //    command.CommandText = cmd;
-            //    command.CommandType = CommandType.Text;
-            //    command.Parameters.Add(new SqlParameter("@id", id));
-
-            //    // Execute reader.
-            //    var reader = (SqlDataReader)command.ExecuteReader();
-            //    var namedValues = this.GetNamedValuesPairs(reader);
-            //    reader.Close();
-
-            //    // Close connection.
-            //    Connection.Close();
-            //}
-            //else
-            //    throw new ApplicationException("Current TModel is not a DB table.");
-        }
-
-        /// <summary>
         /// Selects an entity (first or default if multiple) 
         /// from database by its ID.
         /// </summary>
@@ -165,15 +120,6 @@ namespace CustomORM.DataAccess
         }
 
         /// <summary>
-        /// Updates an entity object in a database table.
-        /// </summary>
-        /// <param name="entity"></param>
-        public void Update(TModel entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Selects all entities from database table.
         /// </summary>
         /// <returns></returns>
@@ -212,6 +158,60 @@ namespace CustomORM.DataAccess
             }
             else
                 throw new ApplicationException("Current TModel is not a DB table.");
+        }
+
+        /// <summary>
+        /// Creates a new entity in its table.
+        /// </summary>
+        /// <param name="entity"></param>
+        public void Add(TModel entity)
+        {
+            //var type = typeof(TModel);
+
+            //// Check table attrib.
+            //var tableAttrib = (DbTableAttribute)DbModelMappingCheker
+            //    .CheckDbTableAttrib(type);
+
+            //if (tableAttrib != null)
+            //{
+            //    // Get a table name.
+            //    var tableName = tableAttrib.Name;               
+
+            //    // Open connection.
+            //    Connection.Open();
+
+            //    var command = Connection.CreateCommand();
+            //    var cmd = $"INSERT INTO {tableName} (";
+
+            //    var props = type.GetProperties();
+            //    foreach (var prop in props)
+            //    {
+            //        cmd += $"{prop.Name}";
+            //    }
+            //    cmd += $") VALUES{idFieldName}=@id;";
+            //    command.CommandText = cmd;
+            //    command.CommandType = CommandType.Text;
+            //    command.Parameters.Add(new SqlParameter("@id", id));
+
+            //    // Execute reader.
+            //    var reader = (SqlDataReader)command.ExecuteReader();
+            //    var namedValues = this.GetNamedValuesPairs(reader);
+            //    reader.Close();
+
+            //    // Close connection.
+            //    Connection.Close();
+            //}
+            //else
+            //    throw new ApplicationException("Current TModel is not a DB table.");
+        }
+
+        /// <summary>
+        /// Updates an entity object in a database table.
+        /// </summary>
+        /// <param name="entity"></param>
+        public void Update(TModel entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

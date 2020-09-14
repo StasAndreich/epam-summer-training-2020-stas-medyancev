@@ -12,7 +12,7 @@ namespace UnitTests_BusinessLogic
         {
             //XlsxFilesCreator.CreateXslxResultsFile("file.xlsx");
             var m = new SessionManager(new DaoFactory());
-            m.GetSessionResults();
+            m.
         }
     }
 }
