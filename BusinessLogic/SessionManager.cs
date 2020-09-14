@@ -1,6 +1,7 @@
 ﻿using AccessToDb.Contracts;
 using AccessToDb.Models;
 using BusinessLogic;
+using BusinessLogic.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,7 +75,7 @@ namespace AccessToDb
         }
 
         /// <summary>
-        /// Gets session results IEnumerable by date.
+        /// Gets session results IEnumerable by date interval.
         /// </summary>
         public IEnumerable<SessionResults> GetSessionResults(DateTime startDate,
                                                                     DateTime endDate)
@@ -119,5 +120,34 @@ namespace AccessToDb
 
             return result;
         }
+
+        /// <summary>
+        /// Returns a min-avg-max session statictics by groups.
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public IEnumerable<SessionStatistics> GetSessionStatistics(DateTime startDate,
+                                                                    DateTime endDate)
+        {
+            var statistics = from student in GetStudents()
+                             join gr in GetGroups()
+                               on student.GroupID equals gr.GroupID
+                             join exam in GetExams()
+                               on student.StudentID equals exam.StudentID
+                             where exam.ExamDate >= startDate &&
+                                exam.ExamDate <= endDate
+                             group exam by gr.GroupName into marks
+                             select new SessionStatistics(marks.Key,
+                                                          marks.Min(e => e.Mark),
+                                                          (float)marks.Average(e => e.Mark),
+                                                          marks.Max(e => e.Mark));
+            return statistics;
+        }
+
+        //public IEnumerable<Student> GetContributableStudents()
+        //{
+
+        //}
     }
 }
