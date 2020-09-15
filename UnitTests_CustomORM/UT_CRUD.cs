@@ -1,7 +1,5 @@
-﻿using System;
-using AccessToDb.Contexts;
+﻿using AccessToDb.Contexts;
 using AccessToDb.DAOs;
-using AccessToDb.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests_CustomORM

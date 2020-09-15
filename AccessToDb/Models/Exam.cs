@@ -38,5 +38,26 @@ namespace AccessToDb.Models
         /// </summary>
         [DbColumn("Mark")]
         public int Mark { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Exam exam &&
+                   ExamID == exam.ExamID &&
+                   SubjectID == exam.SubjectID &&
+                   ExamDate == exam.ExamDate &&
+                   StudentID == exam.StudentID &&
+                   Mark == exam.Mark;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 517185996;
+            hashCode = hashCode * -1521134295 + ExamID.GetHashCode();
+            hashCode = hashCode * -1521134295 + SubjectID.GetHashCode();
+            hashCode = hashCode * -1521134295 + ExamDate.GetHashCode();
+            hashCode = hashCode * -1521134295 + StudentID.GetHashCode();
+            hashCode = hashCode * -1521134295 + Mark.GetHashCode();
+            return hashCode;
+        }
     }
 }

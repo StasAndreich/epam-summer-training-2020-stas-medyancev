@@ -1,5 +1,6 @@
 ﻿using CustomORM.Mapping;
 using System;
+using System.Collections.Generic;
 
 namespace AccessToDb.Models
 {
@@ -38,5 +39,26 @@ namespace AccessToDb.Models
         /// </summary>
         [DbColumn("Result")]
         public string Result { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Assessment assessment &&
+                   AssessmentID == assessment.AssessmentID &&
+                   SubjectID == assessment.SubjectID &&
+                   AssessmentDate == assessment.AssessmentDate &&
+                   StudentID == assessment.StudentID &&
+                   Result == assessment.Result;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -1612082888;
+            hashCode = hashCode * -1521134295 + AssessmentID.GetHashCode();
+            hashCode = hashCode * -1521134295 + SubjectID.GetHashCode();
+            hashCode = hashCode * -1521134295 + AssessmentDate.GetHashCode();
+            hashCode = hashCode * -1521134295 + StudentID.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Result);
+            return hashCode;
+        }
     }
 }

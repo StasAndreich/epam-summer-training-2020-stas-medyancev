@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CustomORM.Mapping;
 
 namespace AccessToDb.Models
@@ -50,5 +51,30 @@ namespace AccessToDb.Models
         /// </summary>
         [DbColumn("GroupID")]
         public int GroupID { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Student student &&
+                   StudentID == student.StudentID &&
+                   FirstName == student.FirstName &&
+                   LastName == student.LastName &&
+                   PatronymicName == student.PatronymicName &&
+                   Sex == student.Sex &&
+                   BirthDate == student.BirthDate &&
+                   GroupID == student.GroupID;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -896933197;
+            hashCode = hashCode * -1521134295 + StudentID.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FirstName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LastName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PatronymicName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Sex);
+            hashCode = hashCode * -1521134295 + BirthDate.GetHashCode();
+            hashCode = hashCode * -1521134295 + GroupID.GetHashCode();
+            return hashCode;
+        }
     }
 }

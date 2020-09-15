@@ -9,20 +9,42 @@ namespace UnitTests_BusinessLogic
     public class UT_Xlsx
     {
         [TestMethod]
-        public void TestMethod2()
+        public void CreateXlsxResultsFile_FilePathAndResults_XlsxFile()
         {
-            //XlsxFilesCreator.CreateXslxResultsFile("file.xlsx");
-            var m = new SessionManager(new DaoFactory());
+            var manager = new SessionManager(new DaoFactory());
 
-            XlsxFilesCreator.CreateXlsxResultsFile("SessionResults.xlsx", m.GetSessionResults(new System.DateTime(2020, 01, 01),
+            XlsxFilesCreator.CreateXlsxResultsFile("SessionResults.xlsx", 
+                manager.GetSessionResults(new System.DateTime(2020, 01, 01),
+                                       new System.DateTime(2020, 09, 01)));
+            
+            // If no exceptions during file creation.
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void CreateXlsxStatisticsFile_FilePathAndStats_XlsxFile()
+        {
+            var manager = new SessionManager(new DaoFactory());
+
+            XlsxFilesCreator.CreateXlsxStatisticsFile("SessionStats.xlsx",
+                manager.GetSessionStatistics(new System.DateTime(2020, 01, 01),
                                        new System.DateTime(2020, 09, 01)));
 
-            XlsxFilesCreator.CreateXlsxStatisticsFile("SessionStats.xlsx", m.GetSessionStatistics(new System.DateTime(2020, 01, 01),
-                                       new System.DateTime(2020, 09, 01)));
+            // If no exceptions during file creation.
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void CreateXlsxContributableStudentsFile_FilePathAndStudents_XlsxFile()
+        {
+            var manager = new SessionManager(new DaoFactory());
 
             XlsxFilesCreator.CreateXlsxContributableStudentsFile("ContributableStudents.xlsx",
-                m.GetContributableStudents(new System.DateTime(2020, 01, 01),
+                manager.GetContributableStudents(new System.DateTime(2020, 01, 01),
                                        new System.DateTime(2020, 09, 01)));
+
+            // If no exceptions during file creation.
+            Assert.IsTrue(true);
         }
     }
 }

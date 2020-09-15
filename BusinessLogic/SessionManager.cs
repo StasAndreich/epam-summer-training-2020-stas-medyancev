@@ -118,6 +118,8 @@ namespace AccessToDb
             result.AddRange(examResults);
             result.AddRange(assessmentResults);
 
+            result.OrderBy(r => r.studentLastname);
+
             return result;
         }
 
@@ -142,6 +144,9 @@ namespace AccessToDb
                                                           marks.Min(e => e.Mark),
                                                           (float)marks.Average(e => e.Mark),
                                                           marks.Max(e => e.Mark));
+            // Apply sorting.
+            statistics.OrderBy(stat => stat.groupName);
+
             return statistics;
         }
 
@@ -170,6 +175,8 @@ namespace AccessToDb
                                patronym = student.PatronymicName,
                                mark = exam.Mark
                            };
+            students.OrderBy(st => st.lastName);
+
             return students;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using CustomORM.Mapping;
+using System.Collections.Generic;
 
 namespace AccessToDb.Models
 {
@@ -19,5 +20,20 @@ namespace AccessToDb.Models
         /// </summary>
         [DbColumn("SubjectName", CanBeNull = false)]
         public string SubjectName { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Subject subject &&
+                   SubjectID == subject.SubjectID &&
+                   SubjectName == subject.SubjectName;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 64492478;
+            hashCode = hashCode * -1521134295 + SubjectID.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(SubjectName);
+            return hashCode;
+        }
     }
 }
