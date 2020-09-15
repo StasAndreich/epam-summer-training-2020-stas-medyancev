@@ -122,5 +122,44 @@ namespace CustomORM.DataAccess
 
             return idFieldName;
         }
+
+        /// <summary>
+        /// Gets IDictionary of model prop value objects.
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="_"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public static IDictionary<string, object> GetModelNamedValues<TModel>(
+            this SqlDao<TModel> _, TModel entity)
+            where TModel : class
+        {
+            var dictionary = new Dictionary<string, object>();
+
+            // Find primary key member.
+            var props = typeof(TModel).GetProperties();
+            foreach (var prop in props)
+            {
+                var propName = "";
+                object propValue = null;
+
+                var colAttrib = (DbColumnAttribute)DbModelMappingCheker
+                    .CheckDbColumnAttrib(prop);
+
+                if (colAttrib == null) continue;
+                if (colAttrib.IsPrimaryKey == false)
+                {
+                    propName = colAttrib.Name;
+                    if (entity != null)
+                    {
+                        propValue = typeof(TModel).GetProperty(propName)
+                            .GetValue(entity);
+                        dictionary.Add(propName, propValue);
+                    }
+                }
+            }
+
+            return dictionary;
+        }
     }
 }

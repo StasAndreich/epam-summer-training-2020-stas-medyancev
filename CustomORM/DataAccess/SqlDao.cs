@@ -166,43 +166,48 @@ namespace CustomORM.DataAccess
         /// <param name="entity"></param>
         public void Add(TModel entity)
         {
-            //var type = typeof(TModel);
+            var type = typeof(TModel);
 
-            //// Check table attrib.
-            //var tableAttrib = (DbTableAttribute)DbModelMappingCheker
-            //    .CheckDbTableAttrib(type);
+            // Check table attrib.
+            var tableAttrib = (DbTableAttribute)DbModelMappingCheker
+                .CheckDbTableAttrib(type);
 
-            //if (tableAttrib != null)
-            //{
-            //    // Get a table name.
-            //    var tableName = tableAttrib.Name;               
+            if (tableAttrib != null)
+            {
+                // Get a table name.
+                var tableName = tableAttrib.Name;
+                var namedValues = this.GetModelNamedValues(entity);
 
-            //    // Open connection.
-            //    Connection.Open();
+                // Open connection.
+                Connection.Open();
 
-            //    var command = Connection.CreateCommand();
-            //    var cmd = $"INSERT INTO {tableName} (";
+                var command = Connection.CreateCommand();
+                // Add fields.
+                var cmd = $"INSERT INTO {tableName} (";
+                cmd += GetSeparatedStringFromNames(namedValues.Keys.ToList(),
+                                                   ",");
+                // Add values.
+                cmd += ") VALUES (@";
+                var valuesStr = GetSeparatedStringFromNames(namedValues.Keys.ToList(),
+                                                   ",@");
+                cmd += valuesStr + ");";
 
-            //    var props = type.GetProperties();
-            //    foreach (var prop in props)
-            //    {
-            //        cmd += $"{prop.Name}";
-            //    }
-            //    cmd += $") VALUES{idFieldName}=@id;";
-            //    command.CommandText = cmd;
-            //    command.CommandType = CommandType.Text;
-            //    command.Parameters.Add(new SqlParameter("@id", id));
+                command.CommandText = cmd;
+                command.CommandType = CommandType.Text;
+                // Add params.
+                foreach (var val in namedValues)
+                {
+                    command.Parameters.AddWithValue($"@{val.Key}", val.Value);
+                }
+                
+                if (command.ExecuteNonQuery() == 0)
+                    throw new ApplicationException("Row not added.");
 
-            //    // Execute reader.
-            //    var reader = (SqlDataReader)command.ExecuteReader();
-            //    var namedValues = this.GetNamedValuesPairs(reader);
-            //    reader.Close();
-
-            //    // Close connection.
-            //    Connection.Close();
-            //}
-            //else
-            //    throw new ApplicationException("Current TModel is not a DB table.");
+                // Close connection.
+                Connection.Close();
+            }
+            else
+                throw new ApplicationException("Current TModel is not a DB table.");
         }
 
         /// <summary>
@@ -213,5 +218,26 @@ namespace CustomORM.DataAccess
         {
             throw new NotImplementedException();
         }
+
+        #region Private utils.
+        private string GetSeparatedStringFromNames(IEnumerable<string> enumerable,
+            string separator)
+        {
+            var str = "";
+
+            var i = 1;
+            foreach (var item in enumerable)
+            {
+                str += item;
+                if (i != enumerable.Count())
+                {
+                    // Add separator.
+                    str += $"{separator}";
+                    i++;
+                }
+            }
+            return str;
+        } 
+        #endregion
     }
 }

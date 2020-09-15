@@ -1,5 +1,6 @@
 ﻿using AccessToDb.Contexts;
 using AccessToDb.DAOs;
+using AccessToDb.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests_CustomORM
@@ -98,7 +99,21 @@ namespace UnitTests_CustomORM
             var students = dao.GetAll();
             // If there is no exceptions.
             Assert.IsTrue(true);
-        } 
+        }
         #endregion
+
+        [TestMethod]
+        public void Add_GroupDAO_GroupModels()
+        {
+            var group = new Group()
+            {
+                GroupID = 89,
+                GroupName = "ITP-11"
+            };
+            var dao = new GroupDAO();
+            dao.Add(group);
+            // If there is no exceptions.
+            Assert.IsTrue(true);
+        }
     }
 }
