@@ -78,7 +78,9 @@ namespace AccessToDb
         /// Gets session results IEnumerable by date interval.
         /// </summary>
         public IEnumerable<SessionResults> GetSessionResults(DateTime startDate,
-                                                                    DateTime endDate)
+                                                             DateTime endDate,
+                                                             Func<IEnumerable<SessionResults>,
+                                                                    IEnumerable<SessionResults>> sort)
         {
             // Join tables on exams.
             var examResults = from student in GetStudents()
@@ -118,9 +120,7 @@ namespace AccessToDb
             result.AddRange(examResults);
             result.AddRange(assessmentResults);
 
-            result.OrderBy(r => r.studentLastname);
-
-            return result;
+            return sort(result);
         }
 
         /// <summary>
@@ -128,9 +128,12 @@ namespace AccessToDb
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
+        /// <param name="sort"></param>
         /// <returns></returns>
         public IEnumerable<SessionStatistics> GetSessionStatistics(DateTime startDate,
-                                                                    DateTime endDate)
+                                                                   DateTime endDate,
+                                                                   Func<IEnumerable<SessionStatistics>,
+                                                                       IEnumerable<SessionStatistics>> sort)
         {
             var statistics = from student in GetStudents()
                              join gr in GetGroups()
@@ -144,10 +147,8 @@ namespace AccessToDb
                                                           marks.Min(e => e.Mark),
                                                           (float)marks.Average(e => e.Mark),
                                                           marks.Max(e => e.Mark));
-            // Apply sorting.
-            statistics.OrderBy(stat => stat.groupName);
 
-            return statistics;
+            return sort(statistics);
         }
 
         /// <summary>
@@ -155,9 +156,12 @@ namespace AccessToDb
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
+        /// <param name="sort"></param>
         /// <returns></returns>
         public IEnumerable<ContributableStudents> GetContributableStudents(DateTime startDate,
-                                                                    DateTime endDate)
+                                                                    DateTime endDate,
+                                                                    Func<IEnumerable<ContributableStudents>,
+                                                                    IEnumerable<ContributableStudents>> sort)
         {
             var students = from student in GetStudents()
                            join gr in GetGroups()
@@ -175,9 +179,8 @@ namespace AccessToDb
                                patronym = student.PatronymicName,
                                mark = exam.Mark
                            };
-            students.OrderBy(st => st.lastName);
 
-            return students;
+            return sort(students);
         }
     }
 }
