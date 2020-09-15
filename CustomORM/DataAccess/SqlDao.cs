@@ -216,7 +216,52 @@ namespace CustomORM.DataAccess
         /// <param name="entity"></param>
         public void Update(TModel entity)
         {
-            throw new NotImplementedException();
+            var type = typeof(TModel);
+
+            // Check table attrib.
+            var tableAttrib = (DbTableAttribute)DbModelMappingCheker
+                .CheckDbTableAttrib(type);
+
+            if (tableAttrib != null)
+            {
+                // Get a table name.
+                var tableName = tableAttrib.Name;
+                var namedValues = this.GetModelNamedValues(entity);
+
+                // Open connection.
+                Connection.Open();
+
+                var command = Connection.CreateCommand();
+                // Add fields.
+                var cmd = $"UPDATE {tableName} SET ";
+                var i = 1;
+                foreach (var item in namedValues)
+                {
+                    cmd += $"{item.Key}=@{item.Key}";
+                    if (i != namedValues.Count())
+                    {
+                        cmd += ",";
+                        i++;
+                    }
+                    command.Parameters.AddWithValue($"@{item.Key}", item.Value);
+                }
+
+                // Get id name and value.
+                var idName = this.
+                    GetModelPrimaryKeyNameAndIdValue(entity, out int idValue);
+                cmd += $" WHERE {idName}={idValue};";
+
+                command.CommandText = cmd;
+                command.CommandType = CommandType.Text;
+
+                if (command.ExecuteNonQuery() == 0)
+                    throw new ApplicationException("Row not updated.");
+
+                // Close connection.
+                Connection.Close();
+            }
+            else
+                throw new ApplicationException("Current TModel is not a DB table.");
         }
 
         #region Private utils.

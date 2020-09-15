@@ -103,15 +103,28 @@ namespace UnitTests_CustomORM
         #endregion
 
         [TestMethod]
-        public void Add_GroupDAO_GroupModels()
+        public void Add_GroupDAO_InsertionIntoGroupsTable()
         {
             var group = new Group()
             {
-                GroupID = 89,
                 GroupName = "ITP-11"
             };
             var dao = new GroupDAO();
             dao.Add(group);
+            // If there is no exceptions.
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void Update_GroupDAO_GroupTableUpdated()
+        {
+            var group = new Group()
+            {
+                GroupID = 6,
+                GroupName = "ITP-21"
+            };
+            var dao = new GroupDAO();
+            dao.Update(group);
             // If there is no exceptions.
             Assert.IsTrue(true);
         }
