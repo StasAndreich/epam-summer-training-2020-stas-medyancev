@@ -19,6 +19,10 @@ namespace UnitTests_BusinessLogic
 
             XlsxFilesCreator.CreateXlsxStatisticsFile("SessionStats.xlsx", m.GetSessionStatistics(new System.DateTime(2020, 01, 01),
                                        new System.DateTime(2020, 09, 01)));
+
+            XlsxFilesCreator.CreateXlsxContributableStudentsFile("ContributableStudents.xlsx",
+                m.GetContributableStudents(new System.DateTime(2020, 01, 01),
+                                       new System.DateTime(2020, 09, 01)));
         }
     }
 }

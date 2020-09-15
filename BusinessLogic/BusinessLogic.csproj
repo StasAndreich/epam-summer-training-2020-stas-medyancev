@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\ContributableStudents.cs" />
     <Compile Include="DTOs\SessionExamResults.cs" />
     <Compile Include="DTOs\SessionStatistics.cs" />
     <Compile Include="SessionManager.cs" />

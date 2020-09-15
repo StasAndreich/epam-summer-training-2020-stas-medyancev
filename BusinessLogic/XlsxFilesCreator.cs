@@ -71,6 +71,41 @@ namespace BusinessLogic
             }
         }
 
+        /// <summary>
+        /// Creates an xlsx file that holds contributable students
+        /// by each university group.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="students"></param>
+        public static void CreateXlsxContributableStudentsFile(string filePath,
+                                                 IEnumerable<ContributableStudents> students)
+        {
+            using (var excelPackage = new ExcelPackage())
+            {
+                // Set excel document props.
+                excelPackage.Workbook.Properties.Title = "ContributableStudents";
+                excelPackage.Workbook.Properties.Created = DateTime.Now;
+
+                // Get students by group.
+                var resultsByGroup = from result in students
+                                     group result by result.groupName;
+
+                foreach (var item in resultsByGroup)
+                {
+                    // Create a worksheet.
+                    var worksheet = excelPackage.Workbook.Worksheets.
+                        Add($"{item.Key}");
+
+                    // Insert data into the worksheet.
+                    InsertContributableStudentsIntoWorksheet(worksheet, 
+                                                             item.ToList());
+                }
+
+                var file = new FileInfo(filePath);
+                excelPackage.SaveAs(file);
+            }
+        }
+
         private static void InsertResultsIntoWorksheet(ExcelWorksheet worksheet,
                                                        IEnumerable<SessionResults> groupResultList)
         {
@@ -109,6 +144,26 @@ namespace BusinessLogic
                 worksheet.Cells["B" + i].Value = item.minMark;
                 worksheet.Cells["C" + i].Value = item.avgMark;
                 worksheet.Cells["D" + i].Value = item.maxMark;
+                i++;
+            }
+        }
+
+        private static void InsertContributableStudentsIntoWorksheet(ExcelWorksheet worksheet,
+                                                       IEnumerable<ContributableStudents> students)
+        {
+            worksheet.Cells["A1"].Value = "Name";
+            worksheet.Cells["B1"].Value = "Last name";
+            worksheet.Cells["C1"].Value = "Patronym";
+            worksheet.Cells["D1"].Value = "Mark";
+
+            // Cell number.
+            var i = 2;
+            foreach (var item in students)
+            {
+                worksheet.Cells["A" + i].Value = item.name;
+                worksheet.Cells["B" + i].Value = item.lastName;
+                worksheet.Cells["C" + i].Value = item.patronym;
+                worksheet.Cells["D" + i].Value = item.mark;
                 i++;
             }
         }

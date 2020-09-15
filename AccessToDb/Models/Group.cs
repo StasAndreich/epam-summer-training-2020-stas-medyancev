@@ -1,4 +1,5 @@
 ﻿using CustomORM.Mapping;
+using System.Collections.Generic;
 
 namespace AccessToDb.Models
 {
@@ -19,5 +20,20 @@ namespace AccessToDb.Models
         /// </summary>
         [DbColumn("GroupName", CanBeNull = false)]
         public string GroupName { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Group group &&
+                   GroupID == group.GroupID &&
+                   GroupName == group.GroupName;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -149169712;
+            hashCode = hashCode * -1521134295 + GroupID.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(GroupName);
+            return hashCode;
+        }
     }
 }

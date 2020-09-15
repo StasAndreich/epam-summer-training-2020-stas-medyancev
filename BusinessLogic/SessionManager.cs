@@ -145,9 +145,32 @@ namespace AccessToDb
             return statistics;
         }
 
-        //public IEnumerable<Student> GetContributableStudents()
-        //{
-
-        //}
+        /// <summary>
+        /// Returns a contributable students IEnumerable.
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public IEnumerable<ContributableStudents> GetContributableStudents(DateTime startDate,
+                                                                    DateTime endDate)
+        {
+            var students = from student in GetStudents()
+                           join gr in GetGroups()
+                               on student.GroupID equals gr.GroupID
+                           join exam in GetExams()
+                               on student.StudentID equals exam.StudentID
+                           where exam.ExamDate >= startDate &&
+                                exam.ExamDate <= endDate &&
+                                exam.Mark < 4 && exam.Mark >= 1
+                           select new ContributableStudents()
+                           {
+                               groupName = gr.GroupName,
+                               name = student.FirstName,
+                               lastName = student.LastName,
+                               patronym = student.PatronymicName,
+                               mark = exam.Mark
+                           };
+            return students;
+        }
     }
 }
