@@ -1,67 +1,92 @@
-CREATE DATABASE UniversityDB;
+CREATE DATABASE UniversityDBExtended;
 GO
 
-USE  UniversityDB;
+USE  UniversityDBExtended;
 GO
 
-CREATE TABLE Groups
+CREATE TABLE Specialty
 (
-	GroupID INT PRIMARY KEY IDENTITY(1, 1),
-	GroupName NVARCHAR(10) NOT NULL
+	Id INT PRIMARY KEY IDENTITY(1, 1),
+	SpecialtyName NVARCHAR(50) NOT NULL
 );
 GO
 
-CREATE TABLE Students
+CREATE TABLE [Group]
 (
-	StudentID INT PRIMARY KEY IDENTITY(1, 1),
-	FirstName NVARCHAR(50) NOT NULL,
-	LastName NVARCHAR(50) NOT NULL,
-	PatronymicName NVARCHAR(50) NOT NULL,
+	Id INT PRIMARY KEY IDENTITY(1, 1),
+	GroupName NVARCHAR(10) NOT NULL,
+	SpecialtyId INT,
+
+	CONSTRAINT FK_GroupSpecialty FOREIGN KEY (SpecialtyId)
+	REFERENCES Specialty(Id)
+);
+GO
+
+CREATE TABLE Examiner
+(
+	Id INT PRIMARY KEY IDENTITY(1, 1),
+	[Name] NVARCHAR(50) NOT NULL,
+	Surname NVARCHAR(50) NOT NULL,
+	Patronym NVARCHAR(50) NOT NULL
+);
+GO
+
+CREATE TABLE Student
+(
+	Id INT PRIMARY KEY IDENTITY(1, 1),
+	[Name] NVARCHAR(50) NOT NULL,
+	Surname NVARCHAR(50) NOT NULL,
+	Patronym NVARCHAR(50) NOT NULL,
 	Sex NVARCHAR(10) NOT NULL,
 	BirthDate DATE NOT NULL,
-	GroupID INT,
+	GroupId INT,
 
-	CONSTRAINT FK_StudentGroup FOREIGN KEY (GroupID)
-	REFERENCES Groups(GroupID)
+	CONSTRAINT FK_StudentGroup FOREIGN KEY (GroupId)
+	REFERENCES [Group](Id)
 );
 GO
 
-CREATE TABLE Subjects
+CREATE TABLE [Subject]
 (
-	SubjectID INT PRIMARY KEY IDENTITY(1, 1),
+	Id INT PRIMARY KEY IDENTITY(1, 1),
 	SubjectName NVARCHAR(70) NOT NULL
 );
 GO
 
-CREATE TABLE Assessments
+CREATE TABLE Assessment
 (
-	AssessmentID INT PRIMARY KEY IDENTITY(1, 1),
-	SubjectID INT,
+	Id INT PRIMARY KEY IDENTITY(1, 1),
+	SubjectId INT,
 	AssessmentDate DATE,
-	StudentID INT,
+	StudentId INT,
 	Result NVARCHAR(10),
+	ExaminerId INT,
 
-	CONSTRAINT FK_AssessmentStudent FOREIGN KEY (StudentID)
-	REFERENCES Students(StudentID),
-	CONSTRAINT FK_AssessmentSubject FOREIGN KEY (SubjectID)
-	REFERENCES Subjects(SubjectID)
+	CONSTRAINT FK_AssessmentStudent FOREIGN KEY (StudentId)
+	REFERENCES Student(Id),
+	CONSTRAINT FK_AssessmentSubject FOREIGN KEY (SubjectId)
+	REFERENCES [Subject](Id),
+	CONSTRAINT FK_AssessmentExaminer FOREIGN KEY (ExaminerId)
+	REFERENCES Examiner(Id)
 );
 GO
 
-
-CREATE TABLE Exams
+CREATE TABLE Exam
 (
-	ExamID INT PRIMARY KEY IDENTITY(1, 1),
-	SubjectID INT,
+	Id INT PRIMARY KEY IDENTITY(1, 1),
+	SubjectId INT,
 	ExamDate DATE,
-	StudentID INT,
+	StudentId INT,
 	Mark INT,
+	ExaminerId INT,
 
 	CONSTRAINT CHK_Mark CHECK (Mark >= 1 AND Mark <= 10),
 
-	CONSTRAINT FK_ExamStudent FOREIGN KEY (StudentID)
-	REFERENCES Students(StudentID),
-	CONSTRAINT FK_ExamSubject FOREIGN KEY (SubjectID)
-	REFERENCES Subjects(SubjectID)
+	CONSTRAINT FK_ExamStudent FOREIGN KEY (StudentId)
+	REFERENCES Student(Id),
+	CONSTRAINT FK_ExamSubject FOREIGN KEY (SubjectId)
+	REFERENCES [Subject](Id),
+	CONSTRAINT FK_ExamExaminer FOREIGN KEY (ExaminerId)
+	REFERENCES Examiner(Id)
 );
 GO
