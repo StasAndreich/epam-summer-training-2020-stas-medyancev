@@ -3,16 +3,13 @@ using System.Data.Linq.Mapping;
 
 namespace LinqCRUD.Models
 {
-    [Table(Name = "Group")]
-    public class Group
+    [Table(Name = "Specialty")]
+    public class Specialty
     {
         [Column(IsPrimaryKey = true, IsDbGenerated = true)]
         public int Id { get; set; }
-
-        [Column]
-        public string GroupName { get; set; }
         
         [Column]
-        public int SpecialtyId { get; set; }
+        public string SpecialtyName { get; set; }
     }
 }
