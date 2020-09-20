@@ -67,6 +67,7 @@
     <Compile Include="Contracts\IExaminerRepository.cs" />
     <Compile Include="Contracts\IExamRepository.cs" />
     <Compile Include="Contracts\IGroupRepository.cs" />
+    <Compile Include="Contracts\IRepositoryFactory.cs" />
     <Compile Include="Contracts\ISpecialtyRepository.cs" />
     <Compile Include="Contracts\IStudentRepository.cs" />
     <Compile Include="Contracts\ISubjectRepository.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Repositories\ExaminerRepository.cs" />
     <Compile Include="Repositories\ExamRepository.cs" />
     <Compile Include="Repositories\GroupRepository.cs" />
+    <Compile Include="Repositories\RepositoryFactory.cs" />
     <Compile Include="Repositories\SpecialtyRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\SubjectRepository.cs" />
