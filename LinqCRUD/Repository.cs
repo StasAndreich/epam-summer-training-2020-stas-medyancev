@@ -55,6 +55,9 @@ namespace LinqCRUD
         /// Returns table of a specified TModel type.
         /// </summary>
         /// <returns></returns>
-        protected abstract Table<TModel> GetTable();
+        protected Table<TModel> GetTable()
+        {
+            return context.GetTable<TModel>();
+        }
     }
 }

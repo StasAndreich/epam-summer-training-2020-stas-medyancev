@@ -1,13 +1,13 @@
 ﻿using LinqCRUD.Models;
-using System.Data.Linq;
+using System.Linq;
 
 namespace LinqCRUD.Repositories
 {
     public class ExaminerRepository : Repository<Examiner>
     {
-        protected override Table<Examiner> GetTable()
+        public IQueryable<Examiner> GetExaminers()
         {
-            return context.GetTable<Examiner>();
+            return GetAll();
         }
     }
 }

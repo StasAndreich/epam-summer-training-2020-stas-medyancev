@@ -1,13 +1,13 @@
 ﻿using LinqCRUD.Models;
-using System.Data.Linq;
+using System.Linq;
 
 namespace LinqCRUD.Repositories
 {
     public class SpecialtyRepository : Repository<Specialty>
     {
-        protected override Table<Specialty> GetTable()
+        public IQueryable<Specialty> GetSpecialties()
         {
-            return context.GetTable<Specialty>();
+            return GetAll();
         }
     }
 }

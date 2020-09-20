@@ -1,14 +1,13 @@
 ﻿using LinqCRUD.Models;
-using System;
-using System.Data.Linq;
+using System.Linq;
 
 namespace LinqCRUD.Repositories
 {
     public class GroupRepository : Repository<Group>
     {
-        protected override Table<Group> GetTable()
+        public IQueryable<Group> GetGroups()
         {
-            return context.GetTable<Group>();
+            return GetAll();
         }
     }
 }
