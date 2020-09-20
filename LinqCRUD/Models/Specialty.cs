@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Linq.Mapping;
+﻿using System.Data.Linq.Mapping;
 
 namespace LinqCRUD.Models
 {
@@ -8,8 +7,8 @@ namespace LinqCRUD.Models
     {
         [Column(IsPrimaryKey = true, IsDbGenerated = true)]
         public int Id { get; set; }
-        
-        [Column]
+
+        [Column(CanBeNull = false)]
         public string SpecialtyName { get; set; }
     }
 }

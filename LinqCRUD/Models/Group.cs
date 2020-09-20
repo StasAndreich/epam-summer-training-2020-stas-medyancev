@@ -9,10 +9,10 @@ namespace LinqCRUD.Models
         [Column(IsPrimaryKey = true, IsDbGenerated = true)]
         public int Id { get; set; }
 
-        [Column]
+        [Column(CanBeNull = false)]
         public string GroupName { get; set; }
         
-        [Column]
+        [Column()]
         public int SpecialtyId { get; set; }
     }
 }

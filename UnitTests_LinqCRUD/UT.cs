@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace UnitTests_LinqCRUD
 {
     [TestClass]
-    public class UnitTest1
+    public class UT
     {
         [TestMethod]
         public void TestMethod1()

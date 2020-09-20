@@ -8,14 +8,14 @@ namespace LinqCRUD.Models
     {
         [Column(IsPrimaryKey = true, IsDbGenerated = true)]
         public int Id { get; set; }
-        
-        [Column]
+
+        [Column(CanBeNull = false)]
         public string Name { get; set; }
-        
-        [Column]
+
+        [Column(CanBeNull = false)]
         public string Surname { get; set; }
-        
-        [Column]
+
+        [Column(CanBeNull = false)]
         public string Patronym { get; set; }
     }
 }
