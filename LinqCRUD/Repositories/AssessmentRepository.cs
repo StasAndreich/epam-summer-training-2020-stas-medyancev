@@ -1,9 +1,11 @@
-﻿using LinqCRUD.Models;
+﻿using LinqCRUD.Contracts;
+using LinqCRUD.Models;
 using System.Linq;
 
 namespace LinqCRUD.Repositories
 {
-    public class AssessmentRepository : Repository<Assessment>
+    public class AssessmentRepository : Repository<Assessment>, 
+        IAssessmentRepository
     {
         public IQueryable<Assessment> GetAssessments()
         {

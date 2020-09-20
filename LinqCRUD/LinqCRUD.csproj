@@ -63,6 +63,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IAssessmentRepository.cs" />
+    <Compile Include="Contracts\IExaminerRepository.cs" />
+    <Compile Include="Contracts\IExamRepository.cs" />
+    <Compile Include="Contracts\IGroupRepository.cs" />
+    <Compile Include="Contracts\ISpecialtyRepository.cs" />
+    <Compile Include="Contracts\IStudentRepository.cs" />
+    <Compile Include="Contracts\ISubjectRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\Exam.cs" />

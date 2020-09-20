@@ -1,9 +1,11 @@
-﻿using LinqCRUD.Models;
+﻿using LinqCRUD.Contracts;
+using LinqCRUD.Models;
 using System.Linq;
 
 namespace LinqCRUD.Repositories
 {
-    public class SubjectRepository : Repository<Subject>
+    public class SubjectRepository : Repository<Subject>,
+        ISubjectRepository
     {
         public IQueryable<Subject> GetSubjects()
         {
