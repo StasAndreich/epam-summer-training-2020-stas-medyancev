@@ -2,6 +2,7 @@
 using LinqCRUD.Contracts;
 using LinqCRUD.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BusinessLogicUsingLinq
@@ -103,7 +104,7 @@ namespace BusinessLogicUsingLinq
                                                              Func<IQueryable<ExaminerStatistics>,
                                                                 IQueryable<ExaminerStatistics>> sort)
         {
-            var specialtiesStats = from exam in GetExams()
+            var examinersStats = from exam in GetExams()
                                    join examiner in GetExaminers()
                                        on exam.ExaminerId equals examiner.Id
                                    where exam.ExamDate >= startDate &&
@@ -115,29 +116,44 @@ namespace BusinessLogicUsingLinq
                                        AvgMark = (float)examinerResults.Average(s => s.Mark)
                                    };
 
-            return sort(specialtiesStats);
+            return sort(examinersStats);
         }
 
-        ///// <summary>
-        ///// Get average mark by every examiner.
-        ///// </summary>
-        ///// <param name="sort"></param>
-        ///// <returns></returns>
-        //public IQueryable<ExaminerStatistics> GetSubjectAvgMarkByYears(Func<IQueryable<ExaminerStatistics>,
-        //                                                        IQueryable<ExaminerStatistics>> sort)
-        //{
-        //    var specialtiesStats = from subject in GetSubjects()
-        //                           join exam in GetExams()
-        //                               on subject.Id equals exam.SubjectId
-        //                           group exam by examiner.Surname into examinerResults
-        //                           select new SubjectMarkDynamics()
-        //                           {
-        //                               SubjectName = examinerResults.Key,
-        //                               MarksByYears = (float)examinerResults.Average(s => s.Mark)
-        //                           };
+        /// <summary>
+        /// Get average mark by every year on every subject.
+        /// </summary>
+        /// <param name="sort"></param>
+        /// <returns></returns>
+        public IQueryable<SubjectMarkDynamics> GetSubjectAvgMarkByYears(Func<IQueryable<SubjectMarkDynamics>,
+                                                                IQueryable<SubjectMarkDynamics>> sort)
+        {
+            var sameYearExams = from subject in GetSubjects()
+                                   join exam in GetExams()
+                                       on subject.Id equals exam.SubjectId
+                                   group exam by exam.ExamDate.Year into sameYearEx
+                                   select new
+                                   {
+                                       Year = sameYearEx.Key,
+                                       AvgMark = sameYearEx.Average(e => e.Mark)
+                                   };
 
-        //    return sort(specialtiesStats);
-        //}
+            var sameSubjectExams = from subject in GetSubjects()
+                                join exam in GetExams()
+                                    on subject.Id equals exam.SubjectId
+                                group subject by new
+                                {
+                                    subject.SubjectName,
+                                    exam.ExamDate,
+                                    exam.Mark
+                                } into s
+                                select new
+                                {
+                                    Name = s.Key.,
+                                    Exams = s.GroupBy(e => e.Id)
+                                };
+
+            return sort(subjectAvgMarkByYears);
+        }
 
         /// <summary>
         /// Gets session results IEnumerable by date interval.
