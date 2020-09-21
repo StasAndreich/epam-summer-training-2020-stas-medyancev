@@ -58,6 +58,7 @@
     <Compile Include="DTOs\SessionResults.cs" />
     <Compile Include="DTOs\SessionStatistics.cs" />
     <Compile Include="DTOs\SpecialtyStatistics.cs" />
+    <Compile Include="DTOs\SubjectMarkDynamics.cs" />
     <Compile Include="SessionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XlsxCreator.cs" />

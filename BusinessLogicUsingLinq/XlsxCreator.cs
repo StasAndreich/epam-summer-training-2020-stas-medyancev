@@ -76,7 +76,7 @@ namespace BusinessLogicUsingLinq
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="results"></param>
-        public static void CreateXlsxResultsFile(string filePath,
+        public static void CreateXlsxResults(string filePath,
                                                  IQueryable<SessionResults> results)
         {
             var resultsByGroup = from result in results
@@ -108,7 +108,7 @@ namespace BusinessLogicUsingLinq
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="stats"></param>
-        public static void CreateXlsxStatisticsFile(string filePath,
+        public static void CreateXlsxStatistics(string filePath,
                                                  IQueryable<SessionStatistics> stats)
         {
             using (var excelPackage = new ExcelPackage())
@@ -134,7 +134,7 @@ namespace BusinessLogicUsingLinq
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="students"></param>
-        public static void CreateXlsxContributableStudentsFile(string filePath,
+        public static void CreateXlsxContributableStudents(string filePath,
                                                  IQueryable<ContributableStudents> students)
         {
             using (var excelPackage = new ExcelPackage())

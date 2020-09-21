@@ -118,6 +118,27 @@ namespace BusinessLogicUsingLinq
             return sort(specialtiesStats);
         }
 
+        ///// <summary>
+        ///// Get average mark by every examiner.
+        ///// </summary>
+        ///// <param name="sort"></param>
+        ///// <returns></returns>
+        //public IQueryable<ExaminerStatistics> GetSubjectAvgMarkByYears(Func<IQueryable<ExaminerStatistics>,
+        //                                                        IQueryable<ExaminerStatistics>> sort)
+        //{
+        //    var specialtiesStats = from subject in GetSubjects()
+        //                           join exam in GetExams()
+        //                               on subject.Id equals exam.SubjectId
+        //                           group exam by examiner.Surname into examinerResults
+        //                           select new SubjectMarkDynamics()
+        //                           {
+        //                               SubjectName = examinerResults.Key,
+        //                               MarksByYears = (float)examinerResults.Average(s => s.Mark)
+        //                           };
+
+        //    return sort(specialtiesStats);
+        //}
+
         /// <summary>
         /// Gets session results IEnumerable by date interval.
         /// </summary>

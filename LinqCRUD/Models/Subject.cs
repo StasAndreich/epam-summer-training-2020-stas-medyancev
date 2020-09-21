@@ -3,7 +3,7 @@ using System.Data.Linq.Mapping;
 
 namespace LinqCRUD.Models
 {
-    [Table(Name = "Specialty")]
+    [Table(Name = "Subject")]
     public class Subject
     {
         [Column(IsPrimaryKey = true, IsDbGenerated = true)]

@@ -49,12 +49,23 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UT.cs" />
+    <Compile Include="UT_XlsxFiles.cs" />
+    <Compile Include="UT_LinqCrud.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessLogicUsingLinq\BusinessLogicUsingLinq.csproj">
+      <Project>{653af2fb-2f85-454d-be28-73b75485bb86}</Project>
+      <Name>BusinessLogicUsingLinq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LinqCRUD\LinqCRUD.csproj">
+      <Project>{f466055b-3a8b-4940-8872-0f8af90f285c}</Project>
+      <Name>LinqCRUD</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

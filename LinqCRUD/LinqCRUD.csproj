@@ -89,6 +89,7 @@
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\SubjectRepository.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="RepositoryContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

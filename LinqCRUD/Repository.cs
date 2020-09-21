@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Data.Linq;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace LinqCRUD
@@ -12,12 +13,12 @@ namespace LinqCRUD
         where TModel : class
     {
         /// <summary>
-        /// Data context.
+        /// Repos context.
         /// </summary>
-        protected readonly DataContext context = 
-            new DataContext(ConfigurationManager.
-                ConnectionStrings["UniversityDBExtendedConnection"].
-                ConnectionString);
+        protected DataContext Context
+        {
+            get => RepositoryContext.Context;
+        }
 
         /// <summary>
         /// Deletes entity from database by its instance.
@@ -27,7 +28,7 @@ namespace LinqCRUD
         public void Delete(TModel entity)
         {
             GetTable().DeleteOnSubmit(entity);
-            context.SubmitChanges();
+            Context.SubmitChanges();
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace LinqCRUD
         public void Save(TModel entity)
         {
             GetTable().InsertOnSubmit(entity);
-            context.SubmitChanges();
+            Context.SubmitChanges();
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace LinqCRUD
         /// <returns></returns>
         protected Table<TModel> GetTable()
         {
-            return context.GetTable<TModel>();
+            return Context.GetTable<TModel>();
         }
     }
 }
