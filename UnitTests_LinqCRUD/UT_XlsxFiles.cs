@@ -10,6 +10,51 @@ namespace UnitTests_LinqCRUD
     public class UT_XlsxFiles
     {
         [TestMethod]
+        public void CreateXlsxSpecialtyStatistics_FilePathAndStatsByAvgMark_XlsxFile()
+        {
+            var manager = new SessionManager(new RepositoryFactory());
+
+            XlsxCreator.CreateXlsxSpecialtyStatistics("SpecialtyStatistics.xlsx",
+                manager.GetSpecialtyStatistics(new DateTime(2020, 01, 01),
+                                       new DateTime(2020, 09, 01),
+                                       results => results.
+                                       OrderBy(r => r.AvgMark)));
+
+            // If no exceptions during file creation.
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void CreateXlsxExaminerStatistics_FilePathAndStatsByAvgMark_XlsxFile()
+        {
+            var manager = new SessionManager(new RepositoryFactory());
+
+            XlsxCreator.CreateXlsxExaminerStatistics("ExaminerStatistics.xlsx",
+                manager.GetExaminerStatistics(new DateTime(2020, 01, 01),
+                                       new DateTime(2020, 09, 01),
+                                       results => results.
+                                       OrderBy(r => r.AvgMark)));
+
+            // If no exceptions during file creation.
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void CreateXlsx_FilePathAndStatsByAvgMark_XlsxFile()
+        {
+            var manager = new SessionManager(new RepositoryFactory());
+
+            XlsxCreator.CreateXlsxExaminerStatistics("ExaminerStatistics.xlsx",
+                manager.GetExaminerStatistics(new DateTime(2020, 01, 01),
+                                       new DateTime(2020, 09, 01),
+                                       results => results.
+                                       OrderBy(r => r.AvgMark)));
+
+            // If no exceptions during file creation.
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
         public void CreateXlsxResults_FilePathAndResultsSortedBySurname_XlsxFile()
         {
             var manager = new SessionManager(new RepositoryFactory());
