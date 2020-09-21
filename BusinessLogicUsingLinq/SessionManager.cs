@@ -92,7 +92,7 @@ namespace BusinessLogicUsingLinq
         }
 
         /// <summary>
-        /// Get average mark by every specialty.
+        /// Get average mark by every examiner.
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>

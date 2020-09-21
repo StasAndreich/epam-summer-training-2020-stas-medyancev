@@ -1,5 +1,4 @@
 ﻿using LinqCRUD.Contracts;
-using System;
 
 namespace LinqCRUD.Repositories
 {
