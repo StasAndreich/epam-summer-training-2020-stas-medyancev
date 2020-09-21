@@ -1,4 +1,5 @@
-﻿using LinqCRUD.Contracts;
+﻿using BusinessLogicUsingLinq.DTOs;
+using LinqCRUD.Contracts;
 using LinqCRUD.Models;
 using System;
 using System.Linq;
@@ -60,50 +61,111 @@ namespace BusinessLogicUsingLinq
         }
 
         /// <summary>
+        /// Get average mark by every specialty.
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="sort"></param>
+        /// <returns></returns>
+        public IQueryable<SpecialtyStatistics> GetSpecialtyStatistics (DateTime startDate,
+                                                             DateTime endDate,
+                                                             Func<IQueryable<SpecialtyStatistics>,
+                                                                IQueryable<SpecialtyStatistics>> sort)
+        {
+            var specialtiesStats = from exam in GetExams()
+                                   join student in GetStudents()
+                                      on exam.StudentId equals student.Id
+                                   join gr in GetGroups()
+                                      on student.GroupId equals gr.Id
+                                   join specialty in GetSpecialties()
+                                      on gr.SpecialtyId equals specialty.Id
+                                   where exam.ExamDate >= startDate &&
+                                        exam.ExamDate <= endDate
+                                   group exam by specialty.SpecialtyName into specResults
+                                   select new SpecialtyStatistics()
+                                   {
+                                       SpecialtyName = specResults.Key,
+                                       AvgMark = (float)specResults.Average(s => s.Mark)
+                                   };
+
+            return sort(specialtiesStats);
+        }
+
+        /// <summary>
+        /// Get average mark by every specialty.
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="sort"></param>
+        /// <returns></returns>
+        public IQueryable<ExaminerStatistics> GetExaminerStatistics(DateTime startDate,
+                                                             DateTime endDate,
+                                                             Func<IQueryable<ExaminerStatistics>,
+                                                                IQueryable<ExaminerStatistics>> sort)
+        {
+            var specialtiesStats = from exam in GetExams()
+                                   join examiner in GetExaminers()
+                                       on exam.ExaminerId equals examiner.Id
+                                   where exam.ExamDate >= startDate &&
+                                       exam.ExamDate <= endDate
+                                   group exam by examiner.Surname into examinerResults
+                                   select new ExaminerStatistics()
+                                   {
+                                       ExaminerName = examinerResults.Key,
+                                       AvgMark = (float)examinerResults.Average(s => s.Mark)
+                                   };
+
+            return sort(specialtiesStats);
+        }
+
+        /// <summary>
         /// Gets session results IEnumerable by date interval.
         /// </summary>
-        public IEnumerable<SessionResults> GetSessionResults(DateTime startDate,
+        public IQueryable<SessionResults> GetSessionResults(DateTime startDate,
                                                              DateTime endDate,
-                                                             Func<IEnumerable<SessionResults>,
-                                                                    IEnumerable<SessionResults>> sort)
+                                                             Func<IQueryable<SessionResults>,
+                                                                IQueryable<SessionResults>> sort)
         {
             // Join tables on exams.
             var examResults = from student in GetStudents()
                               join gr in GetGroups()
-                                on student.GroupID equals gr.GroupID
+                                on student.GroupId equals gr.Id
                               join exam in GetExams()
-                                on student.StudentID equals exam.StudentID
+                                on student.Id equals exam.Id
                               join subject in GetSubjects()
-                                on exam.SubjectID equals subject.SubjectID
+                                on exam.SubjectId equals subject.Id
                               where exam.ExamDate >= startDate && exam.ExamDate <= endDate
-                              select new SessionResults(student.FirstName,
-                                                             student.LastName,
-                                                             student.PatronymicName,
-                                                             gr.GroupName,
-                                                             subject.SubjectName,
-                                                             exam.Mark.ToString());
+                              select new SessionResults()
+                              {
+                                  StudentName = student.Name,
+                                  StudentSurname = student.Surname,
+                                  StudentPatronym = student.Patronym,
+                                  GroupName = gr.GroupName,
+                                  SubjectName = subject.SubjectName,
+                                  Result = exam.Mark.ToString()
+                              };
 
             // Join tables on assessments.
             var assessmentResults = from student in GetStudents()
                                     join gr in GetGroups()
-                                      on student.GroupID equals gr.GroupID
+                                      on student.GroupId equals gr.Id
                                     join assessment in GetAssessments()
-                                      on student.StudentID equals assessment.StudentID
+                                      on student.Id equals assessment.Id
                                     join subject in GetSubjects()
-                                      on assessment.SubjectID equals subject.SubjectID
+                                      on assessment.SubjectId equals subject.Id
                                     where assessment.AssessmentDate >= startDate &&
                                           assessment.AssessmentDate <= endDate
-                                    select new SessionResults(student.FirstName,
-                                                                   student.LastName,
-                                                                   student.PatronymicName,
-                                                                   gr.GroupName,
-                                                                   subject.SubjectName,
-                                                                   assessment.Result);
+                                    select new SessionResults()
+                                    {
+                                        StudentName = student.Name,
+                                        StudentSurname = student.Surname,
+                                        StudentPatronym = student.Patronym,
+                                        GroupName = gr.GroupName,
+                                        SubjectName = subject.SubjectName,
+                                        Result = assessment.Result
+                                    };
 
-            var result = new List<SessionResults>(examResults.Count() +
-                                                         assessmentResults.Count());
-            result.AddRange(examResults);
-            result.AddRange(assessmentResults);
+            var result = examResults.Concat(assessmentResults);
 
             return sort(result);
         }
@@ -115,23 +177,26 @@ namespace BusinessLogicUsingLinq
         /// <param name="endDate"></param>
         /// <param name="sort"></param>
         /// <returns></returns>
-        public IEnumerable<SessionStatistics> GetSessionStatistics(DateTime startDate,
+        public IQueryable<SessionStatistics> GetSessionStatistics(DateTime startDate,
                                                                    DateTime endDate,
-                                                                   Func<IEnumerable<SessionStatistics>,
-                                                                       IEnumerable<SessionStatistics>> sort)
+                                                                   Func<IQueryable<SessionStatistics>,
+                                                                       IQueryable<SessionStatistics>> sort)
         {
             var statistics = from student in GetStudents()
                              join gr in GetGroups()
-                               on student.GroupID equals gr.GroupID
+                               on student.GroupId equals gr.Id
                              join exam in GetExams()
-                               on student.StudentID equals exam.StudentID
+                               on student.Id equals exam.StudentId
                              where exam.ExamDate >= startDate &&
                                 exam.ExamDate <= endDate
                              group exam by gr.GroupName into marks
-                             select new SessionStatistics(marks.Key,
-                                                          marks.Min(e => e.Mark),
-                                                          (float)marks.Average(e => e.Mark),
-                                                          marks.Max(e => e.Mark));
+                             select new SessionStatistics()
+                             {
+                                 GroupName = marks.Key,
+                                 MinMark = marks.Min(e => e.Mark),
+                                 AvgMark = (float)marks.Average(e => e.Mark),
+                                 MaxMark = marks.Max(e => e.Mark)
+                             };
 
             return sort(statistics);
         }
@@ -150,19 +215,19 @@ namespace BusinessLogicUsingLinq
         {
             var students = from student in GetStudents()
                            join gr in GetGroups()
-                               on student.Id equals gr.Id
+                               on student.GroupId equals gr.Id
                            join exam in GetExams()
-                               on student.Id equals exam.Id
+                               on student.Id equals exam.StudentId
                            where exam.ExamDate >= startDate &&
                                 exam.ExamDate <= endDate &&
                                 exam.Mark < 4 && exam.Mark >= 1
                            select new ContributableStudents()
                            {
-                               groupName = gr.GroupName,
-                               name = student.FirstName,
-                               lastName = student.LastName,
-                               patronym = student.PatronymicName,
-                               mark = exam.Mark
+                               GroupName = gr.GroupName,
+                               Name = student.Name,
+                               Surname = student.Surname,
+                               Patronym = student.Patronym,
+                               Mark = exam.Mark
                            };
 
             return sort(students);

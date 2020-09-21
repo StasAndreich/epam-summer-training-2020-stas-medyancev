@@ -5,9 +5,9 @@
     /// </summary>
     public class SessionResults
     {
-        public string StudentFirstName { get; set; }
-        public string StudentLastname { get; set; }
-        public string StudentPatronymic { get; set; }
+        public string StudentName { get; set; }
+        public string StudentSurname { get; set; }
+        public string StudentPatronym { get; set; }
         public string GroupName { get; set; }
         public string SubjectName { get; set; }
         public string Result { get; set; }
