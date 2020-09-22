@@ -124,35 +124,45 @@ namespace BusinessLogicUsingLinq
         /// </summary>
         /// <param name="sort"></param>
         /// <returns></returns>
-        public IQueryable<SubjectMarkDynamics> GetSubjectAvgMarkByYears(Func<IQueryable<SubjectMarkDynamics>,
-                                                                IQueryable<SubjectMarkDynamics>> sort)
+        public IEnumerable<SubjectMarkDynamics> GetSubjectAvgMarkByYears()
         {
-            var sameYearExams = from subject in GetSubjects()
-                                   join exam in GetExams()
-                                       on subject.Id equals exam.SubjectId
-                                   group exam by exam.ExamDate.Year into sameYearEx
-                                   select new
-                                   {
-                                       Year = sameYearEx.Key,
-                                       AvgMark = sameYearEx.Average(e => e.Mark)
-                                   };
+            // Get main exam info.
+            var examInfo = from subject in GetSubjects()
+                           join exam in GetExams()
+                              on subject.Id equals exam.StudentId
+                           select new { subject.SubjectName, exam.Mark, exam.ExamDate };
 
-            var sameSubjectExams = from subject in GetSubjects()
-                                join exam in GetExams()
-                                    on subject.Id equals exam.SubjectId
-                                group subject by new
-                                {
-                                    subject.SubjectName,
-                                    exam.ExamDate,
-                                    exam.Mark
-                                } into s
-                                select new
-                                {
-                                    Name = s.Key.,
-                                    Exams = s.GroupBy(e => e.Id)
-                                };
+            // Find min and max year in exam rows.
+            var minYear = GetExams().Min(e => e.ExamDate.Year);
+            var maxYear = GetExams().Max(e => e.ExamDate.Year);
 
-            return sort(subjectAvgMarkByYears);
+            // Group by subjects.
+            var subjGroups = from s in examInfo
+                             group s by s.SubjectName;
+
+            // Find avg marks.
+            var markList = new List<SubjectMarkDynamics>();
+            foreach (var item in subjGroups)
+            {
+                // Get subject name.
+                var subjectDynamicsObj = new SubjectMarkDynamics();
+                subjectDynamicsObj.SubjectName = item.Key;
+
+                subjectDynamicsObj.AvgMarksByYears =
+                    new Dictionary<int, float>();
+                // Get avg mark by year.
+                for (int year = minYear; year <= maxYear; year++)
+                {
+                    var avgMarkByYear = item.
+                        Where(y => y.ExamDate.Year == year).
+                        Average(m => m.Mark);
+                    subjectDynamicsObj.AvgMarksByYears.Add(year, (float)avgMarkByYear);
+                }
+
+                markList.Add(subjectDynamicsObj);
+            }
+
+            return markList;
         }
 
         /// <summary>

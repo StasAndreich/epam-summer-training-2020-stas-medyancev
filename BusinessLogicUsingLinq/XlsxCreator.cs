@@ -70,8 +70,31 @@ namespace BusinessLogicUsingLinq
             }
         }
 
+        /// <summary>
+        /// Creates an xlsx file that holds examiner statistics.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="stats"></param>
+        public static void CreateXlsxSubjectMarkDynamics(string filePath,
+                                                 IEnumerable<SubjectMarkDynamics> marks)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (var excelPackage = new ExcelPackage())
+            {
+                // Set excel document props.
+                excelPackage.Workbook.Properties.Title = "SubjectMarksDynamics";
+                excelPackage.Workbook.Properties.Created = DateTime.Now;
 
+                // Create a worksheet.
+                var worksheet = excelPackage.Workbook.Worksheets.
+                    Add("SubjectMarksAverageByYear");
+                // Insert data into the worksheet.
+                InsertSubjectAvgMarksIntoWorksheet(worksheet, marks);
 
+                var file = new FileInfo(filePath);
+                excelPackage.SaveAs(file);
+            }
+        }
 
         /// <summary>
         /// Creates an xlsx file that holds session results
@@ -198,6 +221,50 @@ namespace BusinessLogicUsingLinq
                 worksheet.Cells["A" + i].Value = item.ExaminerName;
                 worksheet.Cells["B" + i].Value = item.AvgMark;
                 i++;
+            }
+        }
+
+        private static void InsertSubjectAvgMarksIntoWorksheet(ExcelWorksheet worksheet,
+                                                       IEnumerable<SubjectMarkDynamics> marks)
+        {
+            var chars = "abcdefghijklmnopqrstuvwxyz";
+            chars = chars.ToUpper();
+            var yearsCount = 0;
+            var years = new int[0];
+
+            worksheet.Cells["A1"].Value = "Subject";
+            var i = 0;
+            var charNum = 1;
+            foreach (var item in marks)
+            {
+                if (i == item.AvgMarksByYears.Count)
+                    break;
+
+                // Years array.
+                yearsCount = item.AvgMarksByYears.Keys.Count;
+                years = new int[yearsCount];
+                item.AvgMarksByYears.Keys.CopyTo(years, 0);
+                
+                // Put years in header.
+                worksheet.Cells[$"{chars[charNum]}1"].Value = years[i];
+                i++;
+                charNum++;
+            }
+
+            // Cell number.
+            var row = 2;
+            var col = 0;
+            foreach (var item in marks)
+            {
+                worksheet.Cells[$"{chars[col]}{row}"].Value = item.SubjectName;
+
+                for (int j = col + 1; j <= yearsCount; j++)
+                {
+                    item.AvgMarksByYears.TryGetValue(years[j - 1], out float value);
+                    worksheet.Cells[$"{chars[j]}{row}"].Value = value;
+                }
+                col = 0;
+                row++;
             }
         }
 
